@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@import 'katex/dist/katex.min.css';
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-surface: #fafafa;
+  --color-surface-elevated: #ffffff;
+  --color-ink: #1a1a2e;
+  --color-ink-muted: #64748b;
+  --color-brand: #2563eb;
+  --color-brand-hover: #1d4ed8;
+  --color-border: #e2e8f0;
+  --color-success: #059669;
+  --color-error: #dc2626;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply m-0 min-h-svh bg-surface text-ink font-sans;
+  }
+
+  #root {
+    @apply min-h-svh;
+  }
+}
+
+/* KaTeX + Tailwind: preflight resets break katex span layout without these guards */
+.math-block .katex-display {
+  margin: 0;
+  text-align: center;
+}
+
+.math-block .katex {
+  font-size: 1.05em;
+  color: var(--color-ink);
+}
+
+.math-inline .katex {
+  font-size: 1em;
+  color: inherit;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.katex {
+  white-space: normal;
+}
+
+.katex .katex-html {
+  white-space: nowrap;
+}

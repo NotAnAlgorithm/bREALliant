@@ -1,0 +1,73 @@
+{
+  "lessonId": "lesson-bounds-01",
+  "title": "Bounds and Suprema",
+  "tags": ["bounds", "supremum", "infimum"],
+  "prerequisites": [],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Before we axiomatize the real numbers, we need language for \"nothing in E exceeds this value.\""
+        },
+        {
+          "type": "math",
+          "latex": "M \\text{ is an upper bound of } E \\subset \\mathbb{R} \\iff \\forall x \\in E,\\, x \\le M"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "discover",
+      "prompt": "Drag a point on the number line to explore upper bounds of the set E = (0, 1).",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -0.5,
+          "max": 2,
+          "intervals": [{ "start": 0, "end": 1, "label": "E" }]
+        }
+      }
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "prompt": "Any upper bound M of (0, 1) must satisfy M ≥ ___",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "M \\ge {{answer}}" }
+      },
+      "validator": {
+        "type": "expression",
+        "engine": "mathjs",
+        "accept": ["1"]
+      },
+      "feedback": {
+        "correct": "Correct — 1 is the least upper bound of (0, 1).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "An upper bound must be at least as large as every element of E. What is the smallest value that still bounds (0, 1)?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "An upper bound of E is any number ≥ every element of E. The least upper bound (supremum) is the smallest such bound when it exists."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "quiz",
+      "items": []
+    }
+  ]
+}

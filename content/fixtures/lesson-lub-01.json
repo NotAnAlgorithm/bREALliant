@@ -1,0 +1,73 @@
+{
+  "lessonId": "lesson-lub-01",
+  "title": "The Least Upper Bound Property",
+  "tags": ["lub", "supremum", "completeness"],
+  "prerequisites": ["lesson-bounds-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Does every non-empty subset of ℝ that is bounded above have a least upper bound?"
+        },
+        {
+          "type": "math",
+          "latex": "\\sup E = \\min\\{ M \\in \\mathbb{R} : M \\text{ is an upper bound of } E \\}"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "discover",
+      "prompt": "Experiment with upper bounds of $E = \\{ q \\in \\mathbb{Q} : q^2 < 2 \\}$. Where would the least upper bound live?",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 2,
+          "markers": [{ "value": 1.414, "label": "√2?" }]
+        }
+      }
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "prompt": "For E = (0, 1), the supremum is ___",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\sup E = {{answer}}" }
+      },
+      "validator": {
+        "type": "expression",
+        "engine": "mathjs",
+        "accept": ["1"]
+      },
+      "feedback": {
+        "correct": "Yes — sup(0, 1) = 1 even though 1 ∉ E.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "That's an upper bound, but E has a smaller one. Try the endpoint of the open interval."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The least upper bound property (completeness) is what separates ℝ from ℚ. In ℝ, every non-empty set bounded above has a supremum."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "quiz",
+      "items": []
+    }
+  ]
+}

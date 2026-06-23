@@ -1,0 +1,11 @@
+{
+  "courseId": "rudin-real-analysis",
+  "title": "Real Analysis",
+  "units": [
+    {
+      "unitId": "ch1-number-systems",
+      "title": "The Real and Complex Number Systems",
+      "lessonIds": ["lesson-bounds-01", "lesson-lub-01"]
+    }
+  ]
+}
