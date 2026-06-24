@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'react'
+import { type CSSProperties, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import type { Lesson } from '@content/schemas'
+
+import './CoursePath.css'
 
 import { useCourseProgress } from '../../hooks/useCourseProgress'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
@@ -10,6 +12,15 @@ import {
   missingPrerequisites,
   type LessonStatus,
 } from '../../services/unlock'
+
+// Stagger entrance so intro, title, and rows cascade in. Capped so the last
+// row still lands comfortably under ~600ms even with many lessons.
+const STAGGER_STEP_MS = 40
+const STAGGER_CAP_MS = 560
+
+const riseDelay = (index: number): CSSProperties => ({
+  animationDelay: `${Math.min(index * STAGGER_STEP_MS, STAGGER_CAP_MS)}ms`,
+})
 
 const STATUS_META: Record<
   LessonStatus,
@@ -55,7 +66,11 @@ export function CoursePath() {
 
   const [pendingLocked, setPendingLocked] = useState<Lesson | null>(null)
 
-  const openLesson = (lessonId: string) => navigate(`/lesson/${lessonId}`)
+  const openLesson = (lessonId: string, bypassPrereqGate = false) =>
+    navigate(
+      `/lesson/${lessonId}`,
+      bypassPrereqGate ? { state: { bypassPrereqGate: true } } : undefined,
+    )
 
   const onSelect = (lessonId: string, status: LessonStatus) => {
     if (status === 'locked') {
@@ -66,9 +81,11 @@ export function CoursePath() {
     openLesson(lessonId)
   }
 
+  let riseIndex = 2
+
   return (
     <div className="space-y-8">
-      <section className="space-y-3">
+      <section className="animate-course-rise space-y-3" style={riseDelay(0)}>
         <p className="text-sm font-medium uppercase tracking-wide text-brand">
           Real Analysis
         </p>
@@ -83,7 +100,12 @@ export function CoursePath() {
       </section>
 
       <section className="space-y-6">
-        <h2 className="text-lg font-medium text-ink">{course.title}</h2>
+        <h2
+          className="animate-course-rise text-lg font-medium text-ink"
+          style={riseDelay(1)}
+        >
+          {course.title}
+        </h2>
         <ol className="space-y-8">
           {course.units.map((unit, unitIndex) => (
             <li key={unit.unitId} className="space-y-3">
@@ -97,12 +119,15 @@ export function CoursePath() {
                 {unit.lessonIds.map((lessonId) => {
                   const lesson = lessonsById.get(lessonId)
                   const status = statuses.get(lessonId) ?? 'locked'
+                  const riseStyle = riseDelay(riseIndex++)
                   return (
                     <li key={lessonId}>
                       <LessonRow
                         title={lesson?.title ?? lessonId}
                         status={status}
+                        inProgress={inProgressIds.has(lessonId)}
                         onSelect={() => onSelect(lessonId, status)}
+                        riseStyle={riseStyle}
                       />
                     </li>
                   )
@@ -123,7 +148,7 @@ export function CoursePath() {
           onConfirm={() => {
             const id = pendingLocked.lessonId
             setPendingLocked(null)
-            openLesson(id)
+            openLesson(id, true)
           }}
         />
       ) : null}
@@ -134,28 +159,35 @@ export function CoursePath() {
 function LessonRow({
   title,
   status,
+  inProgress,
   onSelect,
+  riseStyle,
 }: {
   title: string
   status: LessonStatus
+  inProgress: boolean
   onSelect: () => void
+  riseStyle?: CSSProperties
 }) {
   const meta = STATUS_META[status]
   const isLocked = status === 'locked'
+  const lockedStarted = isLocked && inProgress
+  const label = lockedStarted ? 'Locked · started' : meta.label
 
   return (
     <button
       type="button"
       onClick={onSelect}
-      aria-label={`${title} — ${meta.label}`}
+      aria-label={`${title} — ${label}`}
+      style={riseStyle}
       className={[
-        'flex min-h-14 w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors',
+        'group animate-course-rise flex min-h-14 w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-all motion-reduce:transition-none motion-reduce:transform-none',
         isLocked
           ? 'border-border bg-surface/60 hover:border-border'
-          : 'border-border bg-surface hover:border-brand/40 hover:bg-brand/5',
+          : 'border-border bg-surface hover:border-brand/40 hover:bg-brand/5 hover:-translate-y-0.5 active:scale-[0.99]',
       ].join(' ')}
     >
-      <StatusIcon status={status} />
+      <StatusIcon status={status} inProgress={inProgress} />
       <span className="min-w-0 flex-1">
         <span
           className={[
@@ -165,12 +197,16 @@ function LessonRow({
         >
           {title}
         </span>
-        <span className={`text-xs ${meta.tone}`}>{meta.label}</span>
+        <span className={`text-xs ${lockedStarted ? 'text-amber-600' : meta.tone}`}>
+          {label}
+        </span>
       </span>
       <span
         className={[
-          'shrink-0 text-xs font-medium',
-          isLocked ? 'text-ink-muted' : 'text-brand',
+          'shrink-0 text-xs font-medium transition-transform motion-reduce:transition-none motion-reduce:transform-none',
+          isLocked
+            ? 'text-ink-muted'
+            : 'text-brand group-hover:translate-x-0.5',
         ].join(' ')}
       >
         {meta.cta}
@@ -179,7 +215,13 @@ function LessonRow({
   )
 }
 
-function StatusIcon({ status }: { status: LessonStatus }) {
+function StatusIcon({
+  status,
+  inProgress,
+}: {
+  status: LessonStatus
+  inProgress: boolean
+}) {
   const base = 'flex h-7 w-7 shrink-0 items-center justify-center rounded-full'
 
   if (status === 'completed') {
@@ -197,17 +239,27 @@ function StatusIcon({ status }: { status: LessonStatus }) {
   }
 
   if (status === 'locked') {
+    // Distinguish a locked lesson the learner has already started (bypassed the
+    // prerequisite gate) from an untouched locked one.
+    const lockTone = inProgress
+      ? 'bg-amber-100 text-amber-600'
+      : 'bg-surface-elevated text-ink-muted'
     return (
-      <span
-        className={`${base} bg-surface-elevated text-ink-muted`}
-        aria-hidden
-      >
+      <span className={`${base} ${lockTone}`} aria-hidden>
         <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M10 1a4 4 0 0 0-4 4v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4Zm2 6V5a2 2 0 1 0-4 0v2h4Z"
-            clipRule="evenodd"
-          />
+          {inProgress ? (
+            <path
+              fillRule="evenodd"
+              d="M10 1a4 4 0 0 0-4 4v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4Zm2 6V5a2 2 0 1 0-4 0v2h4Zm-1 4a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z"
+              clipRule="evenodd"
+            />
+          ) : (
+            <path
+              fillRule="evenodd"
+              d="M10 1a4 4 0 0 0-4 4v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4Zm2 6V5a2 2 0 1 0-4 0v2h4Z"
+              clipRule="evenodd"
+            />
+          )}
         </svg>
       </span>
     )

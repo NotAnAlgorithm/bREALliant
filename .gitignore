@@ -8,12 +8,22 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+data
 dist
 dist-ssr
 *.local
 .env
 .env.*
 !.env.example
+# Committed: holds only the public local Supabase anon key (see e2e/README.md).
+!.env.test
+.vercel
+
+# Playwright
+/test-results
+/playwright-report
+/playwright/.cache
+/blob-report
 
 # Editor directories and files
 .vscode/*

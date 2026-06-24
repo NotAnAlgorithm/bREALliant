@@ -5,7 +5,13 @@
     {
       "unitId": "ch1-number-systems",
       "title": "The Real and Complex Number Systems",
-      "lessonIds": ["lesson-bounds-01", "lesson-lub-01"]
+      "lessonIds": [
+        "lesson-rationals-01",
+        "lesson-ordered-fields-01",
+        "lesson-bounds-01",
+        "lesson-lub-01",
+        "lesson-nth-roots-01"
+      ]
     }
   ]
 }

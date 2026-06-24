@@ -1,10 +1,11 @@
-import type { Step } from '@content/schemas'
+import { useState } from 'react'
+
+import type { QuizItem, Step } from '@content/schemas'
 import type { EvaluationResult } from '../../lib/feedback/feedback-engine'
 import type { WidgetState } from '../../widgets/types'
 
 import { BlockRenderer } from '../blocks/BlockRenderer'
 import { RichText } from '../blocks/RichText'
-import { getInitialWidgetState } from '../../widgets/types'
 import { WidgetRenderer } from '../../widgets/registry'
 import { FeedbackPanel } from './FeedbackPanel'
 
@@ -16,12 +17,25 @@ const STEP_LABELS: Record<Step['type'], string> = {
   quiz: 'Quiz',
 }
 
+type QuizStep = Extract<Step, { type: 'quiz' }>
+
+type QuizItemHandlers = {
+  quizItemState: (itemId: string) => WidgetState
+  quizItemResult: (itemId: string) => EvaluationResult | null
+  onQuizItemStateChange: (itemId: string, state: WidgetState) => void
+  onCheckQuizItem: (itemId: string) => void
+}
+
 type StepRendererProps = {
   step: Step
   widgetState: WidgetState
   onWidgetStateChange: (state: WidgetState) => void
   problemResult?: EvaluationResult | null
   onCheckAnswer?: () => void
+} & Partial<QuizItemHandlers>
+
+function isItemGraded(item: QuizItem): boolean {
+  return item.validator != null && item.feedback != null
 }
 
 export function StepRenderer({
@@ -30,6 +44,10 @@ export function StepRenderer({
   onWidgetStateChange,
   problemResult,
   onCheckAnswer,
+  quizItemState,
+  quizItemResult,
+  onQuizItemStateChange,
+  onCheckQuizItem,
 }: StepRendererProps) {
   const isProblem = step.type === 'problem'
 
@@ -84,25 +102,13 @@ export function StepRenderer({
 
       {step.type === 'quiz' ? (
         step.items.length > 0 ? (
-          <ul className="space-y-4">
-            {step.items.map((item) => (
-              <li
-                key={item.id}
-                className="rounded-xl border border-border bg-surface-elevated p-4"
-              >
-                <RichText
-                  content={item.prompt}
-                  className="mb-3 text-sm font-medium text-ink"
-                />
-                <WidgetRenderer
-                  kind={item.widget.kind}
-                  widget={item.widget}
-                  state={getInitialWidgetState(item.widget)}
-                  onStateChange={() => {}}
-                />
-              </li>
-            ))}
-          </ul>
+          <QuizStepRenderer
+            step={step}
+            quizItemState={quizItemState}
+            quizItemResult={quizItemResult}
+            onQuizItemStateChange={onQuizItemStateChange}
+            onCheckQuizItem={onCheckQuizItem}
+          />
         ) : (
           <p className="text-sm text-ink-muted italic">
             Quiz items will appear here when authored.
@@ -110,6 +116,89 @@ export function StepRenderer({
         )
       ) : null}
     </article>
+  )
+}
+
+type QuizStepRendererProps = {
+  step: QuizStep
+} & Partial<QuizItemHandlers>
+
+function QuizStepRenderer({
+  step,
+  quizItemState,
+  quizItemResult,
+  onQuizItemStateChange,
+  onCheckQuizItem,
+}: QuizStepRendererProps) {
+  const isSatisfied = (item: QuizItem): boolean => {
+    if (!isItemGraded(item)) return true
+    return quizItemResult?.(item.id)?.correct === true
+  }
+
+  const [quizIndex, setQuizIndex] = useState(() => {
+    const firstUnanswered = step.items.findIndex((item) => !isSatisfied(item))
+    return firstUnanswered === -1 ? 0 : firstUnanswered
+  })
+
+  const item = step.items[quizIndex]
+  const graded = isItemGraded(item)
+  const result = quizItemResult?.(item.id) ?? null
+  const state = quizItemState?.(item.id) ?? {}
+  const solved = result?.correct === true
+  const satisfied = !graded || solved
+  const isLastQuestion = quizIndex === step.items.length - 1
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-ink-muted">
+        Question {quizIndex + 1} of {step.items.length}
+      </p>
+
+      <div className="space-y-3 rounded-xl border border-border bg-surface-elevated p-4">
+        <RichText
+          content={item.prompt}
+          className="text-sm font-medium text-ink"
+        />
+        <WidgetRenderer
+          kind={item.widget.kind}
+          widget={item.widget}
+          state={state}
+          onStateChange={(next) => onQuizItemStateChange?.(item.id, next)}
+          disabled={solved}
+        />
+        {graded ? (
+          <div className="space-y-3">
+            {result ? (
+              <FeedbackPanel
+                correct={result.correct}
+                message={result.message}
+              />
+            ) : null}
+            {!solved ? (
+              <button
+                type="button"
+                onClick={() => onCheckQuizItem?.(item.id)}
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-hover sm:w-auto"
+              >
+                Check
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
+      {satisfied && !isLastQuestion ? (
+        <button
+          type="button"
+          onClick={() =>
+            setQuizIndex((i) => Math.min(step.items.length - 1, i + 1))
+          }
+          className="inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-border bg-surface-elevated px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface sm:w-auto"
+        >
+          Next question
+        </button>
+      ) : null}
+    </div>
   )
 }
 

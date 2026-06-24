@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import type { Lesson } from '@content/schemas'
 
+import './lesson-transitions.css'
+
 import { useAuth } from '../../hooks/useAuth'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
 import {
@@ -49,6 +51,13 @@ function canAdvanceFromStep(
   if (step.type === 'problem') {
     return attempts[step.id]?.correct === true
   }
+  if (step.type === 'quiz') {
+    return step.items.every((item) => {
+      const graded = item.validator != null && item.feedback != null
+      if (!graded) return true
+      return attempts[`${step.id}:${item.id}`]?.correct === true
+    })
+  }
   return true
 }
 
@@ -57,6 +66,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
   const navigate = useNavigate()
 
   const [stepIndex, setStepIndex] = useState(0)
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward')
   const [stepStates, setStepStates] = useState<Record<string, WidgetState>>({})
   const [stepAttempts, setStepAttempts] = useState<StepAttemptMap>({})
   const [hydrated, setHydrated] = useState(false)
@@ -167,12 +177,64 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
     setStepAttempts((prev) => ({ ...prev, [step.id]: result }))
   }, [step, widgetState])
 
+  const quizItemState = useCallback(
+    (itemId: string): WidgetState => {
+      if (!step || step.type !== 'quiz') return {}
+      const item = step.items.find((i) => i.id === itemId)
+      if (!item) return {}
+      return getInitialWidgetState(item.widget, stepStates[`${step.id}:${itemId}`])
+    },
+    [step, stepStates],
+  )
+
+  const quizItemResult = useCallback(
+    (itemId: string): EvaluationResult | null => {
+      if (!step) return null
+      return stepAttempts[`${step.id}:${itemId}`] ?? null
+    },
+    [step, stepAttempts],
+  )
+
+  const onQuizItemStateChange = useCallback(
+    (itemId: string, state: WidgetState) => {
+      if (!step || step.type !== 'quiz') return
+      const key = `${step.id}:${itemId}`
+      setStepStates((prev) => ({ ...prev, [key]: state }))
+      setStepAttempts((prev) => {
+        const current = prev[key]
+        if (!current || current.correct) return prev
+        return { ...prev, [key]: undefined }
+      })
+    },
+    [step],
+  )
+
+  const onCheckQuizItem = useCallback(
+    (itemId: string) => {
+      if (!step || step.type !== 'quiz') return
+      const item = step.items.find((i) => i.id === itemId)
+      if (!item || !item.validator || !item.feedback) return
+      const key = `${step.id}:${itemId}`
+      const state = getInitialWidgetState(item.widget, stepStates[key])
+      const result = evaluateProblemFromWidget(
+        item.validator,
+        item.feedback,
+        item.widget.kind,
+        state,
+      )
+      setStepAttempts((prev) => ({ ...prev, [key]: result }))
+    },
+    [step, stepStates],
+  )
+
   const goBack = useCallback(() => {
+    setDirection('back')
     setStepIndex((i) => Math.max(0, i - 1))
   }, [])
 
   const goNext = useCallback(() => {
     if (!step || !canAdvanceFromStep(step, stepAttempts)) return
+    setDirection('forward')
     setStepIndex((i) => Math.min(lesson.steps.length - 1, i + 1))
   }, [lesson.steps.length, step, stepAttempts])
 
@@ -276,7 +338,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-lesson-in space-y-8">
       <header className="space-y-4">
         <Link
           to="/"
@@ -308,13 +370,24 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
         />
       </header>
 
-      <StepRenderer
-        step={step}
-        widgetState={widgetState}
-        onWidgetStateChange={onWidgetStateChange}
-        problemResult={problemResult}
-        onCheckAnswer={step.type === 'problem' ? onCheckAnswer : undefined}
-      />
+      <div
+        key={step.id}
+        className={
+          direction === 'back' ? 'animate-step-back' : 'animate-step-forward'
+        }
+      >
+        <StepRenderer
+          step={step}
+          widgetState={widgetState}
+          onWidgetStateChange={onWidgetStateChange}
+          problemResult={problemResult}
+          onCheckAnswer={step.type === 'problem' ? onCheckAnswer : undefined}
+          quizItemState={quizItemState}
+          quizItemResult={quizItemResult}
+          onQuizItemStateChange={onQuizItemStateChange}
+          onCheckQuizItem={onCheckQuizItem}
+        />
+      </div>
 
       <footer className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between">
         <button
@@ -346,9 +419,11 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
         )}
       </footer>
 
-      {step.type === 'problem' && !canContinue ? (
+      {(step.type === 'problem' || step.type === 'quiz') && !canContinue ? (
         <p className="text-center text-xs text-ink-muted">
-          Answer correctly to continue.
+          {step.type === 'quiz'
+            ? 'Answer all questions correctly to continue.'
+            : 'Answer correctly to continue.'}
         </p>
       ) : null}
     </div>

@@ -33,8 +33,34 @@ export function getInitialWidgetState(
       const initial = props.initialMarker ?? (min + max) / 2
       return { markerPosition: initial }
     }
+    case 'fraction_line': {
+      const props = widget.props as {
+        inputs?: number
+        defaultA?: [number, number]
+        defaultB?: [number, number]
+      }
+      const inputs = props.inputs === 2 ? 2 : 1
+      const [aNum, aDen] = props.defaultA ?? (inputs === 2 ? [1, 3] : [1, 2])
+      if (inputs === 2) {
+        const [bNum, bDen] = props.defaultB ?? [1, 2]
+        return { aNum, aDen, bNum, bDen }
+      }
+      return { aNum, aDen }
+    }
     case 'fill_blank':
       return { answer: '' }
+    case 'multiple_choice':
+      return { selectedId: '' }
+    case 'drag_order': {
+      const props = widget.props as {
+        items?: Array<{ id?: unknown }>
+      }
+      const items = Array.isArray(props.items) ? props.items : []
+      const order = items.flatMap((item) =>
+        item && typeof item.id === 'string' ? [item.id] : [],
+      )
+      return { order }
+    }
     default:
       return {}
   }

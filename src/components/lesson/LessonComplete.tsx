@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { Confetti } from './Confetti'
+
 export type LessonCompleteData = {
   lessonTitle: string
   streak: number | null
@@ -25,8 +27,18 @@ export function LessonComplete({
       ? 'Unit complete!'
       : 'Lesson complete!'
 
+  const confetti = courseComplete
+    ? { pieceCount: 160, durationMs: 4000 }
+    : unitComplete
+      ? { pieceCount: 120, durationMs: 3200 }
+      : { pieceCount: 90, durationMs: 2500 }
+
   return (
     <div className="mx-auto max-w-lg space-y-8 py-6 text-center">
+      <Confetti
+        pieceCount={confetti.pieceCount}
+        durationMs={confetti.durationMs}
+      />
       <div className="space-y-3">
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand text-white">
           <svg viewBox="0 0 20 20" className="h-8 w-8" fill="currentColor">

@@ -24,12 +24,12 @@ export function StepProgress({
             role="tab"
             aria-selected={index === currentIndex}
             aria-label={`${label}${index === currentIndex ? ', current' : index < currentIndex ? ', completed' : ''}`}
-            className={`h-1.5 flex-1 rounded-full transition-colors ${
+            className={`h-1.5 flex-1 origin-left rounded-full transition-all duration-300 ease-out motion-reduce:transition-colors ${
               index < currentIndex
-                ? 'bg-brand'
+                ? 'bg-brand opacity-100'
                 : index === currentIndex
-                  ? 'bg-brand/70'
-                  : 'bg-border'
+                  ? 'bg-brand/70 opacity-100 motion-safe:animate-pulse'
+                  : 'bg-border opacity-70'
             }`}
           />
         ))}

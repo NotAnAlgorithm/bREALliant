@@ -1,0 +1,29 @@
+/* FLIP transition applied during reorder. The transform itself is set
+   inline by the component; this class only carries the timing. */
+.drag-order-row-animating {
+  transition: transform 220ms ease;
+  will-change: transform;
+}
+
+/* Subtle highlight flash on the row that was just moved. */
+.drag-order-row-moved {
+  animation: drag-order-flash 600ms ease;
+}
+
+@keyframes drag-order-flash {
+  0% {
+    box-shadow: 0 0 0 2px var(--color-brand);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drag-order-row-animating {
+    transition: none;
+  }
+  .drag-order-row-moved {
+    animation: none;
+  }
+}

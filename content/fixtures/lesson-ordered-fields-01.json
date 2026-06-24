@@ -1,0 +1,244 @@
+{
+  "lessonId": "lesson-ordered-fields-01",
+  "title": "Ordered Fields & the Gap in ℚ",
+  "tags": ["rationals", "completeness", "supremum", "irrational"],
+  "prerequisites": ["lesson-rationals-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Last lesson left us with a paradox. The rationals are dense: between any two of them sits another, so as you zoom in you never see a gap. Yet we claimed ℚ is still missing points. How can something be missing from a line that looks completely solid?"
+        },
+        {
+          "type": "text",
+          "content": "Here's where the missing point hides. Draw a right triangle with both legs equal to 1. By the Pythagorean theorem its hypotenuse has length √2. Around 500 BC a follower of Pythagoras discovered that this length is NOT a fraction — a result so unsettling to a school that worshipped whole-number ratios that, legend says, it was kept secret. We are about to rediscover their scandal."
+        },
+        {
+          "type": "text",
+          "content": "Before we hunt the gap, fix the setting. ℚ comes with +, −, ×, ÷ and an order ≤ that plays nicely with them: you can add the same thing to both sides, multiply by a positive number, and so on. A structure with these arithmetic and order rules is called an *ordered field*. ℝ is one too. The only thing that will distinguish ℝ from ℚ in this entire unit is a single extra property — *completeness* — and that is the star of the show."
+        },
+        {
+          "type": "math",
+          "latex": "(\\mathbb{Q}, +, \\cdot, \\le) \\text{ is an ordered field: } x \\le y \\implies x + z \\le y + z, \\quad (x \\le y,\\ 0 \\le z) \\implies xz \\le yz"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "discover",
+      "prompt": "Hunt for the gap yourself. Choose a fraction $p = m/n$ between 1 and 2 and watch $p^2$. The line splits into a region where $p^2 < 2$ and one where $p^2 > 2$. Push $p$ up and down: you can land as close to 2 as you like from either side, but no fraction ever makes $p^2$ exactly 2.",
+      "widget": {
+        "kind": "fraction_line",
+        "props": {
+          "min": 1,
+          "max": 2,
+          "inputs": 1,
+          "transform": "square",
+          "target": 2,
+          "bands": [
+            { "label": "p² < 2", "side": "below" },
+            { "label": "p² > 2", "side": "above" }
+          ],
+          "defaultA": [7, 5]
+        }
+      }
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "prompt": "Collect every fraction on the low side into one set: $A = \\{\\, p \\in \\mathbb{Q},\\ p > 0 : p^2 < 2 \\,\\}$. Does $A$ have a *largest* element?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Yes — some rational in $A$ is the biggest." },
+            { "id": "b", "label": "No — given any $p$ in $A$, a slightly larger rational is still in $A$." }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": ["b"]
+      },
+      "feedback": {
+        "correct": "Right. Whatever $p$ you pick in $A$, there's a tiny rational $\\varepsilon > 0$ you can add so that $(p+\\varepsilon)^2$ is still below 2 — so $p+\\varepsilon$ is also in $A$, and bigger. No element is ever the largest; $A$ creeps upward forever without a top.",
+        "incorrect": [
+          {
+            "match": "a",
+            "message": "Try to name that biggest rational $p$. Whatever it is, you can nudge it up by a tiny amount and stay under 2 — so $p$ wasn't actually the biggest. There's always room above."
+          },
+          {
+            "match": "*",
+            "message": "Test the claim: take any $p$ with $p^2 < 2$. Can you always add a small rational and keep the square below 2? If yes, no element can be the largest."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "prompt": "Time for the Pythagoreans' scandal. Arrange the steps of the classic proof — by contradiction — that *no* rational squares to 2.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "3", "label": "Since $m^2$ is even, $m$ is even; write $m = 2k$." },
+            { "id": "1", "label": "Suppose, for contradiction, $p = m/n$ in lowest terms (m, n share no common factor) with $p^2 = 2$." },
+            { "id": "4", "label": "Substituting gives $4k^2 = 2n^2$, so $n^2 = 2k^2$ — hence $n^2$ is even and $n$ is even." },
+            { "id": "2", "label": "Then $m^2 = 2n^2$, so $m^2$ is even." },
+            { "id": "5", "label": "Then $m$ and $n$ are both even, contradicting 'lowest terms.' So no such rational exists." }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": ["1,2,3,4,5"]
+      },
+      "feedback": {
+        "correct": "That's the proof exactly. The fraction's own 'lowest terms' assumption is what collapses: m and n turn out to share the factor 2, which is impossible. So √2 simply cannot be written as a ratio of integers.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Build the chain of consequences. Start by assuming a fraction $m/n$ in lowest terms with square 2; square it to learn $m$ is even; substitute $m = 2k$ to learn $n$ is even; then spot the contradiction with 'lowest terms.'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Put the two discoveries together. ℚ is a perfectly good ordered field — arithmetic and order behave flawlessly — and yet it is *incomplete*. We just proved that √2 is not one of its members."
+        },
+        {
+          "type": "math",
+          "latex": "\\sqrt{2} \\notin \\mathbb{Q}, \\qquad A = \\{\\, p \\in \\mathbb{Q},\\ p > 0 : p^2 < 2 \\,\\}"
+        },
+        {
+          "type": "text",
+          "content": "And the set A showed us exactly *where* the hole is. A has no largest element; it climbs toward a boundary and stops just short. That boundary — the smallest number that is ≥ every element of A — is precisely a *least upper bound*. In ℚ, that boundary point is missing."
+        },
+        {
+          "type": "text",
+          "content": "This is the whole game. The single property ℚ lacks is: every non-empty set that is bounded above has a least upper bound. Add that property and you get ℝ. The next lessons build the language of bounds and suprema carefully, so we can return and prove that √2 really does live in ℝ."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "Is ℚ an ordered field?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Yes — it has +, −, ×, ÷ and a compatible order." },
+                { "id": "b", "label": "No, because √2 is missing from it." }
+              ]
+            }
+          },
+          "validator": {
+            "type": "set_match",
+            "engine": "mathjs",
+            "accept": ["a"]
+          },
+          "feedback": {
+            "correct": "Yes. Being an ordered field is only about arithmetic and order, and ℚ satisfies all of those rules.",
+            "incorrect": [
+              {
+                "match": "b",
+                "message": "A missing √2 is a *completeness* failure, not a field-or-order failure. ℚ still adds, multiplies, divides, and orders perfectly — so it is an ordered field."
+              },
+              {
+                "match": "*",
+                "message": "Check the definition: an ordered field needs +, −, ×, ÷ and a compatible order. ℚ has all of these."
+              }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "The standard proof that √2 is irrational is a proof by ___.",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "induction" },
+                { "id": "b", "label": "contradiction" },
+                { "id": "c", "label": "direct construction of √2 as a fraction" }
+              ]
+            }
+          },
+          "validator": {
+            "type": "set_match",
+            "engine": "mathjs",
+            "accept": ["b"]
+          },
+          "feedback": {
+            "correct": "Exactly — we assumed √2 = m/n in lowest terms and derived an impossibility.",
+            "incorrect": [
+              {
+                "match": "a",
+                "message": "Induction proves a statement for all $n$ by a base case and a step. Here we instead *assumed the opposite* and reached an absurdity — that's contradiction."
+              },
+              {
+                "match": "c",
+                "message": "We can't construct √2 as a fraction — that's the whole point we disproved. Instead we assumed it could be and hit a contradiction."
+              },
+              {
+                "match": "*",
+                "message": "Recall the structure: assume a fraction in lowest terms squares to 2, then show m and n are both even. That impossibility is the hallmark of proof by contradiction."
+              }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "In ℚ, the set $A = \\{ p > 0 : p^2 < 2 \\}$ fails to have a ___.",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "least upper bound (supremum) in ℚ" },
+                { "id": "b", "label": "lower bound" },
+                { "id": "c", "label": "any element at all" }
+              ]
+            }
+          },
+          "validator": {
+            "type": "set_match",
+            "engine": "mathjs",
+            "accept": ["a"]
+          },
+          "feedback": {
+            "correct": "Right. A is bounded above (by 2, say) but its least upper bound would be √2, which isn't in ℚ — so no supremum exists *within* ℚ.",
+            "incorrect": [
+              {
+                "match": "b",
+                "message": "A is full of positive numbers, so it certainly has lower bounds (0, for instance). The trouble is at the *top* of A, not the bottom."
+              },
+              {
+                "match": "c",
+                "message": "A is far from empty — 1 is in it, since $1^2 < 2$. What it lacks is a least upper bound inside ℚ."
+              },
+              {
+                "match": "*",
+                "message": "A climbs toward √2 and stops short. The thing missing in ℚ is the boundary it approaches — its least upper bound."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

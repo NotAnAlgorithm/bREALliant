@@ -1,0 +1,26 @@
+@keyframes course-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Default state is fully visible so content is never stuck invisible
+ * (important for reduced-motion users and for test queries). The entrance
+ * animation only runs when the user has no motion preference set.
+ */
+.animate-course-rise {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-course-rise {
+    opacity: 0;
+    animation: course-rise 400ms ease-out both;
+  }
+}

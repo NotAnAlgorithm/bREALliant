@@ -1,0 +1,205 @@
+{
+  "lessonId": "lesson-rationals-01",
+  "title": "The Rational Number System",
+  "tags": ["rationals", "ordered-field", "density"],
+  "prerequisites": [],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Every kind of number was invented to fix a limitation of the one before it. You start with the counting numbers, then you want to subtract freely, then you want to divide freely — and each wish forces a new number system into existence."
+        },
+        {
+          "type": "math",
+          "latex": "\\mathbb{N} \\;\\subset\\; \\mathbb{Z} \\;\\subset\\; \\mathbb{Q}"
+        },
+        {
+          "type": "text",
+          "content": "The integers ℤ let you solve x + 3 = 1, but they choke on something as simple as 3x = 1 — there is no integer answer. The rationals ℚ are exactly the numbers you reach once division is allowed. The big question for this whole course: once we can divide, can we measure everything?"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "discover",
+      "prompt": "Pick any two rationals $a$ and $b$. Their midpoint $(a+b)/2$ is *another* rational sitting strictly between them. Change the fractions and watch — you can never trap two rationals with empty space between them.",
+      "widget": {
+        "kind": "fraction_line",
+        "props": {
+          "min": 0,
+          "max": 1,
+          "inputs": 2,
+          "showMidpoint": true,
+          "defaultA": [1, 3],
+          "defaultB": [1, 2]
+        }
+      }
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "prompt": "We invented fractions precisely to solve equations the integers can't. Solve $3x = 1$.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "x = {{answer}}", "placeholder": "a/b" }
+      },
+      "validator": {
+        "type": "expression",
+        "engine": "mathjs",
+        "accept": ["1/3"]
+      },
+      "feedback": {
+        "correct": "Exactly — x = 1/3. No integer works, but ℚ supplies an answer. That's the whole reason ℚ exists.",
+        "incorrect": [
+          {
+            "match": "0",
+            "message": "Not zero — 3 · 0 = 0, not 1. Divide both sides of 3x = 1 by 3."
+          },
+          {
+            "match": "3",
+            "message": "Careful with the direction: you divide by 3, you don't multiply. What times 3 gives 1?"
+          },
+          {
+            "match": "*",
+            "message": "Divide both sides by 3. The answer is the fraction that, multiplied by 3, gives exactly 1."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "prompt": "Now use density yourself: name a rational strictly between $1/3$ and $1/2$. (There are infinitely many — any one will do.)",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\frac{1}{3} < {{answer}} < \\frac{1}{2}", "placeholder": "a/b" }
+      },
+      "validator": {
+        "type": "interval",
+        "engine": "mathjs",
+        "accept": ["1/3", "1/2"]
+      },
+      "feedback": {
+        "correct": "Nice — that rational lives strictly between 1/3 and 1/2. Since you could now repeat this between your answer and 1/2 forever, there are infinitely many.",
+        "incorrect": [
+          {
+            "match": "1/3",
+            "message": "1/3 is an endpoint, not strictly between. Nudge inward — try the midpoint (1/3 + 1/2)/2."
+          },
+          {
+            "match": "1/2",
+            "message": "1/2 is an endpoint, not strictly between. Nudge inward — try the midpoint (1/3 + 1/2)/2."
+          },
+          {
+            "match": "*",
+            "message": "Your value isn't between 1/3 ≈ 0.333 and 1/2 = 0.5. The midpoint (1/3 + 1/2)/2 = 5/12 always works."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Now the formal picture. A rational number isn't a single fraction — it's a whole family of fractions naming the same value:"
+        },
+        {
+          "type": "math",
+          "latex": "\\mathbb{Q} = \\left\\{ \\tfrac{a}{b} : a, b \\in \\mathbb{Z},\\, b \\neq 0 \\right\\}, \\qquad \\tfrac{a}{b} = \\tfrac{c}{d} \\iff ad = bc"
+        },
+        {
+          "type": "text",
+          "content": "With addition, multiplication, and the usual ordering defined on these classes, ℚ is an ordered field: you can add, subtract, multiply, divide (except by 0), and compare — and all the familiar algebra and order rules hold."
+        },
+        {
+          "type": "text",
+          "content": "And ℚ is dense: between any two distinct rationals lies another (their midpoint), hence infinitely many. There are no visible gaps at any zoom level."
+        },
+        {
+          "type": "text",
+          "content": "Here's the twist that launches real analysis: dense does NOT mean gap-free. Despite being packed everywhere, ℚ still misses specific points — like the length √2. Pinning down exactly what's missing is the next lesson."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "Why did we need to invent the rational numbers ℚ?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "To count objects like apples" },
+                { "id": "b", "label": "To allow subtraction such as $1 - 3$" },
+                { "id": "c", "label": "To solve equations like $3x = 1$ that have no integer solution" },
+                { "id": "d", "label": "To measure the diagonal of a unit square" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Right — division (solving 3x = 1) is exactly what ℚ adds to ℤ.",
+            "incorrect": [
+              { "match": "a", "message": "Counting is already handled by the natural numbers ℕ." },
+              { "match": "b", "message": "Subtraction is what the integers ℤ added. ℚ is about division." },
+              { "match": "d", "message": "Good instinct — but that diagonal is √2, which (as we'll soon see) ℚ cannot measure. ℚ was built for division." },
+              { "match": "*", "message": "Think about the one operation ℤ cannot always do. What does 3x = 1 require?" }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "We say ℚ is dense. What does that mean?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Between any two distinct rationals there is always another rational" },
+                { "id": "b", "label": "Every rational can be written as a decimal" },
+                { "id": "c", "label": "There is a smallest positive rational" },
+                { "id": "d", "label": "The rationals leave no points missing from the line" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — you can always insert the midpoint, so there are infinitely many between any two.",
+            "incorrect": [
+              { "match": "d", "message": "Tempting — but that is completeness, which ℚ does NOT have (the twist of the next lesson). Density is about always finding one strictly between two others." },
+              { "match": "*", "message": "Density is about what you can always find strictly between any two rationals." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Is there a smallest positive rational number?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Yes, it is $1$" },
+                { "id": "b", "label": "Yes, an extremely tiny one" },
+                { "id": "c", "label": "No — for any positive rational $q$, the number $q/2$ is smaller and still positive" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Right — halving always gives a smaller positive rational, so there is no smallest.",
+            "incorrect": [
+              { "match": "*", "message": "If some q were smallest, what about q/2 — is it positive, and is it smaller?" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

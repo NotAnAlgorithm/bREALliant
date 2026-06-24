@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const widgetKindSchema = z.enum([
   'number_line',
+  'fraction_line',
   'slider',
   'fill_blank',
   'drag_order',

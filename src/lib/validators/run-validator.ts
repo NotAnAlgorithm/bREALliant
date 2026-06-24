@@ -46,8 +46,23 @@ export function runValidator(validator: Validator, answer: string): boolean {
       return validator.accept.some((expected) =>
         valuesMatch(answer, expected, tolerance),
       )
+    case 'interval': {
+      // accept = [lower, upper] → answer must lie strictly between the bounds.
+      // Falls back to exact match if fewer than two bounds are provided.
+      if (validator.accept.length < 2) {
+        return validator.accept.some(
+          (expected) => normalizeAnswer(answer) === normalizeAnswer(expected),
+        )
+      }
+      const value = parseNumeric(answer)
+      const a = parseNumeric(validator.accept[0])
+      const b = parseNumeric(validator.accept[1])
+      if (value === null || a === null || b === null) return false
+      const lower = Math.min(a, b)
+      const upper = Math.max(a, b)
+      return value > lower && value < upper
+    }
     case 'set_match':
-    case 'interval':
     case 'custom':
       return validator.accept.some(
         (expected) => normalizeAnswer(answer) === normalizeAnswer(expected),

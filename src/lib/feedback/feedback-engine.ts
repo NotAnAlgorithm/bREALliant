@@ -20,6 +20,16 @@ export function getAnswerFromWidgetState(
       return String(state.answer ?? '')
     case 'number_line':
       return String(state.markerPosition ?? '')
+    case 'fraction_line': {
+      const num = Number(state.aNum)
+      const den = Number(state.aDen)
+      if (!Number.isFinite(num) || !Number.isFinite(den) || den === 0) return ''
+      return `${num}/${den}`
+    }
+    case 'multiple_choice':
+      return String(state.selectedId ?? '')
+    case 'drag_order':
+      return (Array.isArray(state.order) ? state.order : []).join(',')
     default:
       return ''
   }

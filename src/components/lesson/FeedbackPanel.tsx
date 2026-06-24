@@ -1,3 +1,5 @@
+import { RichText } from '../blocks/RichText'
+
 type FeedbackPanelProps = {
   correct: boolean
   message: string
@@ -14,7 +16,7 @@ export function FeedbackPanel({ correct, message }: FeedbackPanelProps) {
           : 'border-error/30 bg-error/10 text-error'
       }`}
     >
-      {message}
+      <RichText content={message} />
     </div>
   )
 }

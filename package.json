@@ -5,14 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "vite --mode test --port 5174 --strictPort",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:report": "playwright show-report",
     "validate-content": "tsx scripts/validate-content.ts",
     "verify-supabase": "tsx scripts/verify-supabase.ts",
     "db:push": "tsx scripts/push-migrations.ts",
-    "db:push:dry-run": "npx --yes supabase db push --linked --dry-run"
+    "db:push:dry-run": "npx --yes supabase db push --linked --dry-run",
+    "test-user:seed": "tsx scripts/seed-test-user.ts",
+    "test-user:reset": "tsx scripts/reset-test-user.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -28,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.61.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",

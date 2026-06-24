@@ -2,7 +2,7 @@
   "lessonId": "lesson-bounds-01",
   "title": "Bounds and Suprema",
   "tags": ["bounds", "supremum", "infimum"],
-  "prerequisites": [],
+  "prerequisites": ["lesson-ordered-fields-01"],
   "steps": [
     {
       "id": "s1",

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 import { useAuth } from '../../hooks/useAuth'
 import { displayUsername } from '../../lib/auth/profile'
 import { isSupabaseConfigured, supabase } from '../../lib/supabase'
 import { loadStreak } from '../../services/progress'
+import { ThemeToggle } from './ThemeToggle'
 
 export function AppLayout() {
   const { user, profile, loading } = useAuth()
+  const location = useLocation()
   const [streak, setStreak] = useState<number | null>(null)
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export function AppLayout() {
             bREALliant
           </Link>
           <nav className="flex items-center gap-4 text-sm">
+            <ThemeToggle />
             {loading ? (
               <span className="text-ink-muted">…</span>
             ) : user ? (
@@ -67,7 +70,10 @@ export function AppLayout() {
           </p>
         )}
       </header>
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6">
+      <main
+        key={location.pathname}
+        className="animate-page-in mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6"
+      >
         <Outlet />
       </main>
     </div>

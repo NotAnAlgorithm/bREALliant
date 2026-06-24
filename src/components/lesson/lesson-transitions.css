@@ -1,0 +1,64 @@
+/*
+ * Lesson transition animations.
+ *
+ * All animations are gated behind `prefers-reduced-motion: no-preference`.
+ * The default (reduced-motion / non-animating) state leaves content fully
+ * visible (opacity: 1, no transform) so content is always present in the DOM
+ * and queryable immediately. We never delay mounting/unmounting — only the
+ * CSS entrance differs.
+ */
+
+@keyframes step-in-forward {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes step-in-back {
+  from {
+    transform: translateX(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes lesson-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Default state: fully visible, no animation. */
+.animate-step-forward,
+.animate-step-back,
+.animate-lesson-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-step-forward {
+    animation: step-in-forward 280ms ease-out both;
+  }
+
+  .animate-step-back {
+    animation: step-in-back 280ms ease-out both;
+  }
+
+  .animate-lesson-in {
+    animation: lesson-in 320ms ease-out both;
+  }
+}

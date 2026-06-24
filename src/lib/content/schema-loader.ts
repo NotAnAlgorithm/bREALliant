@@ -1,6 +1,9 @@
 import courseFixture from '@content/fixtures/course.json'
+import lessonRationalsFixture from '@content/fixtures/lesson-rationals-01.json'
+import lessonOrderedFieldsFixture from '@content/fixtures/lesson-ordered-fields-01.json'
 import lessonBoundsFixture from '@content/fixtures/lesson-bounds-01.json'
 import lessonLubFixture from '@content/fixtures/lesson-lub-01.json'
+import lessonNthRootsFixture from '@content/fixtures/lesson-nth-roots-01.json'
 
 import {
   parseCourse,
@@ -11,8 +14,11 @@ import {
 } from '@content/schemas'
 
 const LESSON_FIXTURES: Record<string, unknown> = {
+  'lesson-rationals-01': lessonRationalsFixture,
+  'lesson-ordered-fields-01': lessonOrderedFieldsFixture,
   'lesson-bounds-01': lessonBoundsFixture,
   'lesson-lub-01': lessonLubFixture,
+  'lesson-nth-roots-01': lessonNthRootsFixture,
 }
 
 export function loadCourse(): Course {
