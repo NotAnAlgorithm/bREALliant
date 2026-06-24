@@ -17,7 +17,20 @@ See [`prd.md`](prd.md) for full MVP requirements.
 
 ```bash
 npm install
-cp .env.example .env   # optional until Phase 5 — app runs without it
+cp .env.example .env
+```
+
+### Supabase
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` to `.env`
+3. Apply migrations (pick one):
+   - **Cursor + Supabase MCP:** authenticate the Supabase MCP server (see `.mcp.json`), then ask the agent to push migrations
+   - **CLI:** `npx supabase login`, add `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` to `.env`, then `npm run db:push`
+   - **Manual:** run each file in [`supabase/migrations/`](supabase/migrations/) in the Supabase SQL editor
+4. Enable Email auth in Authentication → Providers
+
+```bash
 npm run dev
 ```
 
@@ -32,6 +45,8 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run test` | Vitest unit tests |
 | `npm run validate-content` | Validate all lesson JSON against schema |
 | `npm run lint` | ESLint |
+| `npm run verify-supabase` | Check Supabase env connectivity |
+| `npm run db:push` | Push `supabase/migrations/` to remote Supabase |
 
 ## Project layout
 

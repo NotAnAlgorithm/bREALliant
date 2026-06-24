@@ -1,0 +1,56 @@
+import type { Feedback } from '@content/schemas/feedback'
+import type { Validator } from '@content/schemas/validators'
+import type { WidgetKind } from '@content/schemas/widgets'
+
+import { runValidator } from '../validators/run-validator'
+import type { WidgetState } from '../../widgets/types'
+import { resolveIncorrectMessage } from './match-pattern'
+
+export type EvaluationResult = {
+  correct: boolean
+  message: string
+}
+
+export function getAnswerFromWidgetState(
+  kind: WidgetKind,
+  state: WidgetState,
+): string {
+  switch (kind) {
+    case 'fill_blank':
+      return String(state.answer ?? '')
+    case 'number_line':
+      return String(state.markerPosition ?? '')
+    default:
+      return ''
+  }
+}
+
+export function evaluateProblem(
+  validator: Validator,
+  feedback: Feedback,
+  answer: string,
+): EvaluationResult {
+  const correct = runValidator(validator, answer)
+
+  if (correct) {
+    return { correct: true, message: feedback.correct }
+  }
+
+  return {
+    correct: false,
+    message: resolveIncorrectMessage(feedback.incorrect, answer),
+  }
+}
+
+export function evaluateProblemFromWidget(
+  validator: Validator,
+  feedback: Feedback,
+  kind: WidgetKind,
+  state: WidgetState,
+): EvaluationResult {
+  return evaluateProblem(
+    validator,
+    feedback,
+    getAnswerFromWidgetState(kind, state),
+  )
+}

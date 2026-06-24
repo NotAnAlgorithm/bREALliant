@@ -1,8 +1,25 @@
+import { useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
-import { isSupabaseConfigured } from '../../lib/supabase'
+import { useAuth } from '../../hooks/useAuth'
+import { displayUsername } from '../../lib/auth/profile'
+import { isSupabaseConfigured, supabase } from '../../lib/supabase'
+import { loadStreak } from '../../services/progress'
 
 export function AppLayout() {
+  const { user, profile, loading } = useAuth()
+  const [streak, setStreak] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!user || !supabase) return
+
+    loadStreak(supabase, user.id)
+      .then(setStreak)
+      .catch(() => setStreak(null))
+  }, [user])
+
+  const username = displayUsername(profile, user)
+
   return (
     <div className="flex min-h-svh flex-col">
       <header className="border-b border-border bg-surface-elevated">
@@ -11,12 +28,30 @@ export function AppLayout() {
             bREALliant
           </Link>
           <nav className="flex items-center gap-4 text-sm">
-            <Link
-              to="/auth"
-              className="text-ink-muted transition-colors hover:text-brand"
-            >
-              Sign in
-            </Link>
+            {loading ? (
+              <span className="text-ink-muted">…</span>
+            ) : user ? (
+              <>
+                {streak !== null && streak > 0 ? (
+                  <span className="rounded-full bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
+                    {streak} day streak
+                  </span>
+                ) : null}
+                <Link
+                  to="/account"
+                  className="font-medium text-ink transition-colors hover:text-brand"
+                >
+                  {username ?? 'Account'}
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                className="text-ink-muted transition-colors hover:text-brand"
+              >
+                Sign in
+              </Link>
+            )}
           </nav>
         </div>
         {!isSupabaseConfigured && (
@@ -24,6 +59,11 @@ export function AppLayout() {
             Supabase not configured — copy{' '}
             <code className="rounded bg-amber-100 px-1">.env.example</code> to{' '}
             <code className="rounded bg-amber-100 px-1">.env</code> when ready
+          </p>
+        )}
+        {!loading && isSupabaseConfigured && !user && (
+          <p className="bg-brand/5 px-4 py-1.5 text-center text-xs text-brand">
+            Sign in to save progress and track your streak
           </p>
         )}
       </header>

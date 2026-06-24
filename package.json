@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "validate-content": "tsx scripts/validate-content.ts",
-    "verify-supabase": "tsx scripts/verify-supabase.ts"
+    "verify-supabase": "tsx scripts/verify-supabase.ts",
+    "db:push": "tsx scripts/push-migrations.ts",
+    "db:push:dry-run": "npx --yes supabase db push --linked --dry-run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",

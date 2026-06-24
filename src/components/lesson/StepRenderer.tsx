@@ -1,10 +1,12 @@
 import type { Step } from '@content/schemas'
+import type { EvaluationResult } from '../../lib/feedback/feedback-engine'
 import type { WidgetState } from '../../widgets/types'
 
 import { BlockRenderer } from '../blocks/BlockRenderer'
 import { RichText } from '../blocks/RichText'
 import { getInitialWidgetState } from '../../widgets/types'
 import { WidgetRenderer } from '../../widgets/registry'
+import { FeedbackPanel } from './FeedbackPanel'
 
 const STEP_LABELS: Record<Step['type'], string> = {
   motivation: 'Motivation',
@@ -18,13 +20,19 @@ type StepRendererProps = {
   step: Step
   widgetState: WidgetState
   onWidgetStateChange: (state: WidgetState) => void
+  problemResult?: EvaluationResult | null
+  onCheckAnswer?: () => void
 }
 
 export function StepRenderer({
   step,
   widgetState,
   onWidgetStateChange,
+  problemResult,
+  onCheckAnswer,
 }: StepRendererProps) {
+  const isProblem = step.type === 'problem'
+
   return (
     <article className="space-y-6">
       <header className="space-y-1">
@@ -50,7 +58,28 @@ export function StepRenderer({
           widget={step.widget}
           state={widgetState}
           onStateChange={onWidgetStateChange}
+          disabled={isProblem && problemResult?.correct === true}
         />
+      ) : null}
+
+      {isProblem && onCheckAnswer ? (
+        <div className="space-y-3">
+          {problemResult ? (
+            <FeedbackPanel
+              correct={problemResult.correct}
+              message={problemResult.message}
+            />
+          ) : null}
+          {!problemResult?.correct ? (
+            <button
+              type="button"
+              onClick={onCheckAnswer}
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-hover sm:w-auto"
+            >
+              Check answer
+            </button>
+          ) : null}
+        </div>
       ) : null}
 
       {step.type === 'quiz' ? (

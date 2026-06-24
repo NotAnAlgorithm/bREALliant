@@ -1,5 +1,7 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
+import type { Database } from './database.types'
+
 const url = import.meta.env.VITE_SUPABASE_URL
 
 /** Supports new publishable keys (`sb_publishable_…`) and legacy anon keys. */
@@ -10,6 +12,6 @@ const apiKey =
 export const isSupabaseConfigured = Boolean(url && apiKey)
 
 /** Null when env vars are missing — app runs in local-only mode. */
-export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(url!, apiKey!)
+export const supabase: SupabaseClient<Database> | null = isSupabaseConfigured
+  ? createClient<Database>(url!, apiKey!)
   : null
