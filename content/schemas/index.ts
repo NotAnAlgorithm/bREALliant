@@ -74,6 +74,12 @@ export const lessonSchema = z
     title: z.string().min(1),
     tags: z.array(z.string()).default([]),
     prerequisites: z.array(z.string()).default([]),
+    glossary: z
+      .record(
+        z.string(),
+        z.object({ term: z.string().optional(), definition: z.string() }),
+      )
+      .default({}),
     steps: z.array(stepSchema).min(1),
   })
   .refine((lesson) => assertUniqueStepIds(lesson.steps), {
@@ -82,6 +88,7 @@ export const lessonSchema = z
   })
 
 export type Lesson = z.infer<typeof lessonSchema>
+export type Glossary = Lesson['glossary']
 
 export const unitSchema = z.object({
   unitId: z.string().min(1),

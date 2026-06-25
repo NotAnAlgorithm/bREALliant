@@ -1,0 +1,23 @@
+# Local research material — large, never deployed (the 210 MB zip lives here)
+data
+
+# Build is run in Vercel's cloud; don't upload local build output or deps
+node_modules
+dist
+dist-ssr
+
+# Tests / tooling artifacts not needed for the production build
+test-results
+playwright-report
+blob-report
+playwright/.cache
+e2e
+
+# Agent / editor scratch
+.agents
+.cursor
+.vscode
+
+# Stray large binaries, just in case
+*.zip
+*.pdf

@@ -4,6 +4,7 @@ import lessonOrderedFieldsFixture from '@content/fixtures/lesson-ordered-fields-
 import lessonBoundsFixture from '@content/fixtures/lesson-bounds-01.json'
 import lessonLubFixture from '@content/fixtures/lesson-lub-01.json'
 import lessonNthRootsFixture from '@content/fixtures/lesson-nth-roots-01.json'
+import lessonArchimedeanFixture from '@content/fixtures/lesson-archimedean-01.json'
 
 import {
   parseCourse,
@@ -19,6 +20,7 @@ const LESSON_FIXTURES: Record<string, unknown> = {
   'lesson-bounds-01': lessonBoundsFixture,
   'lesson-lub-01': lessonLubFixture,
   'lesson-nth-roots-01': lessonNthRootsFixture,
+  'lesson-archimedean-01': lessonArchimedeanFixture,
 }
 
 export function loadCourse(): Course {

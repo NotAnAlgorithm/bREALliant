@@ -92,7 +92,7 @@ export function Auth() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
-                className="min-h-11 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="min-h-11 w-full rounded-lg border border-border bg-surface px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
             </label>
           ) : null}
@@ -108,7 +108,7 @@ export function Auth() {
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 autoComplete="username"
-                className="min-h-11 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="min-h-11 w-full rounded-lg border border-border bg-surface px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
             </label>
           ) : (
@@ -120,7 +120,7 @@ export function Auth() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                className="min-h-11 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="min-h-11 w-full rounded-lg border border-border bg-surface px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
             </label>
           )}
@@ -136,7 +136,7 @@ export function Auth() {
               autoComplete={
                 mode === 'signin' ? 'current-password' : 'new-password'
               }
-              className="min-h-11 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className="min-h-11 w-full rounded-lg border border-border bg-surface px-3 py-2 text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
 

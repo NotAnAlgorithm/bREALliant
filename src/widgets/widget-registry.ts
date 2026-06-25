@@ -5,12 +5,14 @@ import { FillBlankWidget } from './fill-blank/FillBlankWidget'
 import { FractionLineWidget } from './fraction-line/FractionLineWidget'
 import { MultipleChoiceWidget } from './multiple-choice/MultipleChoiceWidget'
 import { NumberLineWidget } from './number-line/NumberLineWidget'
+import { RationalInput } from './rational-input/RationalInput'
 import type { WidgetComponent } from './types'
 
 export const widgetRegistry: Partial<Record<WidgetKind, WidgetComponent>> = {
   number_line: NumberLineWidget,
   fraction_line: FractionLineWidget,
   fill_blank: FillBlankWidget,
+  rational_input: RationalInput,
   multiple_choice: MultipleChoiceWidget,
   drag_order: DragOrderWidget,
 }

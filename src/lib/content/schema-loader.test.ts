@@ -17,12 +17,14 @@ describe('schema-loader', () => {
   it('loads a lesson by id', () => {
     const lesson = loadLesson('lesson-lub-01')
     expect(lesson.prerequisites).toEqual(['lesson-bounds-01'])
-    expect(lesson.steps).toHaveLength(5)
+    expect(lesson.steps).toHaveLength(9)
   })
 
   it('loads all registered lesson fixtures', () => {
     const lessons = loadAllLessons()
-    expect(lessons.length).toBeGreaterThanOrEqual(2)
+    expect(lessons.map((lesson) => lesson.lessonId)).toContain(
+      'lesson-archimedean-01',
+    )
   })
 
   it('rejects invalid lesson json', () => {

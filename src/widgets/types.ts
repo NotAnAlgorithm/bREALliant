@@ -49,6 +49,16 @@ export function getInitialWidgetState(
     }
     case 'fill_blank':
       return { answer: '' }
+    case 'rational_input': {
+      const props = widget.props as { default?: [number, number] }
+      if (Array.isArray(props.default) && props.default.length === 2) {
+        return {
+          num: String(props.default[0]),
+          den: String(props.default[1]),
+        }
+      }
+      return { num: '', den: '' }
+    }
     case 'multiple_choice':
       return { selectedId: '' }
     case 'drag_order': {

@@ -90,7 +90,7 @@ export function Account() {
       <div className="flex flex-col gap-3 sm:flex-row">
         <Link
           to="/"
-          className="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg border border-border bg-white px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface"
+          className="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg border border-border bg-surface-elevated px-5 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface"
         >
           Back to course
         </Link>

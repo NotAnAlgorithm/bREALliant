@@ -52,7 +52,7 @@ function FractionInput({
           disabled={disabled}
           aria-label={`${label} numerator`}
           onChange={handle('num')}
-          className="h-9 w-14 rounded-md border border-border bg-white text-center font-mono text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
+          className="h-9 w-14 rounded-md border border-border bg-surface text-center font-mono text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
         />
         <span className="my-0.5 h-px w-12 bg-ink/60" aria-hidden />
         <input
@@ -62,7 +62,7 @@ function FractionInput({
           disabled={disabled}
           aria-label={`${label} denominator`}
           onChange={handle('den')}
-          className="h-9 w-14 rounded-md border border-border bg-white text-center font-mono text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
+          className="h-9 w-14 rounded-md border border-border bg-surface text-center font-mono text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
         />
       </div>
     </div>

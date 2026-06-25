@@ -10,64 +10,232 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Does every non-empty subset of ℝ that is bounded above have a least upper bound?"
+          "content": "Now that we know what a supremum is, return to the set that exposed the hole in the rationals:"
         },
         {
           "type": "math",
-          "latex": "\\sup E = \\min\\{ M \\in \\mathbb{R} : M \\text{ is an upper bound of } E \\}"
+          "latex": "A = \\{\\, p \\in \\mathbb{Q} : p>0 \\text{ and } p^2 < 2 \\,\\}"
+        },
+        {
+          "type": "text",
+          "content": "$A$ is nonempty, since $1 \\in A$, and it is bounded above, since $2$ is certainly above every element of $A$. So it is exactly the kind of set where asking for $\\sup A$ makes sense."
+        },
+        {
+          "type": "text",
+          "content": "But inside $\\mathbb{Q}$, that supremum does not exist. The least upper bound would be $\\sqrt2$, and the previous lesson proved $\\sqrt2$ is not rational. This is the precise way $\\mathbb{Q}$ has a hole."
         }
       ]
     },
     {
       "id": "s2",
-      "type": "discover",
-      "prompt": "Experiment with upper bounds of $E = \\{ q \\in \\mathbb{Q} : q^2 < 2 \\}$. Where would the least upper bound live?",
-      "widget": {
-        "kind": "number_line",
-        "props": {
-          "min": 0,
-          "max": 2,
-          "markers": [{ "value": 1.414, "label": "√2?" }]
-        }
-      }
-    },
-    {
-      "id": "s3",
-      "type": "problem",
-      "prompt": "For E = (0, 1), the supremum is ___",
-      "widget": {
-        "kind": "fill_blank",
-        "props": { "template": "\\sup E = {{answer}}" }
-      },
-      "validator": {
-        "type": "expression",
-        "engine": "mathjs",
-        "accept": ["1"]
-      },
-      "feedback": {
-        "correct": "Yes — sup(0, 1) = 1 even though 1 ∉ E.",
-        "incorrect": [
-          {
-            "match": "*",
-            "message": "That's an upper bound, but E has a smaller one. Try the endpoint of the open interval."
-          }
-        ]
-      }
-    },
-    {
-      "id": "s4",
-      "type": "summary",
+      "type": "motivation",
       "blocks": [
         {
           "type": "text",
-          "content": "The least upper bound property (completeness) is what separates ℝ from ℚ. In ℝ, every non-empty set bounded above has a supremum."
+          "content": "The real numbers are built by forbidding that failure. The **least upper bound property**, also called **completeness**, says:"
+        },
+        {
+          "type": "math",
+          "latex": "\\text{Every nonempty subset of } \\mathbb{R} \\text{ that is bounded above has a supremum in } \\mathbb{R}."
+        },
+        {
+          "type": "text",
+          "content": "That sentence is the hinge of this unit. Both $\\mathbb{Q}$ and $\\mathbb{R}$ have arithmetic and order. The extra promise that separates $\\mathbb{R}$ from $\\mathbb{Q}$ is completeness: bounded nonempty sets cannot climb toward a missing boundary."
         }
       ]
     },
     {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Look again at the upper bounds of $A=\\{p\\in\\mathbb{Q}:p>0,p^2<2\\}$. The marker near $1.414$ is the missing boundary $\\sqrt2$. Rational upper bounds sit to its right, but no rational one is the *least*: any rational upper bound can be nudged down and still stay above $\\sqrt2$.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 1,
+          "max": 2,
+          "intervals": [{ "start": 1, "end": 1.414, "label": "A climbs here" }],
+          "markers": [{ "value": 1.414, "label": "√2: missing in ℚ" }]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "prompt": "Why does $\\mathbb{Q}$ fail the least upper bound property?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$A$ is empty." },
+            { "id": "b", "label": "$A$ has no upper bound." },
+            { "id": "c", "label": "$A$ is nonempty and bounded above, but its least upper bound is $\\sqrt2$, which is not in $\\mathbb{Q}$." },
+            { "id": "d", "label": "The elements of $A$ are not rational." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Exactly. $A$ satisfies the two hypotheses, but the boundary it needs is missing from $\\mathbb{Q}$.",
+        "incorrect": [
+          { "match": "a", "message": "$A$ is not empty: $1\\in A$ because $1^2<2$." },
+          { "match": "b", "message": "$A$ is bounded above; for example, $2$ is an upper bound." },
+          { "match": "d", "message": "By definition, $A$ contains rational numbers. The issue is that its least upper bound is not rational." },
+          { "match": "*", "message": "Check the two hypotheses first: nonempty and bounded above. The failure is that the supremum is missing from $\\mathbb{Q}$." }
+        ]
+      }
+    },
+    {
       "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The two hypotheses in the least upper bound property are not decoration. They prevent trivial failures."
+        },
+        {
+          "type": "text",
+          "content": "The empty set has every real number as an upper bound, so there is no least one. An unbounded set like $\\mathbb{N}$ has no upper bound at all. Completeness only promises a supremum when the set is nonempty and bounded above."
+        },
+        {
+          "type": "text",
+          "content": "That is why $A$ is the real test. It is not empty, and it is bounded above. Its failure in $\\mathbb{Q}$ is not a technicality; it is a genuine missing boundary."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "prompt": "Which set is guaranteed to have a supremum by the least upper bound property of $\\mathbb{R}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\varnothing$" },
+            { "id": "b", "label": "$\\mathbb{N}$" },
+            { "id": "c", "label": "$\\{x \\in \\mathbb{R}: x^2 < 2\\}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. This set is nonempty and bounded above, so completeness guarantees a supremum in $\\mathbb{R}$.",
+        "incorrect": [
+          { "match": "a", "message": "The empty set is excluded: the property requires the set to be nonempty." },
+          { "match": "b", "message": "$\\mathbb{N}$ is not bounded above in $\\mathbb{R}$, so the property does not apply." },
+          { "match": "*", "message": "Look for the option that is both nonempty and bounded above." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "How can one build such a number system? Dedekind's idea was to name a real number by the rationals lying to its left — a cut in the rational line."
+        },
+        {
+          "type": "text",
+          "content": "A rational like $3/2$ is named by all rationals less than $3/2$. The missing number $\\sqrt2$ can be named by the rationals on the left of the gap: roughly, all negative rationals together with positive rationals whose square is less than $2$."
+        },
+        {
+          "type": "text",
+          "content": "The details can wait. The point is the design: include every possible cut, and the missing boundaries become numbers. Completeness is not magic; it is built into what we choose to call $\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "$\\mathbb{R}$ is the complete ordered field: it keeps the arithmetic and order of $\\mathbb{Q}$ and adds the least upper bound property."
+        },
+        {
+          "type": "text",
+          "content": "Completeness says every nonempty subset of $\\mathbb{R}$ that is bounded above has a supremum in $\\mathbb{R}$. By a mirror argument, every nonempty subset bounded below has an infimum."
+        },
+        {
+          "type": "text",
+          "content": "This is the clean slogan: $\\mathbb{R}$ is $\\mathbb{Q}$ with its holes filled. Next we cash that in: the supremum of $\\{x>0:x^2<2\\}$ is a real number whose square is exactly $2$."
+        }
+      ]
+    },
+    {
+      "id": "s9",
       "type": "quiz",
-      "items": []
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The least upper bound property says:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Every subset of $\\mathbb{R}$ has a maximum." },
+                { "id": "b", "label": "Every nonempty subset of $\\mathbb{R}$ that is bounded above has a supremum in $\\mathbb{R}$." },
+                { "id": "c", "label": "Every bounded set is finite." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Exactly. Nonempty plus bounded above guarantees a supremum in $\\mathbb{R}$.",
+            "incorrect": [
+              { "match": "a", "message": "A supremum need not be a maximum. For example, $(0,1)$ has supremum $1$ but no maximum." },
+              { "match": "c", "message": "Bounded sets can be infinite, like $(0,1)$. Completeness is about suprema, not finiteness." },
+              { "match": "*", "message": "Remember the two hypotheses and the promised object: nonempty, bounded above, supremum." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Why does $\\mathbb{Q}$ fail the least upper bound property?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\mathbb{Q}$ is not ordered." },
+                { "id": "b", "label": "$\\mathbb{Q}$ has no upper bounds." },
+                { "id": "c", "label": "Some nonempty bounded-above rational sets, such as $\\{p\\in\\mathbb{Q}:p>0,p^2<2\\}$, have no rational least upper bound." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Right. The issue is not arithmetic or order; it is the missing supremum.",
+            "incorrect": [
+              { "match": "a", "message": "$\\mathbb{Q}$ is ordered. The failure is completeness." },
+              { "match": "b", "message": "$\\mathbb{Q}$ has plenty of upper bounds. The problem is that some sets have no least upper bound in $\\mathbb{Q}$." },
+              { "match": "*", "message": "Use the $p^2<2$ set: it climbs toward $\\sqrt2$, which is not rational." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why does the least upper bound property require the set to be nonempty and bounded above?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Because the empty set has every real as an upper bound, and an unbounded set has no upper bound at all." },
+                { "id": "b", "label": "Because empty sets and unbounded sets are not allowed in mathematics." },
+                { "id": "c", "label": "Because bounded sets always have maximum elements." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The hypotheses remove trivial cases where a supremum cannot be expected.",
+            "incorrect": [
+              { "match": "b", "message": "They are allowed; they just are not cases where this property can promise a supremum." },
+              { "match": "c", "message": "Bounded sets need not have maxima: $(0,1)$ is bounded but has no maximum." },
+              { "match": "*", "message": "Think about what upper bounds look like for the empty set and for $\\mathbb{N}$." }
+            ]
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,8 +1,26 @@
 {
   "lessonId": "lesson-rationals-01",
   "title": "The Rational Number System",
-  "tags": ["rationals", "ordered-field", "density"],
+  "tags": ["rationals", "ordered-field", "density", "construction"],
   "prerequisites": [],
+  "glossary": {
+    "field": {
+      "term": "Field",
+      "definition": "A set where you can add, subtract, multiply, and divide (by anything nonzero) with the usual algebra laws. $\\mathbb{Q}$ and $\\mathbb{R}$ are fields; the integers $\\mathbb{Z}$ are *not* (you cannot divide $1$ by $2$ inside $\\mathbb{Z}$)."
+    },
+    "ordered-field": {
+      "term": "Ordered field",
+      "definition": "A field with an order $<$ that cooperates with the arithmetic: adding the same amount to both sides preserves $<$, and multiplying both sides by a positive number preserves $<$."
+    },
+    "well-defined": {
+      "term": "Well-defined",
+      "definition": "An operation on equivalence classes is *well-defined* when its result does not depend on which representative you pick — renaming $\\tfrac12$ as $\\tfrac24$ must not change the output."
+    },
+    "dense": {
+      "term": "Dense",
+      "definition": "A set is *dense* on the line if between any two distinct points there is always another point of the set. Between any two rationals lies another rational — infinitely many, in fact."
+    }
+  },
   "steps": [
     {
       "id": "s1",
@@ -10,22 +28,173 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Every kind of number was invented to fix a limitation of the one before it. You start with the counting numbers, then you want to subtract freely, then you want to divide freely — and each wish forces a new number system into existence."
-        },
-        {
-          "type": "math",
-          "latex": "\\mathbb{N} \\;\\subset\\; \\mathbb{Z} \\;\\subset\\; \\mathbb{Q}"
+          "content": "In 1886 Leopold Kronecker declared: \"God created the integers. All else is the work of man.\" It sounds like poetry, but it was a challenge — he distrusted any number you couldn't *build*, step by step, from the whole numbers."
         },
         {
           "type": "text",
-          "content": "The integers ℤ let you solve x + 3 = 1, but they choke on something as simple as 3x = 1 — there is no integer answer. The rationals ℚ are exactly the numbers you reach once division is allowed. The big question for this whole course: once we can divide, can we measure everything?"
+          "content": "He had a point. For 200 years calculus had been a brilliant toolbox that occasionally lied: mathematicians computed with infinite sums without ever saying what an infinite sum *is*, and no one could pin down whether there were even enough numbers to hold all the answers calculus needed. So in the 1800s, Cauchy, Weierstrass, and Dedekind rebuilt the subject from the ground up."
+        },
+        {
+          "type": "text",
+          "content": "That is our mission. We will not assume the real numbers — we will earn them. As a warm-up for what \"build a number system\" means, we construct the rationals $\\mathbb{Q}$ using nothing but the integers $\\mathbb{Z}$. (Why bother? The payoff of this unit, the completeness of $\\mathbb{R}$, is the foundation under measure theory, probability, and optimization — the ground every limit and integral stands on.)"
         }
       ]
     },
     {
       "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Start with an innocent question: what *is* the fraction $\\tfrac{1}{3}$? Cut a cake into 3 equal slices and take 1. But cut the *same* cake into 6 slices and take 2, and you hold the identical amount — now named $\\tfrac{2}{6}$."
+        },
+        {
+          "type": "text",
+          "content": "So $\\tfrac{1}{3}$ and $\\tfrac{2}{6}$ are different symbols for the same quantity — and so are $\\tfrac{10}{30}$, $\\tfrac{20}{60}$, and infinitely many more. The key idea: a rational number is not \"a number over a number.\" It is a whole *family* of integer pairs that all deserve the same name. We call such a family an equivalence class."
+        },
+        {
+          "type": "text",
+          "content": "To make this precise with only integers, write a fraction as a pair $(m, n)$ with $n \\neq 0$, and call two pairs equivalent when they cross-multiply to the same value:"
+        },
+        {
+          "type": "math",
+          "latex": "(m, n) \\sim (p, q) \\quad \\Longleftrightarrow \\quad mq = np"
+        },
+        {
+          "type": "text",
+          "content": "Notice we used only multiplication of integers — no division, which $\\mathbb{Z}$ doesn't have. The symbol $\\tfrac{1}{3}$ is just our nickname for the family $\\{(1,3),(2,6),(3,9),\\dots\\}$, and $\\mathbb{Q}$ is the set of all such families."
+        }
+      ]
+    },
+    {
+      "id": "s3",
       "type": "discover",
-      "prompt": "Pick any two rationals $a$ and $b$. Their midpoint $(a+b)/2$ is *another* rational sitting strictly between them. Change the fractions and watch — you can never trap two rationals with empty space between them.",
+      "prompt": "See \"same number, different names\" directly. Both inputs plot onto the line. Try to land **two different-looking fractions on the exact same point** (say $\\tfrac{1}{2}$ and $\\tfrac{2}{4}$, then $\\tfrac{3}{6}$). Each coincidence is another member of one equivalence class.",
+      "widget": {
+        "kind": "fraction_line",
+        "props": {
+          "min": 0,
+          "max": 1,
+          "inputs": 2,
+          "showMidpoint": false,
+          "defaultA": [1, 2],
+          "defaultB": [2, 4]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "prompt": "Our rule says $(m,n) \\sim (p,q)$ exactly when $mq = np$. Using *only* that cross-multiplication test (no decimals), which fraction is in the same family as $\\tfrac{3}{4}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\tfrac{6}{8}$, because $3 \\cdot 8 = 4 \\cdot 6$" },
+            { "id": "b", "label": "$\\tfrac{4}{3}$, because the numbers are the same" },
+            { "id": "c", "label": "$\\tfrac{7}{8}$, because both denominators are $8$" },
+            { "id": "d", "label": "$\\tfrac{5}{6}$, because both are close to $1$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly — $3 \\cdot 8 = 24 = 4 \\cdot 6$, so $(3,4) \\sim (6,8)$. The cross-multiplication test is the entire definition of \"same rational.\"",
+        "incorrect": [
+          { "match": "b", "message": "Flipping to $\\tfrac{4}{3}$ gives the pair $(4,3)$. Test it: is $3 \\cdot 3 = 4 \\cdot 4$? That's $9 = 16$, false — a different number." },
+          { "match": "c", "message": "Sharing a denominator isn't the test. Apply $mq = np$: is $3 \\cdot 8 = 4 \\cdot 7$? That's $24 = 28$, false." },
+          { "match": "d", "message": "\"Close to 1\" isn't the test — equality is exact. Check: is $3 \\cdot 6 = 4 \\cdot 5$? That's $18 = 20$, false." },
+          { "match": "*", "message": "Use the definition literally: $(3,4) \\sim (p,q)$ means $3q = 4p$. Which option satisfies that?" }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Now we want to *add* these families — and here is one of the deepest ideas in mathematics. When you define an operation on families, the answer must not depend on which name you happen to pick. A definition with that good property is called [[well-defined]]."
+        },
+        {
+          "type": "text",
+          "content": "Picture students grouped by graduating class. \"What year will you graduate?\" is a fair question about the *class* — every senior answers the same. \"How many courses are you taking?\" is *not* fair — it depends on the individual, not the year. A rule that depends on the individual representative is broken."
+        },
+        {
+          "type": "text",
+          "content": "You get to *invent* addition — but it must be well-defined. Let's stress-test the most tempting guess:"
+        },
+        {
+          "type": "math",
+          "latex": "\\text{Tempting rule:}\\qquad \\frac{a}{b} + \\frac{c}{d} \\;\\stackrel{?}{=}\\; \\frac{a+c}{b+d}"
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "prompt": "Apply the tempting rule **literally** (add tops, add bottoms) to $\\tfrac{1}{2} + \\tfrac{1}{3}$. Don't \"fix\" it — we're testing the rule. What does it output?",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\frac{1}{2} + \\frac{1}{3} = {{answer}}", "placeholder": "a/b" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2/5"] },
+      "feedback": {
+        "correct": "Right — the rule gives $\\tfrac{1+1}{2+3} = \\tfrac{2}{5}$. Hold onto that; we're about to do something sneaky.",
+        "incorrect": [
+          { "match": "5/6", "message": "That's the *true* sum from grade school — but we're deliberately applying the naive rule $\\tfrac{a+c}{b+d}$. Add the tops, add the bottoms." },
+          { "match": "*", "message": "Apply the rule exactly: numerator $1+1$, denominator $2+3$. No common denominators — just the rule." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "prompt": "Here's the trap. The number $\\tfrac{1}{2}$ has another valid name: $\\tfrac{2}{4}$. Apply the **same** rule to $\\tfrac{2}{4} + \\tfrac{1}{3}$ — the identical sum, spelled differently.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\frac{2}{4} + \\frac{1}{3} = {{answer}}", "placeholder": "a/b" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["3/7"] },
+      "feedback": {
+        "correct": "So the naive rule gives $\\tfrac{3}{7}$ here. But $\\tfrac{2}{4}$ IS $\\tfrac{1}{2}$ — we added the same two numbers and got a different answer ($\\tfrac{2}{5}$ vs $\\tfrac{3}{7}$). The rule's output depends on spelling, so it is **not well-defined** — it cannot be our definition of addition.",
+        "incorrect": [
+          { "match": "2/5", "message": "Apply the rule to *these* numerals: $\\tfrac{2+1}{4+3}$. The whole point is to see whether renaming $\\tfrac{1}{2}$ as $\\tfrac{2}{4}$ changes the output." },
+          { "match": "5/6", "message": "That's the true sum again. Use the naive rule on $\\tfrac{2}{4}+\\tfrac{1}{3}$: top $2+1$, bottom $4+3$." },
+          { "match": "*", "message": "Add tops and bottoms for $\\tfrac{2}{4} + \\tfrac{1}{3}$: numerator $2+1$, denominator $4+3$." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The fix — the rule you learned in grade school — is built to survive renaming:"
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{a}{b} + \\frac{c}{d} = \\frac{ad + bc}{bd}, \\qquad \\frac{a}{b} \\times \\frac{c}{d} = \\frac{ac}{bd}"
+        },
+        {
+          "type": "text",
+          "content": "Check it: $\\tfrac{1}{2}+\\tfrac{1}{3} = \\tfrac{5}{6}$, and the renamed $\\tfrac{2}{4}+\\tfrac{1}{3} = \\tfrac{10}{12} = \\tfrac{5}{6}$ — the same answer, every time. It's a genuine theorem that this rule is always well-defined."
+        },
+        {
+          "type": "text",
+          "content": "With these operations $\\mathbb{Q}$ is a [[field]]: you can add, subtract, multiply, and divide by anything nonzero (here $0 = \\tfrac{0}{1}$, $1 = \\tfrac{1}{1}$). It also carries an **order** ($\\tfrac{m}{n}$ counts as positive when $mn > 0$), and the order cooperates with the arithmetic — adding the same amount to both sides, or multiplying by a positive number, preserves $<$. A field whose order behaves this way is an [[ordered field|ordered-field]]."
+        },
+        {
+          "type": "text",
+          "content": "This is exactly why $\\mathbb{Q}$ is useful: it solves equations $\\mathbb{Z}$ cannot, like $5x = 3$ (three cakes split among five people). But — foreshadowing — it still cannot solve $x^2 = 2$."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "discover",
+      "prompt": "One more property to feel for. Lay two rationals on the line and watch their **midpoint** $\\tfrac{a+b}{2}$ land strictly between them — itself a rational. Imagine repeating that forever: no two rationals are ever \"neighbors.\" There is always another squeezed between.",
       "widget": {
         "kind": "fraction_line",
         "props": {
@@ -39,163 +208,113 @@
       }
     },
     {
-      "id": "s3",
+      "id": "s10",
       "type": "problem",
-      "prompt": "We invented fractions precisely to solve equations the integers can't. Solve $3x = 1$.",
+      "prompt": "Use that yourself: type a rational strictly between $\\tfrac{1}{3}$ and $\\tfrac{1}{2}$. (Any correct one works — there are infinitely many.)",
       "widget": {
-        "kind": "fill_blank",
-        "props": { "template": "x = {{answer}}", "placeholder": "a/b" }
+        "kind": "rational_input",
+        "props": { "label": "a rational strictly between 1/3 and 1/2" }
       },
-      "validator": {
-        "type": "expression",
-        "engine": "mathjs",
-        "accept": ["1/3"]
-      },
+      "validator": { "type": "interval", "engine": "mathjs", "accept": ["1/3", "1/2"] },
       "feedback": {
-        "correct": "Exactly — x = 1/3. No integer works, but ℚ supplies an answer. That's the whole reason ℚ exists.",
+        "correct": "That rational sits strictly between $\\tfrac13$ and $\\tfrac12$ — and you could repeat the trick between it and $\\tfrac12$ endlessly. That endless squeezing is what we mean by *dense*.",
         "incorrect": [
-          {
-            "match": "0",
-            "message": "Not zero — 3 · 0 = 0, not 1. Divide both sides of 3x = 1 by 3."
-          },
-          {
-            "match": "3",
-            "message": "Careful with the direction: you divide by 3, you don't multiply. What times 3 gives 1?"
-          },
-          {
-            "match": "*",
-            "message": "Divide both sides by 3. The answer is the fraction that, multiplied by 3, gives exactly 1."
-          }
+          { "match": "1/3", "message": "$\\tfrac13$ is an endpoint, not strictly between. Try the midpoint $(\\tfrac13+\\tfrac12)/2 = \\tfrac{5}{12}$." },
+          { "match": "1/2", "message": "$\\tfrac12$ is an endpoint, not strictly between. Try the midpoint $\\tfrac{5}{12}$." },
+          { "match": "*", "message": "Your value isn't between $\\tfrac13 \\approx 0.333$ and $\\tfrac12 = 0.5$. The midpoint $\\tfrac{5}{12} \\approx 0.417$ always works." }
         ]
       }
     },
     {
-      "id": "s4",
-      "type": "problem",
-      "prompt": "Now use density yourself: name a rational strictly between $1/3$ and $1/2$. (There are infinitely many — any one will do.)",
-      "widget": {
-        "kind": "fill_blank",
-        "props": { "template": "\\frac{1}{3} < {{answer}} < \\frac{1}{2}", "placeholder": "a/b" }
-      },
-      "validator": {
-        "type": "interval",
-        "engine": "mathjs",
-        "accept": ["1/3", "1/2"]
-      },
-      "feedback": {
-        "correct": "Nice — that rational lives strictly between 1/3 and 1/2. Since you could now repeat this between your answer and 1/2 forever, there are infinitely many.",
-        "incorrect": [
-          {
-            "match": "1/3",
-            "message": "1/3 is an endpoint, not strictly between. Nudge inward — try the midpoint (1/3 + 1/2)/2."
-          },
-          {
-            "match": "1/2",
-            "message": "1/2 is an endpoint, not strictly between. Nudge inward — try the midpoint (1/3 + 1/2)/2."
-          },
-          {
-            "match": "*",
-            "message": "Your value isn't between 1/3 ≈ 0.333 and 1/2 = 0.5. The midpoint (1/3 + 1/2)/2 = 5/12 always works."
-          }
-        ]
-      }
-    },
-    {
-      "id": "s5",
+      "id": "s11",
       "type": "summary",
       "blocks": [
         {
           "type": "text",
-          "content": "Now the formal picture. A rational number isn't a single fraction — it's a whole family of fractions naming the same value:"
-        },
-        {
-          "type": "math",
-          "latex": "\\mathbb{Q} = \\left\\{ \\tfrac{a}{b} : a, b \\in \\mathbb{Z},\\, b \\neq 0 \\right\\}, \\qquad \\tfrac{a}{b} = \\tfrac{c}{d} \\iff ad = bc"
+          "content": "In one breath: a rational number is an equivalence class of integer pairs $(m,n)$, $n\\neq 0$, under $(m,n)\\sim(p,q) \\iff mq = np$. With well-defined addition, multiplication, and order, $\\mathbb{Q}$ is an [[ordered field|ordered-field]], it **contains $\\mathbb{Z}$**, and it is [[dense]]."
         },
         {
           "type": "text",
-          "content": "With addition, multiplication, and the usual ordering defined on these classes, ℚ is an ordered field: you can add, subtract, multiply, divide (except by 0), and compare — and all the familiar algebra and order rules hold."
+          "content": "Density feels like the line is solid — zoom in anywhere and rationals are packed with no visible gaps. And yet something is missing: the diagonal of a unit square has a length (we'll call it $\\sqrt{2}$) equal to *no* rational. A set packed everywhere can still be riddled with invisible holes."
         },
         {
           "type": "text",
-          "content": "And ℚ is dense: between any two distinct rationals lies another (their midpoint), hence infinitely many. There are no visible gaps at any zoom level."
-        },
-        {
-          "type": "text",
-          "content": "Here's the twist that launches real analysis: dense does NOT mean gap-free. Despite being packed everywhere, ℚ still misses specific points — like the length √2. Pinning down exactly what's missing is the next lesson."
+          "content": "Resolving that paradox drives the next several lessons. A teaser: the decimal $1.41421\\ldots$ is not really \"a number with infinitely many digits\" — it is shorthand for the smallest number sitting above $\\{1,\\,1.4,\\,1.41,\\,1.414,\\dots\\}$. By the end of this unit you'll know exactly why that number exists in $\\mathbb{R}$ but not in $\\mathbb{Q}$."
         }
       ]
     },
     {
-      "id": "s6",
+      "id": "s12",
       "type": "quiz",
       "items": [
         {
           "id": "q1",
-          "prompt": "Why did we need to invent the rational numbers ℚ?",
+          "prompt": "What is the single best reason $\\mathbb{Q}$ was worth building on top of $\\mathbb{Z}$?",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "To count objects like apples" },
-                { "id": "b", "label": "To allow subtraction such as $1 - 3$" },
-                { "id": "c", "label": "To solve equations like $3x = 1$ that have no integer solution" },
+                { "id": "a", "label": "To count objects" },
+                { "id": "b", "label": "To make subtraction like $1 - 3$ possible" },
+                { "id": "c", "label": "To make division possible, solving equations like $3x = 1$" },
                 { "id": "d", "label": "To measure the diagonal of a unit square" }
               ]
             }
           },
           "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
           "feedback": {
-            "correct": "Right — division (solving 3x = 1) is exactly what ℚ adds to ℤ.",
+            "correct": "Right — $\\mathbb{Q}$ is \"the integers, but now you can divide.\"",
             "incorrect": [
-              { "match": "a", "message": "Counting is already handled by the natural numbers ℕ." },
-              { "match": "b", "message": "Subtraction is what the integers ℤ added. ℚ is about division." },
-              { "match": "d", "message": "Good instinct — but that diagonal is √2, which (as we'll soon see) ℚ cannot measure. ℚ was built for division." },
-              { "match": "*", "message": "Think about the one operation ℤ cannot always do. What does 3x = 1 require?" }
+              { "match": "a", "message": "Counting is already handled by $\\mathbb{N}$." },
+              { "match": "b", "message": "Subtraction is what $\\mathbb{Z}$ added. $\\mathbb{Q}$ is about division." },
+              { "match": "d", "message": "Tempting — but that diagonal is $\\sqrt{2}$, which $\\mathbb{Q}$ cannot measure. That's next lesson." },
+              { "match": "*", "message": "Which operation can $\\mathbb{Z}$ not always do? That's what $3x=1$ needs." }
             ]
           }
         },
         {
           "id": "q2",
-          "prompt": "We say ℚ is dense. What does that mean?",
+          "prompt": "Why was the rule $\\tfrac{a}{b}+\\tfrac{c}{d} = \\tfrac{a+c}{b+d}$ thrown out?",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "Between any two distinct rationals there is always another rational" },
-                { "id": "b", "label": "Every rational can be written as a decimal" },
-                { "id": "c", "label": "There is a smallest positive rational" },
-                { "id": "d", "label": "The rationals leave no points missing from the line" }
+                { "id": "a", "label": "It is not well-defined — renaming a fraction changes the answer" },
+                { "id": "b", "label": "It gives numbers that are too large" },
+                { "id": "c", "label": "It only works for positive fractions" }
               ]
             }
           },
           "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
           "feedback": {
-            "correct": "Exactly — you can always insert the midpoint, so there are infinitely many between any two.",
+            "correct": "Exactly — $\\tfrac12+\\tfrac13$ gave $\\tfrac25$, but the equal sum $\\tfrac24+\\tfrac13$ gave $\\tfrac37$. An operation on classes can't depend on the representative.",
             "incorrect": [
-              { "match": "d", "message": "Tempting — but that is completeness, which ℚ does NOT have (the twist of the next lesson). Density is about always finding one strictly between two others." },
-              { "match": "*", "message": "Density is about what you can always find strictly between any two rationals." }
+              { "match": "b", "message": "Size isn't the issue. The same sum produced two answers ($\\tfrac25$ vs $\\tfrac37$) depending on spelling." },
+              { "match": "c", "message": "It fails even for positive fractions — that's what $\\tfrac12+\\tfrac13$ showed. The flaw is being not well-defined." },
+              { "match": "*", "message": "Same number, two names, two different sums — that failure is called *not well-defined*." }
             ]
           }
         },
         {
           "id": "q3",
-          "prompt": "Is there a smallest positive rational number?",
+          "prompt": "To say $\\mathbb{Q}$ is *dense* means:",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "Yes, it is $1$" },
-                { "id": "b", "label": "Yes, an extremely tiny one" },
-                { "id": "c", "label": "No — for any positive rational $q$, the number $q/2$ is smaller and still positive" }
+                { "id": "a", "label": "Between any two distinct rationals there is always another rational" },
+                { "id": "b", "label": "Every real number is rational" },
+                { "id": "c", "label": "The rationals leave no gaps on the number line" }
               ]
             }
           },
-          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
           "feedback": {
-            "correct": "Right — halving always gives a smaller positive rational, so there is no smallest.",
+            "correct": "Right — take the midpoint and you always find one, so there are infinitely many between any two.",
             "incorrect": [
-              { "match": "*", "message": "If some q were smallest, what about q/2 — is it positive, and is it smaller?" }
+              { "match": "b", "message": "Not so — $\\sqrt2$ is real but not rational (next lesson). Density is about finding a rational *between* two others." },
+              { "match": "c", "message": "Tempting, but that's *completeness*, which $\\mathbb{Q}$ does NOT have — the surprise of this unit." },
+              { "match": "*", "message": "Density is about what you can always squeeze strictly between two rationals." }
             ]
           }
         }

@@ -1,0 +1,233 @@
+{
+  "lessonId": "lesson-archimedean-01",
+  "title": "The Archimedean Property & Density",
+  "tags": ["archimedean", "density", "completeness"],
+  "prerequisites": ["lesson-nth-roots-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Here is a sneaky question: could there be a positive real number smaller than every $1/n$?"
+        },
+        {
+          "type": "text",
+          "content": "Such a number would be an **infinitesimal**: bigger than $0$, but too small for any ordinary measuring stick made from fractions $1, \\tfrac12, \\tfrac13, \\tfrac14,\\dots$ to detect."
+        },
+        {
+          "type": "text",
+          "content": "Your intuition probably says no. But in some exotic ordered fields, infinitesimals really do exist. So their absence from $\\mathbb{R}$ is not free; it is a theorem we earn from completeness. Archimedes captured the spirit: enough copies of any positive magnitude eventually exceed any other."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The **Archimedean property** says: if $x>0$ and $y$ is any real number, then some natural number $n$ makes $nx>y$. Equivalently, for every $x>0$, some $n$ satisfies $1/n<x$."
+        },
+        {
+          "type": "math",
+          "latex": "\\forall x>0,\\ \\forall y\\in\\mathbb{R},\\ \\exists n\\in\\mathbb{N}\\text{ such that } nx>y \\qquad \\Longleftrightarrow \\qquad \\forall x>0,\\ \\exists n\\in\\mathbb{N}\\text{ such that } \\frac1n<x"
+        },
+        {
+          "type": "text",
+          "content": "Why does completeness force this? If $\\mathbb{N}$ were bounded above, it would have a supremum $\\alpha$. But then $\\alpha-1$ would not be an upper bound, so some natural number $n$ would satisfy $n>\\alpha-1$. Then $n+1>\\alpha$, contradicting that $\\alpha$ bounded $\\mathbb{N}$. Thus $\\mathbb{N}$ is unbounded, and enough repeated steps always pass any target."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Type fractions of the form $1/n$ with larger and larger denominators: $1/3$, $1/10$, $1/100$, $1/1000$. Watch the point slide toward $0$. The Archimedean property says no positive real can hide below all of them.",
+      "widget": {
+        "kind": "fraction_line",
+        "props": {
+          "min": 0,
+          "max": 1,
+          "inputs": 1,
+          "showMidpoint": false,
+          "transform": "none",
+          "target": null,
+          "defaultA": [1, 3]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "prompt": "What is the smallest natural number $n$ with $1/n < 1/100$?",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "n = {{answer}}", "placeholder": "a whole number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["101"] },
+      "feedback": {
+        "correct": "Exactly. $1/n < 1/100$ is the same as $n>100$, so the smallest natural number that works is $101$.",
+        "incorrect": [
+          { "match": "100", "message": "$1/100$ is equal to $1/100$, not less than it. You need $n>100$." },
+          { "match": "*", "message": "Solve the inequality: $1/n < 1/100$ means the denominator must be bigger than $100$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Now the infinitesimal question is settled. There is no positive real number below every $1/n$, because for any positive $x$, the Archimedean property gives an $n$ with $1/n<x$."
+        },
+        {
+          "type": "text",
+          "content": "This matters whenever limits are supposed to zoom in honestly. In $\\mathbb{R}$, shrinking tolerances like $1/n$ eventually beat every positive error margin. There is no hidden layer of positive quantities too small for sequences to detect."
+        },
+        {
+          "type": "text",
+          "content": "Other ordered fields can behave differently. For example, rational functions ordered by eventual size contain quantities that act infinitesimal. Completeness rules that behavior out in $\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The same property gives a powerful density theorem: between any two real numbers $x<y$, there is a rational number."
+        },
+        {
+          "type": "text",
+          "content": "Here is the idea. Choose $n$ so large that $1/n<y-x$. The rational grid $\\dots,-2/n,-1/n,0,1/n,2/n,\\dots$ marches along the line in jumps smaller than the gap from $x$ to $y$. One of those grid points must land inside the interval."
+        },
+        {
+          "type": "math",
+          "latex": "x<y \\quad \\Longrightarrow \\quad \\exists r\\in\\mathbb{Q}\\text{ such that }x<r<y"
+        },
+        {
+          "type": "text",
+          "content": "So $\\mathbb{Q}$ is dense in $\\mathbb{R}$, even around irrational points like $\\sqrt2$. The irrationals are dense too: every interval contains both rational and irrational numbers."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "prompt": "How many rational numbers lie strictly between $\\sqrt2$ and $\\sqrt2 + 0.001$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "None, because $\\sqrt2$ is irrational." },
+            { "id": "b", "label": "Exactly one." },
+            { "id": "c", "label": "Infinitely many." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. Density gives at least one rational in the interval, then another between that rational and the right endpoint, and so on forever.",
+        "incorrect": [
+          { "match": "a", "message": "$\\sqrt2$ being irrational does not keep rationals away. Rationals are dense around every real number." },
+          { "match": "b", "message": "Once you find one rational inside, density lets you find another in the smaller interval to its right, then another, and so on." },
+          { "match": "*", "message": "Use density: every interval between two distinct real numbers contains a rational, and the argument can be repeated endlessly." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Completeness forces the Archimedean property: natural numbers are unbounded, and the fractions $1/n$ eventually fall below every positive real number. So $\\mathbb{R}$ has no positive infinitesimals and no infinitely large real numbers."
+        },
+        {
+          "type": "text",
+          "content": "The Archimedean property also proves that $\\mathbb{Q}$ is dense in $\\mathbb{R}$: every interval, no matter how tiny or where it sits, contains a rational number. The irrationals are dense as well."
+        },
+        {
+          "type": "text",
+          "content": "That completes the first arc. $\\mathbb{Q}$ is dense but holey; the holes are missing suprema; completeness fills them to form $\\mathbb{R}$; roots like $\\sqrt2$ become real; and the Archimedean property fixes the scale of the line so calculus can stand on it."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Archimedean property says:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "For every real $x>0$, there is a natural number $n$ with $1/n < x$." },
+                { "id": "b", "label": "Every real number is rational." },
+                { "id": "c", "label": "$\\mathbb{R}$ has a smallest positive number." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. No positive real can stay below all the fractions $1/n$.",
+            "incorrect": [
+              { "match": "b", "message": "$\\sqrt2$ is real but not rational. The Archimedean property is about scale, not rationality." },
+              { "match": "c", "message": "There is no smallest positive real. If $x>0$, then $x/2$ is smaller and still positive." },
+              { "match": "*", "message": "Think of the sequence $1,1/2,1/3,\\dots$ eventually dropping below any positive target." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Does $\\mathbb{R}$ contain a positive infinitesimal smaller than every $1/n$?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Yes — infinitely small reals exist in $\\mathbb{R}$." },
+                { "id": "b", "label": "No — the Archimedean property rules this out." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. Given any $x>0$, some $1/n$ is smaller than $x$, so $x$ cannot be below every $1/n$.",
+            "incorrect": [
+              { "match": "a", "message": "Some ordered fields have infinitesimals, but $\\mathbb{R}$ does not. Completeness forces the Archimedean property." },
+              { "match": "*", "message": "Use the equivalent form: for every $x>0$, some $n$ has $1/n<x$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "$\\mathbb{Q}$ is dense in $\\mathbb{R}$ means:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Between any two distinct real numbers there is a rational number." },
+                { "id": "b", "label": "Every real number is a rational number." },
+                { "id": "c", "label": "Every real number is a limit of itself." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Every open interval on the real line contains rationals.",
+            "incorrect": [
+              { "match": "b", "message": "No — $\\sqrt2$ is real but not rational. Density means rationals appear between reals, not that all reals are rational." },
+              { "match": "c", "message": "That statement is true but not what density means. Density is about finding rational points inside every interval." },
+              { "match": "*", "message": "Density is an interval statement: between any two different reals, find a rational." }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -15,10 +15,12 @@ export type NumberLineProps = {
   intervals?: NumberLineInterval[]
   markers?: NumberLineMarker[]
   initialMarker?: number
+  snapDenominator?: number
 }
 
 export type NumberLineState = {
   markerPosition: number
+  markerFraction?: string
 }
 
 export function parseNumberLineProps(props: Record<string, unknown>): NumberLineProps {
@@ -33,7 +35,50 @@ export function parseNumberLineProps(props: Record<string, unknown>): NumberLine
       : undefined,
     initialMarker:
       typeof props.initialMarker === 'number' ? props.initialMarker : undefined,
+    snapDenominator:
+      typeof props.snapDenominator === 'number' &&
+      Number.isFinite(props.snapDenominator) &&
+      props.snapDenominator > 0
+        ? props.snapDenominator
+        : undefined,
   }
+}
+
+export function gcd(a: number, b: number): number {
+  let x = Math.abs(a)
+  let y = Math.abs(b)
+  while (y) {
+    ;[x, y] = [y, x % y]
+  }
+  return x
+}
+
+export function reduceFraction(num: number, den: number): [number, number] {
+  if (den === 0) return [num, den]
+  const divisor = gcd(num, den) || 1
+  let reducedNum = num / divisor
+  let reducedDen = den / divisor
+  if (reducedDen < 0) {
+    reducedNum = -reducedNum
+    reducedDen = -reducedDen
+  }
+  if (reducedNum === 0) return [0, 1]
+  return [reducedNum, reducedDen]
+}
+
+export function formatFraction(num: number, den: number): string {
+  if (num === 0) return '0'
+  if (den === 1) return `${num}`
+  return `${num}/${den}`
+}
+
+export function snapToRational(
+  value: number,
+  denominator: number,
+): { value: number; num: number; den: number; label: string } {
+  const rawNum = Math.round(value * denominator)
+  const [num, den] = reduceFraction(rawNum, denominator)
+  return { value: num / den, num, den, label: formatFraction(num, den) }
 }
 
 export function clamp(value: number, min: number, max: number): number {

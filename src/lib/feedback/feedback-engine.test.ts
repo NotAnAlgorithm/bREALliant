@@ -57,6 +57,33 @@ describe('getAnswerFromWidgetState', () => {
       getAnswerFromWidgetState('fraction_line', { aNum: 1, aDen: 0 }),
     ).toBe('')
   })
+
+  it('formats num/den for rational_input', () => {
+    expect(
+      getAnswerFromWidgetState('rational_input', { num: '3', den: '4' }),
+    ).toBe('3/4')
+    expect(
+      getAnswerFromWidgetState('rational_input', { num: '-3', den: '4' }),
+    ).toBe('-3/4')
+    // Zero denominator or empty fields yield an empty answer.
+    expect(
+      getAnswerFromWidgetState('rational_input', { num: '3', den: '0' }),
+    ).toBe('')
+    expect(getAnswerFromWidgetState('rational_input', {})).toBe('')
+  })
+
+  it('prefers the snapped fraction for number_line', () => {
+    expect(
+      getAnswerFromWidgetState('number_line', {
+        markerPosition: 0.3333,
+        markerFraction: '1/3',
+      }),
+    ).toBe('1/3')
+    // Falls back to the numeric position when no fraction is present.
+    expect(
+      getAnswerFromWidgetState('number_line', { markerPosition: 5 }),
+    ).toBe('5')
+  })
 })
 
 describe('evaluateProblemFromWidget (quiz kinds)', () => {

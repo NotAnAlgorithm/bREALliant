@@ -5,6 +5,7 @@ export const widgetKindSchema = z.enum([
   'fraction_line',
   'slider',
   'fill_blank',
+  'rational_input',
   'drag_order',
   'multiple_choice',
 ])

@@ -11,4 +11,20 @@ describe('RichText', () => {
     expect(document.querySelectorAll('.katex').length).toBeGreaterThanOrEqual(2)
     expect(screen.getByText(/For/)).toBeInTheDocument()
   })
+
+  it('renders inline markdown in plain prompts', () => {
+    const { container } = render(
+      <RichText content="plain *italic* and **bold** words" />,
+    )
+    const em = container.querySelector('em')
+    const strong = container.querySelector('strong')
+    expect(em).toHaveTextContent('italic')
+    expect(strong).toHaveTextContent('bold')
+  })
+
+  it('does not apply markdown inside math segments', () => {
+    const { container } = render(<RichText content="value $a * b$ end" />)
+    expect(container.querySelector('.katex')).not.toBeNull()
+    expect(container.querySelector('em')).toBeNull()
+  })
 })

@@ -1,9 +1,15 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 
 import type { WidgetComponentProps } from '../types'
 import {
   clamp,
   parseNumberLineProps,
+  snapToRational,
   valueToX,
   xToValue,
   type NumberLineState,
@@ -23,22 +29,49 @@ export function NumberLineWidget({
   const props = parseNumberLineProps(widget.props)
   const min = props.min ?? 0
   const max = props.max ?? 10
+  const snapDenominator = props.snapDenominator
   const svgRef = useRef<SVGSVGElement>(null)
   const dragging = useRef(false)
   const [dragValue, setDragValue] = useState<number | null>(null)
+  const normalized = useRef(false)
 
   const markerPosition =
     typeof state.markerPosition === 'number'
       ? clamp(state.markerPosition, min, max)
       : props.initialMarker ?? (min + max) / 2
 
+  const markerFraction =
+    typeof state.markerFraction === 'string' ? state.markerFraction : undefined
+
   const displayPosition = dragValue ?? markerPosition
 
   const updatePosition = (value: number) => {
     const clamped = clamp(value, min, max)
+    if (snapDenominator) {
+      const snapped = snapToRational(clamped, snapDenominator)
+      const snappedValue = clamp(snapped.value, min, max)
+      setDragValue(snappedValue)
+      onStateChange({
+        markerPosition: snappedValue,
+        markerFraction: snapped.label,
+      } satisfies NumberLineState)
+      return
+    }
     setDragValue(clamped)
     onStateChange({ markerPosition: clamped } satisfies NumberLineState)
   }
+
+  useEffect(() => {
+    if (!snapDenominator || normalized.current) return
+    if (markerFraction !== undefined) return
+    normalized.current = true
+    const snapped = snapToRational(markerPosition, snapDenominator)
+    onStateChange({
+      markerPosition: clamp(snapped.value, min, max),
+      markerFraction: snapped.label,
+    } satisfies NumberLineState)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [snapDenominator])
 
   const positionFromClientX = (clientX: number) => {
     const svg = svgRef.current
@@ -184,9 +217,18 @@ export function NumberLineWidget({
 
       <p className="text-center text-sm text-ink-muted">
         Current value:{' '}
-        <span className="font-mono font-medium text-ink">
-          {displayPosition.toFixed(3).replace(/\.?0+$/, '')}
-        </span>
+        {snapDenominator ? (
+          <span className="font-mono font-medium text-ink">
+            {snapToRational(displayPosition, snapDenominator).label}{' '}
+            <span className="text-ink-muted">
+              (≈ {displayPosition.toFixed(3).replace(/\.?0+$/, '')})
+            </span>
+          </span>
+        ) : (
+          <span className="font-mono font-medium text-ink">
+            {displayPosition.toFixed(3).replace(/\.?0+$/, '')}
+          </span>
+        )}
       </p>
     </div>
   )

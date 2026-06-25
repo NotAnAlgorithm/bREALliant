@@ -22,7 +22,7 @@ vi.mock('../hooks/useAuth', () => ({
 
 const mockedUseCourseProgress = vi.mocked(useCourseProgress)
 
-const LUB_MOTIVATION = /Does every non-empty subset/
+const LUB_MOTIVATION = /Now that we know what a supremum is/
 
 function setProgress(completed: string[] = []) {
   mockedUseCourseProgress.mockReturnValue({

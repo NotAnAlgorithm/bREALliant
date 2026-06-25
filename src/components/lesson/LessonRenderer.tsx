@@ -5,6 +5,7 @@ import type { Lesson } from '@content/schemas'
 
 import './lesson-transitions.css'
 
+import { GlossaryProvider } from '../../contexts/GlossaryProvider'
 import { useAuth } from '../../hooks/useAuth'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
 import {
@@ -338,7 +339,8 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
   }
 
   return (
-    <div className="animate-lesson-in space-y-8">
+    <GlossaryProvider glossary={lesson.glossary}>
+      <div className="animate-lesson-in space-y-8">
       <header className="space-y-4">
         <Link
           to="/"
@@ -426,6 +428,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
             : 'Answer correctly to continue.'}
         </p>
       ) : null}
-    </div>
+      </div>
+    </GlossaryProvider>
   )
 }

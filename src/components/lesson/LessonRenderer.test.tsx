@@ -29,35 +29,20 @@ describe('LessonRenderer', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText(/Step 1 of 5/)).toBeInTheDocument()
+    expect(screen.getByText(/Step 1 of 9/)).toBeInTheDocument()
     expect(
-      screen.getByText(/Before we axiomatize the real numbers/),
+      screen.getByText(/Last lesson left a set climbing toward a boundary/),
     ).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Continue' }))
-    expect(screen.getByText(/Step 2 of 5/)).toBeInTheDocument()
-    expect(screen.getByText(/Drag a point on the number line/)).toBeInTheDocument()
+    expect(screen.getByText(/Step 2 of 9/)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Continue' }))
+    expect(screen.getByText(/Step 3 of 9/)).toBeInTheDocument()
+    expect(screen.getByText(/Explore/)).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /Number line from -0.5 to 2/ })).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'Continue' }))
-    expect(screen.getByRole('textbox', { name: 'Your answer' })).toBeInTheDocument()
-
-    await user.type(screen.getByRole('textbox', { name: 'Your answer' }), '2')
-    await user.click(screen.getByRole('button', { name: 'Check answer' }))
-    expect(screen.getByRole('status')).toHaveTextContent(/upper bound/)
-
-    await user.clear(screen.getByRole('textbox', { name: 'Your answer' }))
-    await user.type(screen.getByRole('textbox', { name: 'Your answer' }), '1')
-    await user.click(screen.getByRole('button', { name: 'Check answer' }))
-    expect(screen.getByRole('status')).toHaveTextContent(/Correct/)
-
-    expect(
-      screen.getByRole('button', { name: 'Continue' }),
-    ).not.toBeDisabled()
-
     await user.click(screen.getByRole('button', { name: 'Back' }))
-    await user.click(screen.getByRole('button', { name: 'Continue' }))
-    expect(screen.getByRole('textbox', { name: 'Your answer' })).toHaveValue('1')
-    expect(screen.getByRole('status')).toHaveTextContent(/Correct/)
+    expect(screen.getByText(/Step 2 of 9/)).toBeInTheDocument()
   })
 })

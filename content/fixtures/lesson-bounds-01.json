@@ -10,64 +10,228 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Before we axiomatize the real numbers, we need language for \"nothing in E exceeds this value.\""
+          "content": "Last lesson left a set climbing toward a boundary with no biggest element. We could point at the boundary, but we did not yet have the clean language for it."
         },
         {
-          "type": "math",
-          "latex": "M \\text{ is an upper bound of } E \\subset \\mathbb{R} \\iff \\forall x \\in E,\\, x \\le M"
+          "type": "text",
+          "content": "That language matters far beyond number puzzles. In optimization, you may know every feasible payoff is below some best possible ceiling even when no feasible choice actually reaches it. In an auction, you may want the least price above every bid. Analysis needs words for these sharp ceilings."
+        },
+        {
+          "type": "text",
+          "content": "This lesson is about those words: upper bounds, lower bounds, maximum, supremum, and infimum. The question of whether a supremum always exists is the next lesson's job."
         }
       ]
     },
     {
       "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Let $E$ be a set of real numbers. A number $\\beta$ is an **upper bound** of $E$ if every element of $E$ lies at or below $\\beta$. If $E$ has at least one upper bound, we say $E$ is **bounded above**."
+        },
+        {
+          "type": "math",
+          "latex": "\\beta \\text{ is an upper bound of } E \\subset \\mathbb{R} \\quad \\Longleftrightarrow \\quad x \\le \\beta \\text{ for every } x \\in E"
+        },
+        {
+          "type": "text",
+          "content": "A **lower bound** is the mirror image: $\\alpha$ is a lower bound if $\\alpha \\le x$ for every $x \\in E$. An upper bound is any ceiling, not necessarily the best one. If $1$ bounds a set from above, then $10$ and $10{,}000$ usually do too."
+        }
+      ]
+    },
+    {
+      "id": "s3",
       "type": "discover",
-      "prompt": "Drag a point on the number line to explore upper bounds of the set E = (0, 1).",
+      "prompt": "Explore $E=(0,1)$. A point is an upper bound exactly when it sits at or to the right of every point in $E$. Drag the marker — it snaps to the nearest twelfth and shows its value as a fraction. Try $\\tfrac{11}{12}$, $1$, $\\tfrac{3}{2}$, and $2$. Notice: $1$ is not inside the open interval, but it still bounds the whole set from above.",
       "widget": {
         "kind": "number_line",
         "props": {
           "min": -0.5,
           "max": 2,
-          "intervals": [{ "start": 0, "end": 1, "label": "E" }]
+          "snapDenominator": 12,
+          "intervals": [{ "start": 0, "end": 1, "label": "E=(0,1)" }]
         }
-      }
-    },
-    {
-      "id": "s3",
-      "type": "problem",
-      "prompt": "Any upper bound M of (0, 1) must satisfy M ≥ ___",
-      "widget": {
-        "kind": "fill_blank",
-        "props": { "template": "M \\ge {{answer}}" }
-      },
-      "validator": {
-        "type": "expression",
-        "engine": "mathjs",
-        "accept": ["1"]
-      },
-      "feedback": {
-        "correct": "Correct — 1 is the least upper bound of (0, 1).",
-        "incorrect": [
-          {
-            "match": "*",
-            "message": "An upper bound must be at least as large as every element of E. What is the smallest value that still bounds (0, 1)?"
-          }
-        ]
       }
     },
     {
       "id": "s4",
-      "type": "summary",
+      "type": "problem",
+      "prompt": "Does the open interval $(0,1)$ have a largest element, also called a **maximum**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Yes — the maximum is $1$." },
+            { "id": "b", "label": "Yes — the maximum is $0.999\\ldots$." },
+            { "id": "c", "label": "No — every element $x<1$ can be beaten by a larger element still below $1$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. A maximum must belong to the set. But if $x$ is in $(0,1)$, then a point halfway between $x$ and $1$ is larger and still in $(0,1)$.",
+        "incorrect": [
+          { "match": "a", "message": "$1$ is an upper bound, but it is not an element of $(0,1)$. A maximum has to be inside the set." },
+          { "match": "b", "message": "There is no largest decimal below $1$. Whatever number you name below $1$, the midpoint between it and $1$ is larger and still below $1$." },
+          { "match": "*", "message": "Ask whether the proposed largest number is actually in the set, and whether it can be beaten by another number still below $1$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
       "blocks": [
         {
           "type": "text",
-          "content": "An upper bound of E is any number ≥ every element of E. The least upper bound (supremum) is the smallest such bound when it exists."
+          "content": "So $(0,1)$ has no maximum, yet it has an obvious sharp ceiling: $1$. This is the point of **supremum**."
+        },
+        {
+          "type": "text",
+          "content": "The **supremum** of $E$, written $\\sup E$, is the least upper bound of $E$. That means two things: first, it is an upper bound; second, every smaller number fails to be an upper bound."
+        },
+        {
+          "type": "math",
+          "latex": "\\alpha = \\sup E \\quad \\Longleftrightarrow \\quad \\begin{cases} x \\le \\alpha \\text{ for every } x \\in E, \\\\ \\text{for every } \\gamma < \\alpha,\\ \\text{some } x \\in E \\text{ satisfies } \\gamma < x. \\end{cases}"
+        },
+        {
+          "type": "text",
+          "content": "The **infimum** is the mirror image: the greatest lower bound. A supremum or infimum may lie outside the set it describes."
         }
       ]
     },
     {
-      "id": "s5",
+      "id": "s6",
+      "type": "problem",
+      "prompt": "Which statement correctly proves that $1$ is the least upper bound of $(0,1)$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$1$ is in $(0,1)$, so it is the maximum." },
+            { "id": "b", "label": "$1$ is an upper bound, and any $\\gamma<1$ fails to be an upper bound because some point of $(0,1)$ lies between $\\gamma$ and $1$." },
+            { "id": "c", "label": "$1$ is less than every upper bound, so it is in the set." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Exactly. You checked both halves: $1$ bounds the set, and every smaller number is beaten by some element of the set.",
+        "incorrect": [
+          { "match": "a", "message": "$1$ is not in $(0,1)$. It can be the supremum without being a maximum." },
+          { "match": "c", "message": "Being the least upper bound does not place $1$ inside the set. For $(0,1)$, it is outside." },
+          { "match": "*", "message": "Use the two-part test: upper bound first, then show every smaller candidate fails." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "prompt": "Let $E = \\{x \\in \\mathbb{R} : x < 0\\}$, the set of all negative real numbers. What is $\\sup E$?",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\sup E = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["0"] },
+      "feedback": {
+        "correct": "Yes. Every negative number is below $0$, so $0$ is an upper bound. And any $\\gamma<0$ is beaten by $\\gamma/2$, which is still negative but larger than $\\gamma$. So $0$ is the least upper bound, even though $0 \\notin E$.",
+        "incorrect": [
+          { "match": "-1", "message": "$-1$ is not an upper bound: $-1/2$ is in $E$ and is greater than $-1$." },
+          { "match": "none", "message": "There is a sharp ceiling: $0$. The supremum does not need to belong to the set." },
+          { "match": "*", "message": "Look for the smallest ceiling above all negative numbers. It may be outside the set." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "An upper bound is any ceiling above a set; a lower bound is any floor below it. A set can have many upper bounds, but at most one least upper bound."
+        },
+        {
+          "type": "text",
+          "content": "A maximum must be an element of the set. A supremum is the least upper bound and may sit outside the set: $\\sup(0,1)=1$ and $\\sup\\{x:x<0\\}=0$, even though neither $1$ nor $0$ belongs to the corresponding set."
+        },
+        {
+          "type": "text",
+          "content": "Now we can ask the real question. We can define a supremum, but does every nonempty bounded-above set actually have one? In $\\mathbb{Q}$ the answer was no: the set $\\{p\\in\\mathbb{Q}:p>0, p^2<2\\}$ climbed toward a missing boundary. The next lesson names the property that forbids such holes."
+        }
+      ]
+    },
+    {
+      "id": "s9",
       "type": "quiz",
-      "items": []
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The supremum of a set $E$ is best described as:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "the largest element of $E$" },
+                { "id": "b", "label": "the least upper bound of $E$" },
+                { "id": "c", "label": "any upper bound of $E$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. Supremum means least upper bound.",
+            "incorrect": [
+              { "match": "a", "message": "That is a maximum. A supremum may lie outside the set." },
+              { "match": "c", "message": "A supremum is not just any upper bound; it is the least one." },
+              { "match": "*", "message": "Supremum is the sharpest ceiling: the least upper bound." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Must $\\sup E$ always belong to $E$?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Yes — the supremum is always the maximum." },
+                { "id": "b", "label": "No — for example, $\\sup(0,1)=1$ but $1\\notin(0,1)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Exactly. A maximum must belong to the set; a supremum need not.",
+            "incorrect": [
+              { "match": "a", "message": "$(0,1)$ has supremum $1$, but $1$ is not in the set. Supremum and maximum are different." },
+              { "match": "*", "message": "Use $(0,1)$ as the test case." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "How does a maximum differ from a supremum?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "A maximum must be an element of the set; a supremum is the least upper bound and may lie outside the set." },
+                { "id": "b", "label": "A supremum must be inside the set; a maximum may lie outside." },
+                { "id": "c", "label": "There is no difference." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Maximum is membership plus largeness; supremum is the least ceiling.",
+            "incorrect": [
+              { "match": "b", "message": "Reverse that: a maximum must be in the set, while a supremum may lie outside." },
+              { "match": "c", "message": "$(0,1)$ separates them: it has supremum $1$ but no maximum." },
+              { "match": "*", "message": "A maximum is a point of the set. A supremum is a least upper bound." }
+            ]
+          }
+        }
+      ]
     }
   ]
 }

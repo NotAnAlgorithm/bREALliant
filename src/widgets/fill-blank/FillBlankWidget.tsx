@@ -33,7 +33,7 @@ export function FillBlankWidget({
         onChange={(event) =>
           onStateChange({ answer: event.target.value } satisfies FillBlankState)
         }
-        className="min-h-11 w-16 min-w-[4rem] shrink-0 rounded-lg border border-border bg-white px-3 py-2 text-center font-mono text-base text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
+        className="min-h-11 w-16 min-w-[4rem] shrink-0 rounded-lg border border-border bg-surface px-3 py-2 text-center font-mono text-base text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:opacity-50"
       />
 
       {after ? <LatexFragment latex={after} /> : null}

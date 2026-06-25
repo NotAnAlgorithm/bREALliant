@@ -3,6 +3,7 @@ import {
   parseLatexSegments,
   renderMath,
 } from '../../lib/latex/render-math'
+import { renderInlineMarkdown } from '../../lib/markdown/inline-markdown'
 
 type RichTextProps = {
   content: string
@@ -13,7 +14,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
   if (!hasLatexDelimiters(content)) {
     return (
       <p className={`whitespace-pre-wrap leading-relaxed ${className}`}>
-        {content}
+        {renderInlineMarkdown(content)}
       </p>
     )
   }
@@ -26,7 +27,7 @@ export function RichText({ content, className = '' }: RichTextProps) {
         if (segment.kind === 'text') {
           return (
             <span key={index} className="whitespace-pre-wrap">
-              {segment.value}
+              {renderInlineMarkdown(segment.value, `md-${index}`)}
             </span>
           )
         }

@@ -18,8 +18,22 @@ export function getAnswerFromWidgetState(
   switch (kind) {
     case 'fill_blank':
       return String(state.answer ?? '')
-    case 'number_line':
+    case 'number_line': {
+      const fraction = state.markerFraction
+      if (typeof fraction === 'string' && fraction.length > 0) return fraction
       return String(state.markerPosition ?? '')
+    }
+    case 'rational_input': {
+      const numStr =
+        typeof state.num === 'string' ? state.num.trim() : String(state.num ?? '')
+      const denStr =
+        typeof state.den === 'string' ? state.den.trim() : String(state.den ?? '')
+      if (numStr === '' || denStr === '') return ''
+      const num = Number(numStr)
+      const den = Number(denStr)
+      if (!Number.isFinite(num) || !Number.isFinite(den) || den === 0) return ''
+      return `${num}/${den}`
+    }
     case 'fraction_line': {
       const num = Number(state.aNum)
       const den = Number(state.aDen)
