@@ -83,6 +83,93 @@ function QuizHarness({ step }: { step: QuizStep }) {
   )
 }
 
+type ProblemStep = Extract<Step, { type: 'problem' }>
+
+const problemStep: ProblemStep = {
+  id: 'p1',
+  type: 'problem',
+  prompt: 'What is sup A?',
+  widget: { kind: 'fill_blank', props: {} },
+  validator: { type: 'expression', engine: 'mathjs', accept: ['sqrt(2)'] },
+  feedback: {
+    correct: 'Correct!',
+    incorrect: [{ match: '*', message: 'Recall the lub property.' }],
+  },
+}
+
+describe('StepRenderer hint controls (F6)', () => {
+  it('shows a hint button only after an incorrect attempt when hints are enabled', () => {
+    const { rerender } = render(
+      <StepRenderer
+        step={problemStep}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        hintsEnabled
+        onRequestHint={() => {}}
+        problemResult={null}
+      />,
+    )
+    expect(
+      screen.queryByRole('button', { name: /hint/i }),
+    ).not.toBeInTheDocument()
+
+    rerender(
+      <StepRenderer
+        step={problemStep}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        hintsEnabled
+        onRequestHint={() => {}}
+        problemResult={{ correct: false, message: 'Recall the lub property.' }}
+      />,
+    )
+    expect(
+      screen.getByRole('button', { name: /get a hint/i }),
+    ).toBeInTheDocument()
+  })
+
+  it('renders a returned hint and invokes onRequestHint on click', async () => {
+    const user = userEvent.setup()
+    let calls = 0
+    render(
+      <StepRenderer
+        step={problemStep}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        hintsEnabled
+        hint="Think about upper bounds."
+        onRequestHint={() => {
+          calls += 1
+        }}
+        problemResult={{ correct: false, message: 'Recall the lub property.' }}
+      />,
+    )
+    expect(screen.getByText('Think about upper bounds.')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /another hint/i }))
+    expect(calls).toBe(1)
+  })
+
+  it('does not show hint controls when the feature flag is off', () => {
+    render(
+      <StepRenderer
+        step={problemStep}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        hintsEnabled={false}
+        onRequestHint={() => {}}
+        problemResult={{ correct: false, message: 'Recall the lub property.' }}
+      />,
+    )
+    expect(
+      screen.queryByRole('button', { name: /hint/i }),
+    ).not.toBeInTheDocument()
+  })
+})
+
 describe('StepRenderer quiz grading', () => {
   it('grades a correct multiple choice answer with instant feedback', async () => {
     const user = userEvent.setup()

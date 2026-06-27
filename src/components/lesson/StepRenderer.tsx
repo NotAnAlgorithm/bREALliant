@@ -26,13 +26,22 @@ type QuizItemHandlers = {
   onCheckQuizItem: (itemId: string) => void
 }
 
+type HintHandlers = {
+  hintsEnabled?: boolean
+  hint?: string | null
+  hintLoading?: boolean
+  hintExhausted?: boolean
+  onRequestHint?: () => void
+}
+
 type StepRendererProps = {
   step: Step
   widgetState: WidgetState
   onWidgetStateChange: (state: WidgetState) => void
   problemResult?: EvaluationResult | null
   onCheckAnswer?: () => void
-} & Partial<QuizItemHandlers>
+} & Partial<QuizItemHandlers> &
+  HintHandlers
 
 function isItemGraded(item: QuizItem): boolean {
   return item.validator != null && item.feedback != null
@@ -48,6 +57,11 @@ export function StepRenderer({
   quizItemResult,
   onQuizItemStateChange,
   onCheckQuizItem,
+  hintsEnabled,
+  hint,
+  hintLoading,
+  hintExhausted,
+  onRequestHint,
 }: StepRendererProps) {
   const isProblem = step.type === 'problem'
 
@@ -96,6 +110,17 @@ export function StepRenderer({
             >
               Check answer
             </button>
+          ) : null}
+          {hintsEnabled &&
+          onRequestHint &&
+          problemResult &&
+          !problemResult.correct ? (
+            <HintControls
+              hint={hint}
+              hintLoading={hintLoading}
+              hintExhausted={hintExhausted}
+              onRequestHint={onRequestHint}
+            />
           ) : null}
         </div>
       ) : null}
@@ -198,6 +223,57 @@ function QuizStepRenderer({
           Next question
         </button>
       ) : null}
+    </div>
+  )
+}
+
+type HintControlsProps = {
+  hint?: string | null
+  hintLoading?: boolean
+  hintExhausted?: boolean
+  onRequestHint: () => void
+}
+
+function HintControls({
+  hint,
+  hintLoading,
+  hintExhausted,
+  onRequestHint,
+}: HintControlsProps) {
+  const label = hintLoading
+    ? 'Thinking…'
+    : hint
+      ? 'Another hint'
+      : 'Get a hint'
+
+  return (
+    <div className="space-y-3">
+      {hint ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm leading-relaxed text-ink"
+        >
+          <p className="mb-1 text-xs font-medium uppercase tracking-wide text-brand">
+            Hint
+          </p>
+          <RichText content={hint} />
+        </div>
+      ) : null}
+      {!hintExhausted ? (
+        <button
+          type="button"
+          onClick={onRequestHint}
+          disabled={hintLoading}
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand/40 px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/10 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {label}
+        </button>
+      ) : (
+        <p className="text-xs text-ink-muted italic">
+          That&apos;s all the hints for this one — give it another try.
+        </p>
+      )}
     </div>
   )
 }

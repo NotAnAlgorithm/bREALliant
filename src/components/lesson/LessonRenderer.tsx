@@ -7,9 +7,12 @@ import './lesson-transitions.css'
 
 import { GlossaryProvider } from '../../contexts/GlossaryProvider'
 import { useAuth } from '../../hooks/useAuth'
+import { aiHintsEnabled, requestHint } from '../../lib/ai/hint-client'
+import { buildHintContext, MAX_HINT_LEVEL } from '../../lib/ai/prompt-builder'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
 import {
   evaluateProblemFromWidget,
+  getAnswerFromWidgetState,
   type EvaluationResult,
 } from '../../lib/feedback/feedback-engine'
 import { supabase } from '../../lib/supabase'
@@ -73,7 +76,12 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
   const [hydrated, setHydrated] = useState(false)
   const [finishing, setFinishing] = useState(false)
   const [completion, setCompletion] = useState<LessonCompleteData | null>(null)
+  const [hint, setHint] = useState<string | null>(null)
+  const [hintLevel, setHintLevel] = useState(0)
+  const [hintLoading, setHintLoading] = useState(false)
   const skipNextSave = useRef(false)
+
+  const hintsOn = aiHintsEnabled()
 
   const step = lesson.steps[stepIndex]
   const isFirst = stepIndex === 0
@@ -167,6 +175,12 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
     [step],
   )
 
+  const resetHint = useCallback(() => {
+    setHint(null)
+    setHintLevel(0)
+    setHintLoading(false)
+  }, [])
+
   const onCheckAnswer = useCallback(() => {
     if (!step || step.type !== 'problem') return
     const result = evaluateProblemFromWidget(
@@ -177,6 +191,27 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
     )
     setStepAttempts((prev) => ({ ...prev, [step.id]: result }))
   }, [step, widgetState])
+
+  const onRequestHint = useCallback(async () => {
+    if (!hintsOn || !step || step.type !== 'problem') return
+    const nextLevel = Math.min(MAX_HINT_LEVEL, hintLevel + 1)
+    setHintLoading(true)
+    try {
+      const context = buildHintContext({
+        problem: step,
+        learnerAnswer: getAnswerFromWidgetState(step.widget.kind, widgetState),
+        hintLevel: nextLevel,
+        lessonTitle: lesson.title,
+      })
+      const result = await requestHint(context)
+      if (result) {
+        setHint(result)
+        setHintLevel(nextLevel)
+      }
+    } finally {
+      setHintLoading(false)
+    }
+  }, [hintsOn, step, hintLevel, widgetState, lesson.title])
 
   const quizItemState = useCallback(
     (itemId: string): WidgetState => {
@@ -229,15 +264,17 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
   )
 
   const goBack = useCallback(() => {
+    resetHint()
     setDirection('back')
     setStepIndex((i) => Math.max(0, i - 1))
-  }, [])
+  }, [resetHint])
 
   const goNext = useCallback(() => {
     if (!step || !canAdvanceFromStep(step, stepAttempts)) return
+    resetHint()
     setDirection('forward')
     setStepIndex((i) => Math.min(lesson.steps.length - 1, i + 1))
-  }, [lesson.steps.length, step, stepAttempts])
+  }, [lesson.steps.length, step, stepAttempts, resetHint])
 
   const handleFinish = useCallback(async () => {
     if (!step || !canAdvanceFromStep(step, stepAttempts)) return
@@ -291,6 +328,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
 
       setCompletion({
         lessonTitle: lesson.title,
+        tags: lesson.tags,
         streak,
         unlockedTitles: unlockedIds.map(
           (id) => lessonsById.get(id)?.title ?? id,
@@ -388,6 +426,11 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
           quizItemResult={quizItemResult}
           onQuizItemStateChange={onQuizItemStateChange}
           onCheckQuizItem={onCheckQuizItem}
+          hintsEnabled={hintsOn}
+          hint={hint}
+          hintLoading={hintLoading}
+          hintExhausted={hintLevel >= MAX_HINT_LEVEL}
+          onRequestHint={step.type === 'problem' ? onRequestHint : undefined}
         />
       </div>
 

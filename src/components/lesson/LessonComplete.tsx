@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { Confetti } from './Confetti'
+import { PracticeMore } from './PracticeMore'
 
 export type LessonCompleteData = {
   lessonTitle: string
@@ -10,6 +11,8 @@ export type LessonCompleteData = {
   nextLessonTitle: string | null
   unitComplete: boolean
   courseComplete: boolean
+  /** Concept tags of the finished lesson, used to surface extra practice. */
+  tags?: string[]
 }
 
 export function LessonComplete({
@@ -20,6 +23,7 @@ export function LessonComplete({
   nextLessonTitle,
   unitComplete,
   courseComplete,
+  tags = [],
 }: LessonCompleteData) {
   const milestone = courseComplete
     ? 'Course complete!'
@@ -83,6 +87,8 @@ export function LessonComplete({
           You&apos;ve completed every lesson in the course. Nicely done.
         </p>
       ) : null}
+
+      <PracticeMore tags={tags} />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         {nextLessonId ? (
