@@ -7,9 +7,12 @@ import './CoursePath.css'
 
 import { useCourseProgress } from '../../hooks/useCourseProgress'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
+import { isRetained } from '../../services/mastery'
 import {
   computeCourseStatuses,
+  effectiveSatisfiedIds,
   missingPrerequisites,
+  retainedLessonIds,
   type LessonStatus,
 } from '../../services/unlock'
 
@@ -50,7 +53,7 @@ const STATUS_META: Record<
 
 export function CoursePath() {
   const navigate = useNavigate()
-  const { completedIds, inProgressIds } = useCourseProgress()
+  const { completedIds, inProgressIds, masteryByTag } = useCourseProgress()
 
   const course = useMemo(() => loadCourse(), [])
   const lessons = useMemo(() => loadAllLessons(), [])
@@ -59,9 +62,34 @@ export function CoursePath() {
     [lessons],
   )
 
+  const retainedTags = useMemo(
+    () =>
+      new Set(
+        [...masteryByTag.entries()]
+          .filter(([, state]) => isRetained(state))
+          .map(([tag]) => tag),
+      ),
+    [masteryByTag],
+  )
+
+  // Unlock reads mastery state (a lesson whose concepts are all retained
+  // satisfies prerequisites), with completion kept as a compatibility path.
+  const satisfiedIds = useMemo(
+    () =>
+      effectiveSatisfiedIds(
+        completedIds,
+        retainedLessonIds(lessons, retainedTags),
+      ),
+    [completedIds, lessons, retainedTags],
+  )
+
   const statuses = useMemo(
-    () => computeCourseStatuses(lessons, { completedIds, inProgressIds }),
-    [lessons, completedIds, inProgressIds],
+    () =>
+      computeCourseStatuses(lessons, {
+        completedIds: satisfiedIds,
+        inProgressIds,
+      }),
+    [lessons, satisfiedIds, inProgressIds],
   )
 
   const [pendingLocked, setPendingLocked] = useState<Lesson | null>(null)
@@ -119,6 +147,10 @@ export function CoursePath() {
                 {unit.lessonIds.map((lessonId) => {
                   const lesson = lessonsById.get(lessonId)
                   const status = statuses.get(lessonId) ?? 'locked'
+                  const tags = lesson?.tags ?? []
+                  const retainedCount = tags.filter((tag) =>
+                    retainedTags.has(tag),
+                  ).length
                   const riseStyle = riseDelay(riseIndex++)
                   return (
                     <li key={lessonId}>
@@ -126,6 +158,11 @@ export function CoursePath() {
                         title={lesson?.title ?? lessonId}
                         status={status}
                         inProgress={inProgressIds.has(lessonId)}
+                        concepts={
+                          tags.length > 0
+                            ? { retained: retainedCount, total: tags.length }
+                            : null
+                        }
                         onSelect={() => onSelect(lessonId, status)}
                         riseStyle={riseStyle}
                       />
@@ -141,7 +178,7 @@ export function CoursePath() {
       {pendingLocked ? (
         <PrerequisiteDialog
           lesson={pendingLocked}
-          missingTitles={missingPrerequisites(pendingLocked, completedIds).map(
+          missingTitles={missingPrerequisites(pendingLocked, satisfiedIds).map(
             (id) => lessonsById.get(id)?.title ?? id,
           )}
           onCancel={() => setPendingLocked(null)}
@@ -160,12 +197,14 @@ function LessonRow({
   title,
   status,
   inProgress,
+  concepts,
   onSelect,
   riseStyle,
 }: {
   title: string
   status: LessonStatus
   inProgress: boolean
+  concepts: { retained: number; total: number } | null
   onSelect: () => void
   riseStyle?: CSSProperties
 }) {
@@ -173,6 +212,7 @@ function LessonRow({
   const isLocked = status === 'locked'
   const lockedStarted = isLocked && inProgress
   const label = lockedStarted ? 'Locked · started' : meta.label
+  const showConcepts = concepts != null && concepts.retained > 0 && !isLocked
 
   return (
     <button
@@ -199,6 +239,12 @@ function LessonRow({
         </span>
         <span className={`text-xs ${lockedStarted ? 'text-amber-600' : meta.tone}`}>
           {label}
+          {showConcepts ? (
+            <span className="text-ink-muted">
+              {' · '}
+              {concepts.retained}/{concepts.total} concepts retained
+            </span>
+          ) : null}
         </span>
       </span>
       <span

@@ -1,0 +1,341 @@
+{
+  "lessonId": "lesson-monotone-01",
+  "title": "The Monotone Convergence Theorem",
+  "tags": ["monotone", "convergence", "supremum"],
+  "prerequisites": ["lesson-seq-limits-01", "lesson-lub-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Finding a limit usually means already *knowing* the target $L$ so you can fight $\\varepsilon$. But what if you have a sequence that obviously 'wants' to converge — it only ever climbs, and it never escapes upward — yet you have no candidate $L$ in hand?"
+        },
+        {
+          "type": "text",
+          "content": "Consider $a_n = 1 - 1/n$: $0, \\tfrac12, \\tfrac23, \\tfrac34, \\dots$. It rises at every step and stays under $1$. Surely it converges. The **Monotone Convergence Theorem** promises it does — and hands you the limit for free. This is the moment completeness earns its salary."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Monotone Convergence Theorem.** If a sequence is increasing and bounded above, it converges — and its limit is exactly the supremum of its values."
+        },
+        {
+          "type": "math",
+          "latex": "a_n \\le a_{n+1}\\ \\text{for all }n\\ \\text{ and }\\ \\{a_n\\}\\text{ bounded above} \\ \\implies\\ a_n \\to \\sup_n a_n"
+        },
+        {
+          "type": "text",
+          "content": "There is a mirror image: a **decreasing** sequence that is bounded below converges to its **infimum**. Either way, the engine is the least upper bound property — the very completeness of $\\mathbb{R}$ that we built earlier. In $\\mathbb{Q}$ this theorem fails: an increasing bounded sequence of rationals can crawl toward $\\sqrt2$, which is not there to catch it."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Here is $a_n = 1 - 1/n$ climbing toward its supremum $L = 1$. Every term sits strictly below $1$ (so $1$ is an upper bound), yet the terms creep arbitrarily close to it. The band is the $\\varepsilon$-window below $1$: notice the tail eventually enters it and never falls back out, because the sequence only increases.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 1.5,
+          "intervals": [{ "start": 0.9, "end": 1.0, "label": "ε-band below sup = 1" }],
+          "markers": [
+            { "value": 1, "label": "sup = L = 1" },
+            { "value": 0.5, "label": "a_2" },
+            { "value": 0.75, "label": "a_4" },
+            { "value": 0.9, "label": "a_10" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["monotone", "convergence", "supremum"],
+      "prompt": "Worked example: show $a_n = 1 - \\tfrac1n$ is increasing, bounded above by $1$, and converges to $\\sup_n a_n = 1$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Increasing.** Compare consecutive terms. Since $\\tfrac{1}{n+1} < \\tfrac1n$, subtracting from $1$ flips the inequality:"
+        },
+        {
+          "type": "math",
+          "latex": "a_{n+1} - a_n = \\left(1 - \\tfrac{1}{n+1}\\right) - \\left(1 - \\tfrac1n\\right) = \\tfrac1n - \\tfrac{1}{n+1} > 0"
+        },
+        {
+          "type": "text",
+          "content": "**Bounded above.** Because $1/n > 0$ for every $n$, we have $a_n = 1 - 1/n < 1$. So $1$ is an upper bound for the set of values."
+        },
+        {
+          "type": "text",
+          "content": "**The supremum is $1$.** $1$ is an upper bound; is it the *least* one? Any candidate $M < 1$ fails: pick $n$ with $1/n < 1 - M$ (Archimedean property), then $a_n = 1 - 1/n > M$, so $M$ is not an upper bound. Hence $\\sup_n a_n = 1$."
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** The sequence is increasing and bounded above, so by the Monotone Convergence Theorem it converges, and its limit equals the supremum:"
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{n\\to\\infty}\\left(1 - \\tfrac1n\\right) = \\sup_n\\left(1 - \\tfrac1n\\right) = 1"
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["monotone", "convergence", "supremum"],
+      "prompt": "Reconstruct the proof that an increasing, bounded-above sequence $(a_n)$ converges to $L = \\sup_n a_n$. Match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "s1", "label": "Let $L = \\sup_n a_n$; this number exists in $\\mathbb{R}$." },
+            { "id": "s2", "label": "Given $\\varepsilon>0$, there is an index $N$ with $a_N > L - \\varepsilon$." },
+            { "id": "s3", "label": "For every $n\\ge N$ we have $|a_n - L| < \\varepsilon$, so $a_n \\to L$." }
+          ],
+          "justifications": [
+            { "id": "j1", "label": "The sequence is nonempty and bounded above, so the least upper bound property guarantees the supremum exists." },
+            { "id": "j2", "label": "Since $L-\\varepsilon < L$, it is not an upper bound, so some term must exceed it." },
+            { "id": "j3", "label": "Monotonicity gives $a_n \\ge a_N > L-\\varepsilon$, while $a_n \\le L$ because $L$ is an upper bound; together $|a_n - L| < \\varepsilon$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["s1:j1,s2:j2,s3:j3"] },
+      "feedback": {
+        "correct": "Exactly. Completeness supplies $L=\\sup$; the 'least' part of least upper bound produces a term above $L-\\varepsilon$; and monotonicity squeezes every later term into the band $(L-\\varepsilon, L]$, which lies inside $(L-\\varepsilon, L+\\varepsilon)$.",
+        "incorrect": [
+          { "match": "*", "message": "Trace the engine of each step: the supremum *exists* by the least upper bound property; a term beats $L-\\varepsilon$ because $L$ is the *least* upper bound; and the tail stays close because the sequence is *increasing* and capped by $L$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["monotone", "convergence"],
+      "prompt": "Here is a *flawed* argument that 'every increasing sequence converges.' Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $(a_n)$ be an increasing sequence." },
+            { "id": "p2", "label": "By the least upper bound property, $L = \\sup_n a_n$ exists in $\\mathbb{R}$." },
+            { "id": "p3", "label": "By the Monotone Convergence Theorem, $a_n \\to L$." },
+            { "id": "p4", "label": "Therefore every increasing sequence converges." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p2"] },
+      "feedback": {
+        "correct": "Right — step 2 is the flaw. The least upper bound property only supplies a supremum when the set is *bounded above*. An increasing sequence like $a_n = n$ has no upper bound and no supremum, and indeed diverges to $+\\infty$.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 just names the hypothesis; nothing is wrong with assuming the sequence is increasing." },
+          { "match": "p3", "message": "Step 3 is a correct application of the theorem — but only *if* the supremum from step 2 actually exists. The error is upstream." },
+          { "match": "p4", "message": "Step 4 follows logically from the earlier steps; the rot is in the unjustified claim that the supremum always exists. Consider $a_n = n$." },
+          { "match": "*", "message": "Monotone convergence needs *bounded above*. Which step assumes a supremum exists without that hypothesis? Test it on $a_n = n$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["monotone", "convergence", "supremum"],
+      "prompt": "The sequence $a_n = 3 - \\dfrac{2}{n}$ is increasing and bounded above. What is its limit?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$3$, the supremum of its values." },
+            { "id": "b", "label": "$1$, its first term." },
+            { "id": "c", "label": "It diverges, since it keeps increasing." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Each term satisfies $3 - 2/n < 3$, and the terms climb arbitrarily close to $3$, so $\\sup_n a_n = 3$ and by the theorem $a_n \\to 3$.",
+        "incorrect": [
+          { "match": "b", "message": "$a_1 = 1$ is the smallest term (the infimum), not the limit. An increasing bounded sequence converges to its *supremum*, $3$." },
+          { "match": "c", "message": "Increasing does not mean divergent — it is also *bounded above* by $3$. The Monotone Convergence Theorem then forces convergence to the supremum." },
+          { "match": "*", "message": "Find the supremum: $3 - 2/n < 3$ and the terms approach $3$. The limit equals that supremum." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The Monotone Convergence Theorem is the first tool that produces a limit *without* knowing it in advance. If a sequence increases and is bounded above, it converges — to its supremum. Symmetrically, decreasing-and-bounded-below sequences converge to their infimum."
+        },
+        {
+          "type": "math",
+          "latex": "\\text{increasing}\\ \\&\\ \\text{bounded above}\\ \\Rightarrow\\ a_n\\to\\sup_n a_n,\\qquad \\text{decreasing}\\ \\&\\ \\text{bounded below}\\ \\Rightarrow\\ a_n\\to\\inf_n a_n"
+        },
+        {
+          "type": "text",
+          "content": "The proof rides entirely on completeness: the least upper bound property delivers $L=\\sup$, its minimality puts a term above $L-\\varepsilon$, and monotonicity drags the whole tail into the $\\varepsilon$-band. Drop 'bounded above' and it collapses — $a_n=n$ has no supremum and diverges. This is exactly why the same statement is false in $\\mathbb{Q}$."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Monotone Convergence Theorem guarantees convergence for a sequence that is:",
+          "tags": ["monotone", "convergence"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Increasing and bounded above (or decreasing and bounded below)." },
+                { "id": "b", "label": "Bounded, with no further conditions." },
+                { "id": "c", "label": "Increasing, with no further conditions." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — monotonicity *and* a bound on the correct side together force convergence.",
+            "incorrect": [
+              { "match": "b", "message": "Bounded alone is not enough: $(-1)^n$ is bounded but never settles. You also need monotonicity." },
+              { "match": "c", "message": "Increasing alone is not enough: $a_n = n$ increases forever and diverges. You also need 'bounded above'." },
+              { "match": "*", "message": "Two ingredients are required: monotone *and* bounded on the side it is heading." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "For an increasing, bounded-above sequence, the limit equals:",
+          "tags": ["supremum", "convergence"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "the supremum of its values" },
+                { "id": "b", "label": "the infimum of its values" },
+                { "id": "c", "label": "the average of its first and last terms" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The terms rise toward, and never pass, their least upper bound — so the limit is the supremum.",
+            "incorrect": [
+              { "match": "b", "message": "The infimum is the *smallest* value (here the first term) — the sequence climbs away from it. An increasing sequence converges to its supremum." },
+              { "match": "c", "message": "There is no 'last term' in an infinite sequence, and averaging endpoints is not how limits work. The limit is the supremum." },
+              { "match": "*", "message": "An increasing sequence presses upward against its least upper bound. Which quantity is that?" }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why does the Monotone Convergence Theorem fail in $\\mathbb{Q}$?",
+          "tags": ["monotone", "supremum"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\mathbb{Q}$ lacks the least upper bound property, so a bounded increasing sequence may have no supremum in $\\mathbb{Q}$ to converge to." },
+                { "id": "b", "label": "Sequences of rationals are never monotone." },
+                { "id": "c", "label": "Rational numbers are not bounded." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. A rational sequence increasing toward $\\sqrt2$ is bounded above but its supremum is missing from $\\mathbb{Q}$. Completeness is exactly what the theorem needs.",
+            "incorrect": [
+              { "match": "b", "message": "Rational sequences can certainly be monotone — e.g. the truncated decimals of $\\sqrt2$ increase. The issue is the missing supremum." },
+              { "match": "c", "message": "Rationals can be bounded just fine (e.g. all below $2$). The real problem is that the supremum may not exist *within* $\\mathbb{Q}$." },
+              { "match": "*", "message": "Recall what property $\\mathbb{R}$ has and $\\mathbb{Q}$ does not: the least upper bound (completeness) property." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "The decreasing-sequence form of the theorem: a decreasing sequence bounded below converges to its:",
+      "tags": ["monotone", "convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "infimum" },
+            { "id": "b", "label": "supremum" },
+            { "id": "c", "label": "first term" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — by symmetry, decreasing-and-bounded-below converges down to the infimum (greatest lower bound).",
+        "incorrect": [
+          { "match": "b", "message": "Supremum is for the *increasing* case. A decreasing sequence falls toward its greatest lower bound, the infimum." },
+          { "match": "c", "message": "The first term is the *largest* value of a decreasing sequence (its supremum), not the limit. It heads to the infimum." },
+          { "match": "*", "message": "Mirror the increasing case: decreasing and bounded below converges to the greatest lower bound." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Which sequence does the Monotone Convergence Theorem NOT apply to (to conclude convergence)?",
+      "tags": ["monotone", "convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$a_n = n$" },
+            { "id": "b", "label": "$a_n = 1 - 1/n$" },
+            { "id": "c", "label": "$a_n = 2 + 1/n$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $a_n=n$ is increasing but *not bounded above*, so the theorem does not apply — and indeed it diverges to $+\\infty$.",
+        "incorrect": [
+          { "match": "b", "message": "$1 - 1/n$ is increasing and bounded above by $1$, so the theorem applies and gives convergence to $1$." },
+          { "match": "c", "message": "$2 + 1/n$ is decreasing and bounded below by $2$, so the (mirror) theorem applies and gives convergence to $2$." },
+          { "match": "*", "message": "Find the monotone sequence that lacks a bound on the side it is heading." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "The increasing, bounded-above sequence $a_n = -\\dfrac1n$ converges to:",
+      "tags": ["supremum", "convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$0$" },
+            { "id": "b", "label": "$-1$" },
+            { "id": "c", "label": "$-\\infty$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The terms $-1, -\\tfrac12, -\\tfrac13, \\dots$ increase toward their supremum $0$ (each is negative but creeps up to $0$).",
+        "incorrect": [
+          { "match": "b", "message": "$-1 = a_1$ is the smallest term (the infimum), not the limit. The sequence rises toward its supremum, $0$." },
+          { "match": "c", "message": "The sequence increases and is bounded above by $0$, so it converges; it cannot go to $-\\infty$." },
+          { "match": "*", "message": "Identify the supremum of $\\{-1/n\\}$: the terms are negative but approach it from below. What is it?" }
+        ]
+      }
+    }
+  ]
+}

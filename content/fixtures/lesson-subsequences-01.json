@@ -1,0 +1,347 @@
+{
+  "lessonId": "lesson-subsequences-01",
+  "title": "Subsequences",
+  "tags": ["subsequence", "limit", "sequence"],
+  "prerequisites": ["lesson-seq-limits-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A sequence visits infinitely many terms $a_1, a_2, a_3, \\dots$. Sometimes we only care about *part* of that journey: the even-indexed terms, or the terms after a billion, or the terms that happen to be close to some special value. Picking out an infinite selection of terms, **in their original order**, gives a *subsequence*."
+        },
+        {
+          "type": "text",
+          "content": "Formally, choose indices $n_1 < n_2 < n_3 < \\cdots$ that are **strictly increasing** natural numbers. The subsequence is $(a_{n_k})_{k\\ge 1} = a_{n_1}, a_{n_2}, a_{n_3}, \\dots$. The strict increase matters: it forbids repeating a term or running backwards, and it forces $n_k \\ge k$, so a subsequence always marches off to infinity along with the parent."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Subsequences are a precision tool for studying limits. The key fact: **if $a_n \\to L$, then every subsequence also converges to $L$.**"
+        },
+        {
+          "type": "math",
+          "latex": "a_n \\to L \\quad \\Longrightarrow \\quad a_{n_k} \\to L \\ \\text{ for every choice of } n_1 < n_2 < \\cdots"
+        },
+        {
+          "type": "text",
+          "content": "The reason is short. Given $\\varepsilon>0$, convergence supplies an $N$ with $|a_n - L|<\\varepsilon$ for all $n\\ge N$. Since $n_k \\ge k$, once $k\\ge N$ we also have $n_k \\ge N$, hence $|a_{n_k}-L|<\\varepsilon$. The same $N$ (read as a cutoff on $k$) works for the subsequence."
+        },
+        {
+          "type": "text",
+          "content": "Read the **contrapositive** and you get a divergence detector: if you can find two subsequences heading to *different* limits, the original sequence cannot converge at all. A single limit can't disagree with itself."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Watch the sequence $a_n = (-1)^n$ bounce. Even indices land on $+1$; odd indices land on $-1$. The whole sequence never settles, but it has two perfectly well-behaved subsequences — one pinned at the marker $+1$, one at the marker $-1$. These two destinations are exactly what will prove divergence.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -2,
+          "max": 2,
+          "intervals": [{ "start": -1, "end": 1, "label": "terms forever jump across this gap" }],
+          "markers": [
+            { "value": 1, "label": "even terms: a_{2k} = 1" },
+            { "value": -1, "label": "odd terms: a_{2k-1} = -1" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["subsequence", "limit"],
+      "prompt": "Worked example: pull two convergent subsequences out of $a_n = (-1)^n$ and read off their limits.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Goal.** Exhibit two subsequences of $a_n=(-1)^n$ with different limits."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1 (even indices).** Take $n_k = 2k$, so $n_1=2 < n_2=4 < n_3=6 < \\cdots$ are strictly increasing. Then $a_{2k} = (-1)^{2k} = 1$ for every $k$."
+        },
+        {
+          "type": "math",
+          "latex": "a_{2k} = 1 \\ \\text{ for all } k \\quad \\Longrightarrow \\quad a_{2k} \\to 1"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2 (odd indices).** Take $m_k = 2k-1$, so $m_1=1 < m_2=3 < m_3=5 < \\cdots$. Then $a_{2k-1} = (-1)^{2k-1} = -1$ for every $k$, hence $a_{2k-1}\\to -1$."
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** Two subsequences converge to $1$ and to $-1$, which are different. By the contrapositive of the theorem, $(-1)^n$ **diverges**. Notice how a constant subsequence is the easiest possible limit to read: a constant sequence converges to that constant."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["subsequence"],
+      "scaffold": "worked",
+      "prompt": "Which of the following defines a *valid* subsequence of $(a_n)$ — that is, which index list $n_1, n_2, n_3, \\dots$ is allowed?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "A subsequence requires indices that are **strictly increasing** natural numbers: $n_1 < n_2 < n_3 < \\cdots$."
+        },
+        {
+          "type": "text",
+          "content": "So reject any list that repeats an index, decreases at some point, or stops being infinite. Keep the one list that climbs strictly upward forever."
+        }
+      ],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$1, 4, 9, 16, 25, \\dots$ (the perfect squares)" },
+            { "id": "b", "label": "$2, 2, 4, 4, 6, 6, \\dots$ (each index used twice)" },
+            { "id": "c", "label": "$10, 9, 8, 7, \\dots$ counting down" },
+            { "id": "d", "label": "$1, 3, 2, 4, 6, 5, \\dots$ (mostly increasing, occasional swap)" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The squares $1<4<9<16<\\cdots$ are strictly increasing, so $a_1, a_4, a_9, \\dots$ is a genuine subsequence.",
+        "incorrect": [
+          { "match": "b", "message": "Repeating an index ($2,2$) violates *strict* increase — you'd be reusing the same term, which isn't allowed." },
+          { "match": "c", "message": "Counting down is not increasing at all, and it's also finite. Subsequence indices must climb strictly and forever." },
+          { "match": "d", "message": "Almost — but the swap $1,3,2$ has $n_2=3 > n_3=2$, breaking strict increase. Even one decrease disqualifies the list." },
+          { "match": "*", "message": "Check the defining condition: $n_1 < n_2 < n_3 < \\cdots$, strictly increasing for all $k$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["subsequence", "limit"],
+      "prompt": "What is the full set of *subsequential limits* of $a_n = (-1)^n$ — the values that some subsequence converges to?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\{0\\}$, the average of the terms." },
+            { "id": "b", "label": "$\\{-1, 1\\}$." },
+            { "id": "c", "label": "$\\{-1, 0, 1\\}$." },
+            { "id": "d", "label": "There are none, because the sequence diverges." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Exactly. Even indices give the constant subsequence $1$ and odd indices give $-1$; no subsequence can converge to anything else, since every term is either $1$ or $-1$.",
+        "incorrect": [
+          { "match": "a", "message": "$0$ is the *average*, but no subsequence of $(-1)^n$ ever approaches $0$ — every term is $\\pm 1$, so no selection of them gets close to $0$." },
+          { "match": "c", "message": "Drop the $0$: a subsequential limit must be a limit of actual terms, and the terms only ever equal $1$ or $-1$." },
+          { "match": "d", "message": "Divergence of the whole sequence doesn't mean *no* subsequence converges — quite the opposite here. The constant subsequences $1,1,1,\\dots$ and $-1,-1,-1,\\dots$ both converge." },
+          { "match": "*", "message": "Ask which values some subsequence can approach. Since every term is $1$ or $-1$, only those two values are reachable as limits." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["sequence", "limit"],
+      "prompt": "Does the sequence $a_n = (-1)^n$ converge?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Yes — it converges to $0$ on average." },
+            { "id": "b", "label": "Yes — it converges to $1$ because $1$ appears infinitely often." },
+            { "id": "c", "label": "No — two subsequences converge to different limits ($1$ and $-1$), so it cannot converge." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. If $(a_n)$ converged to some $L$, *every* subsequence would converge to that same $L$. But we found subsequences converging to $1$ and to $-1$, a contradiction — so the sequence diverges.",
+        "incorrect": [
+          { "match": "a", "message": "Convergence is about the terms themselves settling near one value, not about an average. The terms keep jumping between $1$ and $-1$ and never settle." },
+          { "match": "b", "message": "Appearing infinitely often makes $1$ a subsequential limit, not *the* limit. The value $-1$ also appears infinitely often, and a convergent sequence can't have two different subsequential limits." },
+          { "match": "*", "message": "Use the contrapositive: two subsequences with different limits force divergence." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A **subsequence** $(a_{n_k})$ keeps an infinite selection of terms in their original order, indexed by strictly increasing $n_1 < n_2 < \\cdots$. Because $n_k \\ge k$, a subsequence always runs off to infinity with the parent."
+        },
+        {
+          "type": "math",
+          "latex": "a_n \\to L \\quad \\Longrightarrow \\quad a_{n_k} \\to L \\ \\text{ for every subsequence}"
+        },
+        {
+          "type": "text",
+          "content": "The contrapositive is a divergence test: **two subsequences with different limits force the whole sequence to diverge.** The poster child is $a_n=(-1)^n$, whose even and odd subsequences converge to $1$ and $-1$. This idea sets up the next theorem — Bolzano–Weierstrass — where we mine bounded sequences for *convergent* subsequences."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "A subsequence of $(a_n)$ is determined by indices $n_1, n_2, n_3, \\dots$ that are:",
+          "tags": ["subsequence"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "any natural numbers, in any order" },
+                { "id": "b", "label": "strictly increasing natural numbers" },
+                { "id": "c", "label": "consecutive natural numbers only" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Yes — strict increase $n_1<n_2<\\cdots$ is the defining requirement, and it forces $n_k\\ge k$.",
+            "incorrect": [
+              { "match": "a", "message": "Order matters: the indices must strictly increase, so you can't reorder or repeat them." },
+              { "match": "c", "message": "They needn't be consecutive — the squares $1,4,9,\\dots$ are a valid index list. They just have to strictly increase." },
+              { "match": "*", "message": "Recall the definition: $n_1 < n_2 < n_3 < \\cdots$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "If $a_n \\to 5$, what can you say about the subsequence $a_{2^k}$ (terms at indices $2,4,8,16,\\dots$)?",
+          "tags": ["limit", "subsequence"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "It converges to $5$." },
+                { "id": "b", "label": "It might diverge, since we skipped most terms." },
+                { "id": "c", "label": "It converges, but possibly to a different limit." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Correct. Every subsequence of a convergent sequence converges to the same limit, so $a_{2^k}\\to 5$.",
+            "incorrect": [
+              { "match": "b", "message": "Skipping terms can't break convergence. If the whole sequence approaches $5$, so does any infinite selection of its terms." },
+              { "match": "c", "message": "The limit is forced to be the same $5$: a subsequence can't escape the cutoff $N$ that already pins the full sequence near $5$." },
+              { "match": "*", "message": "Use the theorem: $a_n\\to L$ implies every subsequence $\\to L$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Which fact, by itself, proves that a sequence $(a_n)$ diverges?",
+          "tags": ["sequence", "limit"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Some subsequence converges." },
+                { "id": "b", "label": "Two subsequences converge to two different limits." },
+                { "id": "c", "label": "The terms are bounded." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. A convergent sequence forces all subsequences to share one limit, so two disagreeing subsequential limits make convergence impossible.",
+            "incorrect": [
+              { "match": "a", "message": "One convergent subsequence says nothing about the whole sequence — $(-1)^n$ has convergent subsequences yet still diverges." },
+              { "match": "c", "message": "Boundedness alone doesn't decide convergence; $(-1)^n$ is bounded and divergent. You need *conflicting* subsequential limits." },
+              { "match": "*", "message": "Think contrapositive: convergence would make every subsequence share the limit, so two different ones rule it out." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "True or false: every subsequence of a convergent sequence converges to the same limit.",
+      "tags": ["subsequence", "limit"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "True." },
+            { "id": "b", "label": "False — subsequences can converge to other values." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "True — this is the core theorem of the lesson.",
+        "incorrect": [
+          { "match": "b", "message": "If $a_n\\to L$, the same cutoff $N$ controls any subsequence (since $n_k\\ge k$), so it must also converge to $L$." },
+          { "match": "*", "message": "Recall: $a_n\\to L$ implies $a_{n_k}\\to L$ for every subsequence." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "The subsequential limits of $a_n=(-1)^n$ are:",
+      "tags": ["subsequence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\{-1, 1\\}$" },
+            { "id": "b", "label": "$\\{0\\}$" },
+            { "id": "c", "label": "the empty set" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — even indices give $1$, odd indices give $-1$, and nothing else is reachable.",
+        "incorrect": [
+          { "match": "b", "message": "No term is ever near $0$; every term is $\\pm 1$." },
+          { "match": "c", "message": "Constant subsequences $1,1,\\dots$ and $-1,-1,\\dots$ both converge, so the set is non-empty." },
+          { "match": "*", "message": "Look at which values the terms actually approach: only $1$ and $-1$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "prompt": "For a subsequence with indices $n_1<n_2<\\cdots$, which inequality always holds?",
+      "tags": ["subsequence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$n_k \\ge k$" },
+            { "id": "b", "label": "$n_k \\le k$" },
+            { "id": "c", "label": "$n_k = 2k$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — strictly increasing natural-number indices satisfy $n_k\\ge k$, which is why subsequences run to infinity.",
+        "incorrect": [
+          { "match": "b", "message": "It's the other way: starting at $n_1\\ge 1$ and increasing by at least $1$ each step gives $n_k\\ge k$." },
+          { "match": "c", "message": "$n_k=2k$ is just one example (even indices); the general guarantee is the inequality $n_k\\ge k$." },
+          { "match": "*", "message": "Since indices strictly increase from at least $1$, the $k$-th index is at least $k$." }
+        ]
+      }
+    }
+  ]
+}

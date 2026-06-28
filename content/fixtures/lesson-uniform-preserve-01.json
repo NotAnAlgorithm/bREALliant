@@ -1,0 +1,385 @@
+{
+  "lessonId": "lesson-uniform-preserve-01",
+  "title": "What Uniform Convergence Preserves",
+  "tags": ["uniform-convergence", "continuity", "integration", "differentiation", "limit-interchange"],
+  "prerequisites": ["lesson-pointwise-uniform-01", "lesson-riemann-01", "lesson-derivative-01"],
+  "glossary": {
+    "uniform": {
+      "term": "uniform convergence",
+      "definition": "$f_n\\to f$ uniformly on $E$ if for every $\\varepsilon>0$ there is a single $N$ (independent of $x$) with $|f_n(x)-f(x)|<\\varepsilon$ for all $x\\in E$ and $n\\ge N$; equivalently $\\sup_x|f_n-f|\\to 0$."
+    },
+    "continuitythm": {
+      "term": "continuity theorem",
+      "definition": "If each $f_n$ is continuous on $E$ and $f_n\\to f$ uniformly, then $f$ is continuous on $E$ — limits may be interchanged: $\\lim_{y\\to x}\\lim_n f_n(y)=\\lim_n\\lim_{y\\to x} f_n(y)$."
+    },
+    "integralswap": {
+      "term": "term-by-term integration",
+      "definition": "If $f_n$ are Riemann integrable on $[a,b]$ and $f_n\\to f$ uniformly, then $f$ is integrable and $\\int_a^b f_n\\to\\int_a^b f$."
+    },
+    "derivativeswap": {
+      "term": "differentiation theorem",
+      "definition": "$\\big(\\lim_n f_n\\big)'=\\lim_n f_n'$ is NOT guaranteed by uniform convergence of $f_n$ alone; one needs $f_n'$ to converge uniformly and $f_n$ to converge at some point."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall the headline from last lesson: $f_n\\to f$ uniformly means a single $N$ controls the error $|f_n(x)-f(x)|$ for every $x$ at once, i.e. $\\sup_x|f_n-f|\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "Why pay for that stronger notion? Because uniform convergence is exactly the hypothesis that lets a limit *inherit* the good behavior of its terms. We will see it preserves **continuity** and **integration** outright, while **differentiation** needs extra care. Pointwise convergence preserves none of these for free."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Theorem (continuity).** If each $f_n$ is continuous on $E$ and $f_n\\to f$ uniformly, then $f$ is continuous on $E$."
+        },
+        {
+          "type": "text",
+          "content": "Pointwise convergence is not enough: from the previous lesson, $f_n(x)=x^n$ on $[0,1]$ are all continuous and converge pointwise, yet the limit $f$ jumps at $x=1$ — discontinuous. The convergence there is not uniform, and that is precisely what breaks."
+        },
+        {
+          "type": "math",
+          "latex": "f_n\\to f\\text{ uniformly},\\ f_n\\in C(E)\\ \\Longrightarrow\\ f\\in C(E)."
+        }
+      ]
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["continuity", "uniform-convergence"],
+      "prompt": "Worked example: the $3\\varepsilon$ argument that a uniform limit of continuous functions is continuous.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Goal.** Fix $x\\in E$ and $\\varepsilon>0$; produce $\\delta>0$ so that $|y-x|<\\delta$ forces $|f(x)-f(y)|<\\varepsilon$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1 (use uniformity).** Since $f_n\\to f$ uniformly, pick $n$ with $\\sup_{t\\in E}|f_n(t)-f(t)|<\\varepsilon/3$. Then in particular $|f(x)-f_n(x)|<\\varepsilon/3$ and $|f_n(y)-f(y)|<\\varepsilon/3$ for *every* $y$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 2 (use continuity of $f_n$).** That one $f_n$ is continuous at $x$, so choose $\\delta>0$ with $|y-x|<\\delta\\Rightarrow|f_n(x)-f_n(y)|<\\varepsilon/3$."
+        },
+        {
+          "type": "math",
+          "latex": "|f(x)-f(y)|\\le |f(x)-f_n(x)|+|f_n(x)-f_n(y)|+|f_n(y)-f(y)|<\\tfrac{\\varepsilon}{3}+\\tfrac{\\varepsilon}{3}+\\tfrac{\\varepsilon}{3}=\\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "**Why uniformity is essential.** The *same* $n$ had to make the first and third terms small for the specific points $x$ and $y$. Pointwise convergence would give possibly different $n$'s for $x$ and $y$, and the middle continuity estimate would no longer line up."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "tags": ["continuity", "uniform-convergence"],
+      "scaffold": "completion",
+      "prompt": "Reconstruct the $3\\varepsilon$ continuity proof: drag the four steps into the correct logical order.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "The skeleton you just saw: first spend uniformity to fix a good $n$, then spend continuity of that $f_n$ to get $\\delta$, then assemble the triangle inequality, then read off the bound $\\varepsilon$."
+        }
+      ],
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "i1", "label": "Fix $x$ and $\\varepsilon>0$; by uniform convergence choose $n$ with $\\sup_t|f_n(t)-f(t)|<\\varepsilon/3$." },
+            { "id": "i2", "label": "Using continuity of that $f_n$ at $x$, pick $\\delta>0$ so $|y-x|<\\delta\\Rightarrow|f_n(x)-f_n(y)|<\\varepsilon/3$." },
+            { "id": "i3", "label": "For $|y-x|<\\delta$, split $|f(x)-f(y)|\\le|f(x)-f_n(x)|+|f_n(x)-f_n(y)|+|f_n(y)-f(y)|$." },
+            { "id": "i4", "label": "Each term is $<\\varepsilon/3$, so $|f(x)-f(y)|<\\varepsilon$; hence $f$ is continuous at $x$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["i1,i2,i3,i4"] },
+      "feedback": {
+        "correct": "Exactly. Uniformity first (to fix a single $n$ controlling the outer terms), then continuity of $f_n$ (for the middle term), then the triangle inequality, then the $\\varepsilon$ conclusion.",
+        "incorrect": [
+          { "match": "*", "message": "Order by dependency: you must fix $n$ from uniformity before invoking continuity of that $f_n$; only then can the triangle-inequality split be bounded term by term to reach $\\varepsilon$." }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Theorem (integration).** If each $f_n$ is Riemann integrable on $[a,b]$ and $f_n\\to f$ uniformly, then $f$ is integrable and you may swap limit and integral:"
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{n\\to\\infty}\\int_a^b f_n(x)\\,dx=\\int_a^b f(x)\\,dx,\\qquad \\left|\\int_a^b f_n-\\int_a^b f\\right|\\le (b-a)\\sup_x|f_n-f|\\to 0."
+        },
+        {
+          "type": "text",
+          "content": "Pointwise alone fails badly. Consider spike functions $f_n$ on $[0,1]$ that form a tall thin triangle of height $2n$ and base $1/n$ near the origin (so each $\\int_0^1 f_n=1$) but $f_n(x)\\to 0$ for every fixed $x$. The pointwise limit is $f\\equiv 0$ with $\\int_0^1 f=0\\neq 1=\\lim\\int_0^1 f_n$. The mass escapes because the convergence is not uniform."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["uniform-convergence", "limit-interchange", "differentiation"],
+      "scaffold": "bare",
+      "prompt": "Suppose $f_n\\to f$ uniformly on $[a,b]$ with every $f_n$ continuous (hence integrable). Which interchanges are guaranteed?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Continuity is preserved and $\\lim\\int f_n=\\int f$, but $\\lim f_n'=(\\lim f_n)'$ is NOT guaranteed." },
+            { "id": "b", "label": "All three — continuity, integration, and differentiation — follow automatically." },
+            { "id": "c", "label": "None of them; uniform convergence preserves no analytic property." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Uniform convergence of the $f_n$ secures continuity and the integral swap, but differentiation is more delicate and needs a separate hypothesis on the $f_n'$.",
+        "incorrect": [
+          { "match": "b", "message": "Differentiation is the exception. Uniform convergence of $f_n$ does not control $f_n'$; you need $f_n'$ to converge uniformly too." },
+          { "match": "c", "message": "Too pessimistic: continuity and integration *are* preserved under uniform convergence. Only differentiation requires more." },
+          { "match": "*", "message": "Sort the three operations: continuity (yes), integration (yes via $|\\int f_n-\\int f|\\le(b-a)\\sup|f_n-f|$), differentiation (not from uniform convergence of $f_n$ alone)." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Theorem (differentiation, stated carefully).** Uniform convergence of $f_n$ is *not* enough to differentiate term by term. What works: if $f_n'$ converges **uniformly** on $[a,b]$ and $f_n(x_0)$ converges at some single point $x_0$, then $f_n\\to f$ uniformly and $f'(x)=\\lim_n f_n'(x)$."
+        },
+        {
+          "type": "text",
+          "content": "The cautionary example uses your derivative prerequisite: let $f_n(x)=\\dfrac{\\sin(nx)}{\\sqrt{n}}$. Then $|f_n(x)|\\le 1/\\sqrt{n}\\to 0$, so $f_n\\to 0$ uniformly. But $f_n'(x)=\\sqrt{n}\\,\\cos(nx)$, whose amplitude $\\sqrt{n}\\to\\infty$ — the derivatives do not converge at all. Smooth uniform smallness of $f_n$ says nothing about the wild slopes $f_n'$."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["differentiation", "uniform-convergence"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* argument that uniform convergence of $f_n$ lets you swap limit and derivative. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $f_n(x)=\\sin(nx)/\\sqrt{n}$. Since $|f_n(x)|\\le 1/\\sqrt{n}\\to 0$, we have $f_n\\to 0$ uniformly on $\\mathbb{R}$." },
+            { "id": "p2", "label": "The limit $f(x)=0$ is differentiable with $f'(x)=0$." },
+            { "id": "p3", "label": "Because $f_n\\to f$ uniformly, $f_n'\\to f'$ as well, so $\\lim_n f_n'(x)=0$." },
+            { "id": "p4", "label": "But $f_n'(x)=\\sqrt{n}\\,\\cos(nx)$ has amplitude $\\sqrt{n}\\to\\infty$, so $f_n'$ does not converge." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. Uniform convergence of $f_n$ does not transfer to $f_n'$. Steps 1, 2, and 4 are all correct, and together they expose the contradiction: the $f_n'$ blow up even though $f_n\\to 0$ uniformly.",
+        "incorrect": [
+          { "match": "*", "message": "Steps 1, 2, and 4 are each true computations. The unjustified leap is step 3: there is no theorem that uniform convergence of $f_n$ forces $f_n'\\to f'$. You would need $f_n'$ to converge uniformly." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["uniform-convergence", "limit-interchange"],
+      "scaffold": "bare",
+      "prompt": "Match each preservation statement to the reason or extra hypothesis behind it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "A uniform limit of continuous functions is continuous." },
+            { "id": "st2", "label": "$\\lim_n\\int_a^b f_n=\\int_a^b f$." },
+            { "id": "st3", "label": "$\\lim_n f_n'=(\\lim_n f_n)'$ holds only with an extra hypothesis." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Proved by the $3\\varepsilon$ argument, where one $N$ controls the outer error terms for all points." },
+            { "id": "j_b", "label": "Because $\\left|\\int_a^b f_n-\\int_a^b f\\right|\\le (b-a)\\sup_x|f_n-f|\\to 0$." },
+            { "id": "j_c", "label": "It requires $f_n'$ to converge uniformly (plus $f_n$ convergent at one point)." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. Continuity comes from the $3\\varepsilon$ argument, the integral swap from the $(b-a)\\sup$ bound, and differentiation demands uniform convergence of the *derivatives*.",
+        "incorrect": [
+          { "match": "*", "message": "Tie each operation to its engine: continuity $\\to$ $3\\varepsilon$; integration $\\to$ the $(b-a)\\sup|f_n-f|$ estimate; differentiation $\\to$ the extra hypothesis that $f_n'$ converges uniformly." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Uniform convergence is the hypothesis that lets a limit inherit structure. **Continuity** is preserved (the $3\\varepsilon$ argument), and on $[a,b]$ you may **swap limit and integral** since $|\\int f_n-\\int f|\\le(b-a)\\sup|f_n-f|\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "Pointwise convergence preserves neither: $x^n$ on $[0,1]$ yields a discontinuous limit, and spike functions keep $\\int f_n=1$ while $f\\equiv 0$. The common cause is a sup gap that refuses to vanish."
+        },
+        {
+          "type": "text",
+          "content": "**Differentiation** is the careful case: uniform convergence of $f_n$ says nothing about $f_n'$ (witness $\\sin(nx)/\\sqrt n\\to 0$ uniformly while $\\sqrt n\\cos(nx)$ explodes). To differentiate term by term you must assume $f_n'$ converges uniformly and $f_n$ converges at one point."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "If each $f_n$ is continuous on $E$ and $f_n\\to f$ uniformly, what can you conclude about $f$?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$f$ is continuous on $E$." },
+                { "id": "b", "label": "$f$ is differentiable on $E$." },
+                { "id": "c", "label": "Nothing — continuity need not survive any limit." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — the $3\\varepsilon$ argument shows a uniform limit of continuous functions is continuous.",
+            "incorrect": [
+              { "match": "b", "message": "Continuity is guaranteed, but differentiability is not — that needs uniform convergence of the derivatives." },
+              { "match": "c", "message": "Continuity *does* survive uniform limits; the $3\\varepsilon$ argument proves it. It is pointwise limits that can destroy continuity." },
+              { "match": "*", "message": "Use the continuity theorem: continuous $f_n$ plus uniform convergence gives a continuous limit $f$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Why is uniform (not just pointwise) convergence needed for $\\lim_n\\int_a^b f_n=\\int_a^b f$?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Pointwise convergence can let mass escape — e.g. spikes with $\\int f_n=1$ while the pointwise limit is $0$; uniformity bounds $|\\int f_n-\\int f|\\le(b-a)\\sup|f_n-f|$." },
+                { "id": "b", "label": "Because pointwise limits of integrable functions are never integrable." },
+                { "id": "c", "label": "Because integration always commutes with any pointwise limit." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — the sup gap controls the difference of integrals, and the spike example shows pointwise convergence alone lets the area survive while the limit function is $0$.",
+            "incorrect": [
+              { "match": "b", "message": "Pointwise limits can be integrable; the real issue is that $\\int f_n$ need not approach $\\int f$ without uniform control." },
+              { "match": "c", "message": "It does not: the spike functions give $\\int f_n=1$ but $\\int f=0$. Uniform convergence is what makes the swap valid." },
+              { "match": "*", "message": "Recall the bound $|\\int f_n-\\int f|\\le(b-a)\\sup_x|f_n-f|$. Only uniform convergence forces that right side to $0$; spikes show pointwise is not enough." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "To conclude $\\lim_n f_n'=(\\lim_n f_n)'$, which hypothesis is essential?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The derivatives $f_n'$ converge uniformly (and $f_n$ converges at one point)." },
+                { "id": "b", "label": "Only that $f_n\\to f$ uniformly." },
+                { "id": "c", "label": "Only that each $f_n$ is continuous." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — differentiation is the delicate case: you must control the derivatives directly by assuming $f_n'$ converges uniformly.",
+            "incorrect": [
+              { "match": "b", "message": "Uniform convergence of $f_n$ is not enough — $\\sin(nx)/\\sqrt n\\to 0$ uniformly yet $f_n'=\\sqrt n\\cos(nx)$ blows up. You need $f_n'$ to converge uniformly." },
+              { "match": "c", "message": "Continuity of each $f_n$ does not control the limit of the derivatives. The essential hypothesis is uniform convergence of $f_n'$." },
+              { "match": "*", "message": "The differentiation theorem hinges on the *derivatives*: assume $f_n'$ converges uniformly and $f_n$ converges at one point." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "Which counterexample shows that pointwise convergence does NOT preserve continuity?",
+      "tags": ["continuity", "pointwise-convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f_n(x)=x^n$ on $[0,1]$, whose pointwise limit jumps at $x=1$." },
+            { "id": "b", "label": "$f_n(x)=x/n$ on $[0,1]$, which converges uniformly to $0$." },
+            { "id": "c", "label": "$f_n(x)=1/n$, a sequence of constants." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — continuous $f_n=x^n$ converge pointwise to a discontinuous limit, so continuity fails without uniformity.",
+        "incorrect": [
+          { "match": "b", "message": "$x/n$ converges uniformly with continuous limit $0$, so it does not illustrate a failure." },
+          { "match": "c", "message": "Constants converge uniformly to a continuous limit; that is no counterexample. Use $x^n$ on $[0,1]$." },
+          { "match": "*", "message": "You want continuous functions with a discontinuous pointwise limit: $f_n(x)=x^n$ on $[0,1]$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "For $f_n\\to f$ uniformly on $[a,b]$, fill in the bound that proves the integrals converge: $\\left|\\int_a^b f_n-\\int_a^b f\\right|\\le \\underline{\\quad}\\cdot\\sup_x|f_n-f|$.",
+      "tags": ["integration", "uniform-convergence"],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "factor = {{answer}}", "placeholder": "in terms of a and b" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["b-a"] },
+      "feedback": {
+        "correct": "Exactly — the length $b-a$ of the interval times the uniform error bounds the difference of integrals, and it $\\to 0$.",
+        "incorrect": [
+          { "match": "*", "message": "Integrate the bound $|f_n-f|\\le\\sup_x|f_n-f|$ over $[a,b]$: the constant comes out times the interval length $b-a$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "prompt": "True or false: $f_n(x)=\\sin(nx)/\\sqrt n\\to 0$ uniformly, yet $\\lim_n f_n'\\neq(\\lim_n f_n)'$.",
+      "tags": ["differentiation", "uniform-convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "True — $f_n\\to 0$ uniformly but $f_n'=\\sqrt n\\cos(nx)$ fails to converge." },
+            { "id": "b", "label": "False — uniform convergence of $f_n$ always lets you differentiate term by term." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "True. This is the canonical warning that differentiation needs uniform convergence of the derivatives, not just of the functions.",
+        "incorrect": [
+          { "match": "*", "message": "Uniform convergence of $f_n$ does not transfer to $f_n'$: here $f_n\\to 0$ uniformly while $\\sqrt n\\cos(nx)$ blows up, so the statement is true." }
+        ]
+      }
+    }
+  ]
+}

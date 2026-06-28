@@ -1,0 +1,379 @@
+{
+  "lessonId": "lesson-riemann-01",
+  "title": "The Riemann Integral",
+  "tags": ["riemann-integral", "upper-lower-sums", "integrability", "uniform-continuity"],
+  "prerequisites": ["lesson-uniform-continuity-01", "lesson-bounds-01"],
+  "glossary": {
+    "partition": {
+      "term": "Partition",
+      "definition": "A finite set of points $a = x_0 < x_1 < \\cdots < x_n = b$ that splits $[a,b]$ into subintervals, with widths $\\Delta x_i = x_i - x_{i-1}$."
+    },
+    "upper-sum": {
+      "term": "Upper Sum",
+      "definition": "For a partition $P$, $U(P,f) = \\sum_{i=1}^n M_i\\,\\Delta x_i$ where $M_i = \\sup_{[x_{i-1},x_i]} f$. The lower sum uses $m_i = \\inf_{[x_{i-1},x_i]} f$."
+    },
+    "riemann-integrable": {
+      "term": "Riemann Integrable",
+      "definition": "$f$ is Riemann integrable on $[a,b]$ when its upper integral $\\inf_P U(P,f)$ equals its lower integral $\\sup_P L(P,f)$; the common value is $\\int_a^b f$."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall from the bounds lesson that any bounded set of reals has a least upper bound (a **supremum**) and a greatest lower bound (an **infimum**). We are about to put that single fact to work to define area under a curve."
+        },
+        {
+          "type": "text",
+          "content": "The plan: trap the region under $f$ between rectangles that are guaranteed too tall and rectangles guaranteed too short, then squeeze. The sup and inf are exactly the tools that make 'too tall' and 'too short' precise on each piece."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Fix a bounded $f$ on $[a,b]$ and a **partition** $P:\\ a=x_0<x_1<\\cdots<x_n=b$. On each subinterval set $M_i=\\sup_{[x_{i-1},x_i]}f$ and $m_i=\\inf_{[x_{i-1},x_i]}f$. The **upper** and **lower sums** are:"
+        },
+        {
+          "type": "math",
+          "latex": "U(P,f)=\\sum_{i=1}^n M_i\\,\\Delta x_i,\\qquad L(P,f)=\\sum_{i=1}^n m_i\\,\\Delta x_i,\\qquad L(P,f)\\le U(P,f)."
+        },
+        {
+          "type": "text",
+          "content": "Because $m_i\\le M_i$ on every piece, always $L\\le U$. The **upper integral** is $\\overline{\\int_a^b} f=\\inf_P U(P,f)$ and the **lower integral** is $\\underline{\\int_a^b} f=\\sup_P L(P,f)$. We call $f$ **Riemann integrable** exactly when these agree, and the common value is $\\int_a^b f$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Take $f(x)=x$ on $[0,1]$ with $n$ equal subintervals. The upper sum $U(n)=\\tfrac{n+1}{2n}$ overshoots, the lower sum $L(n)=\\tfrac{n-1}{2n}$ undershoots. Drag $n$ upward and watch both readouts close in on $\\tfrac12$ from opposite sides — the gap $U-L=\\tfrac1n$ shrinks to $0$.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "initialValue": 2,
+          "label": "n",
+          "readouts": [
+            { "label": "U(n)", "expression": "(n+1)/(2*n)" },
+            { "label": "L(n)", "expression": "(n-1)/(2*n)" },
+            { "label": "U-L", "expression": "1/n" }
+          ],
+          "markers": [
+            { "value": 1, "label": "coarse" },
+            { "value": 200, "label": "fine" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["riemann-integral", "upper-lower-sums"],
+      "prompt": "Worked example: compute $\\int_0^1 x\\,dx$ from upper and lower sums with $n$ equal subintervals.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Set up the partition.** Use $x_i=i/n$, so each width is $\\Delta x_i=1/n$. Since $f(x)=x$ is increasing, on $[x_{i-1},x_i]$ the supremum is the right end $M_i=i/n$ and the infimum is the left end $m_i=(i-1)/n$."
+        },
+        {
+          "type": "text",
+          "content": "**Upper sum.** Use $\\sum_{i=1}^n i=\\tfrac{n(n+1)}2$:"
+        },
+        {
+          "type": "math",
+          "latex": "U(P,f)=\\sum_{i=1}^n \\frac{i}{n}\\cdot\\frac1n=\\frac{1}{n^2}\\cdot\\frac{n(n+1)}2=\\frac{n+1}{2n}."
+        },
+        {
+          "type": "text",
+          "content": "**Lower sum.** Use $\\sum_{i=1}^n (i-1)=\\tfrac{n(n-1)}2$:"
+        },
+        {
+          "type": "math",
+          "latex": "L(P,f)=\\sum_{i=1}^n \\frac{i-1}{n}\\cdot\\frac1n=\\frac{1}{n^2}\\cdot\\frac{n(n-1)}2=\\frac{n-1}{2n}."
+        },
+        {
+          "type": "text",
+          "content": "**Squeeze.** As $n\\to\\infty$ both $\\tfrac{n+1}{2n}$ and $\\tfrac{n-1}{2n}$ tend to $\\tfrac12$, and their gap $U-L=\\tfrac1n\\to0$. The upper and lower integrals are therefore equal, so $f$ is integrable and $\\int_0^1 x\\,dx=\\tfrac12$."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["riemann-integral"],
+      "scaffold": "worked",
+      "prompt": "Now stretch the same argument to $[0,2]$: what is $\\int_0^2 x\\,dx$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example on $[0,2]$ with $x_i=2i/n$ and $\\Delta x_i=2/n$. The upper sum becomes $\\sum_{i=1}^n \\tfrac{2i}{n}\\cdot\\tfrac2n=\\tfrac{4}{n^2}\\cdot\\tfrac{n(n+1)}2=\\tfrac{2(n+1)}{n}$."
+        },
+        {
+          "type": "math",
+          "latex": "U(n)=\\frac{2(n+1)}{n}\\to 2,\\qquad L(n)=\\frac{2(n-1)}{n}\\to 2."
+        },
+        {
+          "type": "text",
+          "content": "Both squeeze to the same value — that common limit is the integral. (Geometrically it is the triangle of base $2$ and height $2$.)"
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\int_0^2 x\\,dx = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2"] },
+      "feedback": {
+        "correct": "Exactly. Both sums squeeze to $2$, the area of the triangle with base $2$ and height $2$, so $\\int_0^2 x\\,dx=2$.",
+        "incorrect": [
+          { "match": "1/2", "message": "$1/2$ is the value over $[0,1]$. Rescale to $[0,2]$: the triangle now has base $2$ and height $2$." },
+          { "match": "4", "message": "$4$ would be the full square $[0,2]\\times[0,2]$. The region under $y=x$ is only the lower triangle, exactly half of that." },
+          { "match": "*", "message": "Let the upper and lower sums squeeze: $U(n)=\\tfrac{2(n+1)}{n}$ and $L(n)=\\tfrac{2(n-1)}{n}$ both tend to the same value, which is the integral." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Computing both integrals by hand is rarely practical. The **Riemann (Cauchy) criterion** repackages integrability into a single chase: $f$ is integrable on $[a,b]$ if and only if for every $\\varepsilon>0$ there is **one** partition $P$ with"
+        },
+        {
+          "type": "math",
+          "latex": "U(P,f)-L(P,f)<\\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "Note $U(P,f)-L(P,f)=\\sum_i (M_i-m_i)\\,\\Delta x_i$, and $M_i-m_i$ is the **oscillation** of $f$ on the $i$-th piece. Make every oscillation small and the whole gap collapses. This is precisely where uniform continuity earns its keep."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["integrability", "uniform-continuity"],
+      "prompt": "Assemble the proof that a continuous $f$ on $[a,b]$ is integrable. Match each step to the reason that powers it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "Given $\\varepsilon>0$, there is $\\delta>0$ so that $|s-t|<\\delta \\Rightarrow |f(s)-f(t)|<\\tfrac{\\varepsilon}{b-a}$ for all $s,t\\in[a,b]$." },
+            { "id": "st2", "label": "Choose any partition with every width $\\Delta x_i<\\delta$; then each oscillation satisfies $M_i-m_i\\le \\tfrac{\\varepsilon}{b-a}$." },
+            { "id": "st3", "label": "Hence $U(P,f)-L(P,f)=\\sum_i (M_i-m_i)\\Delta x_i<\\varepsilon$, so $f$ is integrable." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "$f$ is continuous on the compact interval $[a,b]$, so it is uniformly continuous: one $\\delta$ works everywhere at once." },
+            { "id": "j_b", "label": "Points of a fine subinterval are within $\\delta$, so their $f$-values differ by less than $\\tfrac{\\varepsilon}{b-a}$, bounding sup minus inf." },
+            { "id": "j_c", "label": "Factor out the common bound: $\\sum_i (M_i-m_i)\\Delta x_i \\le \\tfrac{\\varepsilon}{b-a}\\sum_i \\Delta x_i = \\tfrac{\\varepsilon}{b-a}(b-a)$, and apply the Riemann criterion." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. Uniform continuity gives a single $\\delta$ for the whole interval; fine subintervals force each oscillation below $\\tfrac{\\varepsilon}{b-a}$; summing $(M_i-m_i)\\Delta x_i$ telescopes to under $\\varepsilon$, which is the Riemann criterion.",
+        "incorrect": [
+          { "match": "*", "message": "Trace the engine of each line: a *single* $\\delta$ for all of $[a,b]$ is uniform continuity (compactness); small widths bound each oscillation $M_i-m_i$; then factor the common bound out of the sum to land under $\\varepsilon$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["integrability"],
+      "prompt": "Here is a *flawed* argument that the Dirichlet function $D$ (with $D=1$ on rationals, $D=0$ on irrationals) is integrable on $[0,1]$. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "On any subinterval $[x_{i-1},x_i]$ there are rationals (where $D=1$) and irrationals (where $D=0$)." },
+            { "id": "p2", "label": "So on every subinterval $M_i=\\sup D=1$ and $m_i=\\inf D=0$." },
+            { "id": "p3", "label": "For any partition $P$, $U(P,D)=\\sum 1\\cdot\\Delta x_i=1$ and $L(P,D)=\\sum 0\\cdot\\Delta x_i=0$." },
+            { "id": "p4", "label": "By taking a fine enough partition we can still make $U(P,D)-L(P,D)<\\varepsilon$, so $D$ is integrable." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p4"] },
+      "feedback": {
+        "correct": "Right — step 4 is the flaw. Steps 1–3 correctly show $U=1$ and $L=0$ for *every* partition, so $U-L=1$ no matter how fine $P$ is. Refining never helps, the criterion fails, and $D$ is not integrable: its upper integral is $1$ while its lower integral is $0$.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is true: both rationals and irrationals are dense, so every subinterval contains each kind. The error is later." },
+          { "match": "p2", "message": "Step 2 is correct: with both values present on each piece, the sup is $1$ and the inf is $0$ on every subinterval." },
+          { "match": "p3", "message": "Step 3 is correct arithmetic: $U=\\sum 1\\cdot\\Delta x_i=1$ and $L=0$ for any partition. Look at what is claimed *next*." },
+          { "match": "*", "message": "Since $U-L=1$ for *every* partition, refining can never push the gap below a small $\\varepsilon$. Which step pretends the criterion can be met?" }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The Riemann integral is built by squeezing: upper sums $U(P,f)=\\sum M_i\\Delta x_i$ press down, lower sums $L(P,f)=\\sum m_i\\Delta x_i$ press up, and $f$ is integrable exactly when the upper integral $\\inf_P U$ meets the lower integral $\\sup_P L$."
+        },
+        {
+          "type": "math",
+          "latex": "f\\text{ integrable on }[a,b]\\iff \\forall\\varepsilon>0\\ \\exists P:\\ U(P,f)-L(P,f)<\\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "Two big classes pass: every **continuous** function (uniform continuity on the compact $[a,b]$ shrinks each oscillation $M_i-m_i$ below $\\tfrac{\\varepsilon}{b-a}$) and every **monotone** function. The Dirichlet function fails spectacularly — $U=1$ and $L=0$ for all partitions — showing not everything bounded is integrable."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Riemann criterion says $f$ is integrable on $[a,b]$ if and only if:",
+          "tags": ["integrability"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "for every $\\varepsilon>0$ there is a partition $P$ with $U(P,f)-L(P,f)<\\varepsilon$." },
+                { "id": "b", "label": "$f$ is bounded on $[a,b]$." },
+                { "id": "c", "label": "some partition makes $U(P,f)=0$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Integrability is the ability to drive the upper-minus-lower gap below any $\\varepsilon$ with a single partition.",
+            "incorrect": [
+              { "match": "b", "message": "Boundedness is necessary but not sufficient — the Dirichlet function is bounded yet not integrable. You need the $U-L<\\varepsilon$ gap condition." },
+              { "match": "c", "message": "Upper sums are generally positive; the test is not that $U=0$ but that $U-L$ can be made smaller than any $\\varepsilon$." },
+              { "match": "*", "message": "The criterion is about the *gap*: make $U(P,f)-L(P,f)$ smaller than any prescribed $\\varepsilon$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Why is a continuous function on $[a,b]$ integrable? (Pick the reason that actually does the work.)",
+          "tags": ["integrability", "uniform-continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Continuity on the compact $[a,b]$ is uniform, so a single $\\delta$ makes every oscillation $M_i-m_i$ small at once, forcing $U-L<\\varepsilon$." },
+                { "id": "b", "label": "Continuous functions are differentiable, and derivatives are integrable." },
+                { "id": "c", "label": "Continuous functions are bounded, and every bounded function is integrable." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The crucial upgrade is *uniform* continuity on the compact interval: one $\\delta$ controls all subintervals simultaneously, so refining the partition crushes the total oscillation below $\\varepsilon$.",
+            "incorrect": [
+              { "match": "b", "message": "Continuous functions need not be differentiable (e.g. $|x|$), and that is not the mechanism. The real lever is uniform continuity bounding oscillations." },
+              { "match": "c", "message": "Bounded is not enough — the Dirichlet function is bounded but not integrable. Continuity supplies the extra structure via uniform continuity." },
+              { "match": "*", "message": "Recall the proof: compactness makes continuity *uniform*, giving one $\\delta$ that shrinks every $M_i-m_i$ below $\\tfrac{\\varepsilon}{b-a}$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is the Dirichlet function $D$ NOT integrable on $[0,1]$?",
+          "tags": ["integrability"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Every subinterval contains rationals and irrationals, so $M_i=1$ and $m_i=0$ always, giving $U=1$, $L=0$, and $U-L=1$ for every partition." },
+                { "id": "b", "label": "$D$ is unbounded on $[0,1]$." },
+                { "id": "c", "label": "$D$ has infinitely many discontinuities, and that alone forbids integration." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The oscillation is $1$ on every subinterval, so no partition can shrink $U-L$ below, say, $\\tfrac12$. The upper integral is $1$ and the lower integral is $0$.",
+            "incorrect": [
+              { "match": "b", "message": "$D$ is bounded (its only values are $0$ and $1$). The obstruction is the constant oscillation of $1$, not unboundedness." },
+              { "match": "c", "message": "Some functions with infinitely many discontinuities are still integrable. The decisive fact here is $U-L=1$ for *every* partition." },
+              { "match": "*", "message": "Compute the sums: density forces $M_i=1$, $m_i=0$ on each piece, so $U=1$ and $L=0$ no matter how fine $P$ is." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "In the upper sum $U(P,f)=\\sum_i M_i\\,\\Delta x_i$, what is $M_i$?",
+      "tags": ["upper-lower-sums"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\sup f$ on the $i$-th subinterval $[x_{i-1},x_i]$." },
+            { "id": "b", "label": "$\\inf f$ on the $i$-th subinterval." },
+            { "id": "c", "label": "the value of $f$ at the midpoint of the $i$-th subinterval." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Upper sums use the supremum on each piece (lower sums use the infimum $m_i$).",
+        "incorrect": [
+          { "match": "b", "message": "That is $m_i$, used in the *lower* sum. The upper sum reaches up to the supremum $M_i$." },
+          { "match": "c", "message": "Midpoint values give a Riemann sum, but upper/lower sums use the sup and inf, the tallest and shortest rectangles." },
+          { "match": "*", "message": "Upper means tallest: $M_i$ is the supremum of $f$ on $[x_{i-1},x_i]$." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Besides continuous functions, which class is guaranteed Riemann integrable on $[a,b]$?",
+      "tags": ["integrability"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Monotone functions." },
+            { "id": "b", "label": "Functions that are nowhere continuous." },
+            { "id": "c", "label": "Unbounded functions." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. A bounded monotone function is integrable: telescoping its oscillations gives $U-L\\le (f(b)-f(a))\\max_i\\Delta x_i\\to0$.",
+        "incorrect": [
+          { "match": "b", "message": "Nowhere-continuous functions like Dirichlet's are typically *not* integrable. Monotonicity is the extra class that always works." },
+          { "match": "c", "message": "Unbounded functions are not Riemann integrable on a finite interval at all; the upper/lower sums need $f$ bounded. Monotone is the intended answer." },
+          { "match": "*", "message": "Recall the two headline sufficient conditions: continuous *or* monotone on $[a,b]$." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "Using upper and lower sums, the value of $\\int_0^1 c\\,dx$ for a constant $c>0$ is:",
+      "tags": ["riemann-integral"],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\int_0^1 c\\,dx = {{answer}}", "placeholder": "in terms of c" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. For a constant, $M_i=m_i=c$ on every piece, so $U(P,f)=L(P,f)=c\\sum_i\\Delta x_i=c\\cdot 1=c$.",
+        "incorrect": [
+          { "match": "*", "message": "A constant has $M_i=m_i=c$, so $U=L=c\\sum_i\\Delta x_i=c\\,(1-0)=c$. The rectangle is just base $1$ times height $c$." }
+        ]
+      }
+    }
+  ]
+}

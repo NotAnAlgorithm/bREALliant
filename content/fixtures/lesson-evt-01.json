@@ -1,0 +1,353 @@
+{
+  "lessonId": "lesson-evt-01",
+  "title": "Compactness ⇒ The Extreme Value Theorem",
+  "tags": ["extreme-value-theorem", "compactness", "continuity"],
+  "prerequisites": ["lesson-continuity-01", "lesson-compactness-01"],
+  "glossary": {
+    "evt": {
+      "term": "Extreme Value Theorem",
+      "definition": "If $f$ is continuous on a compact set $K$ (e.g. a closed bounded interval $[a,b]$), then $f$ is bounded on $K$ and attains a maximum and a minimum: there are $x_*,x^*\\in K$ with $f(x_*)\\le f(x)\\le f(x^*)$ for all $x\\in K$."
+    },
+    "compact-image": {
+      "term": "Continuous Image of a Compact Set",
+      "definition": "If $f$ is continuous and $K$ is compact, then $f(K)$ is compact; in $\\mathbb{R}$ this means $f(K)$ is closed and bounded."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Two ideas now combine. From the continuity lesson: $f$ continuous means convergent inputs force convergent outputs. From the compactness lesson: a set is compact iff every open cover has a finite subcover, and in $\\mathbb{R}$ that is exactly closed-and-bounded."
+        },
+        {
+          "type": "text",
+          "content": "Their product is one of the most-used theorems in analysis. On a compact domain a continuous function cannot run off to infinity, and it cannot merely *approach* its supremum without reaching it — it actually **attains** a maximum and a minimum. That is the Extreme Value Theorem (EVT)."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The engine is a single structural fact: **the continuous image of a compact set is compact.** If $f$ is continuous and $K$ is compact, then $f(K)$ is compact, hence (in $\\mathbb{R}$) **closed and bounded**."
+        },
+        {
+          "type": "math",
+          "latex": "K \\text{ compact},\\ f \\text{ continuous} \\implies f(K) \\text{ compact} \\implies f(K)\\text{ is closed and bounded}"
+        },
+        {
+          "type": "text",
+          "content": "Now finish: bounded means $M=\\sup f(K)$ is a finite real number; closed means $M\\in f(K)$ (a set contains its supremum when it is closed). So some $x^*\\in K$ has $f(x^*)=M$ — the maximum is attained. The same argument with $\\inf$ gives the minimum. **Both hypotheses are essential**, as the counterexamples will show."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Picture $f$ continuous on the compact interval $[a,b]$. Its image is the closed bounded interval $[m,M]$. Because the image is *closed*, the top value $M$ is actually hit at some $x^*$ and the bottom $m$ at some $x_*$ — the bracket marks the attained extremes, not just limiting values.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -1,
+          "max": 6,
+          "intervals": [{ "start": 1, "end": 5, "label": "image f([a,b]) = [m, M]" }],
+          "markers": [
+            { "value": 1, "label": "m = min, attained at x_*" },
+            { "value": 5, "label": "M = max, attained at x^*" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["extreme-value-theorem"],
+      "prompt": "Worked example: trace exactly why $\\sup f([a,b])$ is attained.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Setup.** Let $f$ be continuous on the compact interval $K=[a,b]$, and set $M=\\sup f(K)$. We want $x^*\\in K$ with $f(x^*)=M$."
+        },
+        {
+          "type": "text",
+          "content": "**Bounded, so $M$ is finite.** Since $f(K)$ is compact it is bounded, so $M=\\sup f(K)$ is a real number (not $+\\infty$)."
+        },
+        {
+          "type": "text",
+          "content": "**Closed, so $M$ is hit.** By definition of supremum there are values $f(x_n)\\to M$ with $x_n\\in K$. Thus $M$ is a limit point of $f(K)$; because $f(K)$ is *closed*, it contains its limit points, so $M\\in f(K)$."
+        },
+        {
+          "type": "math",
+          "latex": "M=\\sup f(K)\\in f(K) \\implies \\exists\\, x^*\\in K\\ \\text{ with } f(x^*)=M"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** The maximum value $M$ equals $f(x^*)$ for some point $x^*$, so it is genuinely attained. Replacing $\\sup$ by $\\inf$ gives the minimum. The two pillars were *bounded* (gives finite $M$) and *closed* (puts $M$ back in the set)."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["extreme-value-theorem"],
+      "scaffold": "worked",
+      "prompt": "Put the proof of the EVT in logical order. Drag the steps so each follows from the previous.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Follow the worked example's spine: start from the hypotheses, push $K$ through $f$, read off the topological consequences, then land the supremum back inside the image."
+        },
+        {
+          "type": "text",
+          "content": "The chain is: $K$ compact → $f(K)$ compact → $f(K)$ closed and bounded → $M=\\sup f(K)$ is finite and in $f(K)$ → some $x^*$ attains it."
+        }
+      ],
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "d1", "label": "$K$ is compact and $f$ is continuous." },
+            { "id": "d2", "label": "Therefore $f(K)$ is compact." },
+            { "id": "d3", "label": "Hence $f(K)$ is closed and bounded in $\\mathbb{R}$." },
+            { "id": "d4", "label": "So $M=\\sup f(K)$ is finite (bounded) and lies in $f(K)$ (closed)." },
+            { "id": "d5", "label": "Thus some $x^*\\in K$ has $f(x^*)=M$: the maximum is attained." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["d1,d2,d3,d4,d5"] },
+      "feedback": {
+        "correct": "Exactly. Continuity carries compactness to the image; compact in $\\mathbb{R}$ means closed and bounded; bounded makes $M$ finite and closed drags $M$ back into $f(K)$; so $M$ is attained.",
+        "incorrect": [
+          { "match": "*", "message": "Order by dependency: hypotheses (compact + continuous) ⇒ $f(K)$ compact ⇒ closed and bounded ⇒ $\\sup$ finite and in $f(K)$ ⇒ attained. Each step needs the one before it." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["extreme-value-theorem"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* claim: '$f(x)=x$ on $(0,1)$ is continuous, so by the EVT it attains a maximum.' Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "$f(x)=x$ is continuous on $(0,1)$." },
+            { "id": "p2", "label": "$(0,1)$ is a bounded interval, which is enough to apply the EVT." },
+            { "id": "p3", "label": "So $f$ attains a maximum on $(0,1)$." },
+            { "id": "p4", "label": "Hence there is $x^*\\in(0,1)$ with $f(x^*)\\ge x$ for all $x\\in(0,1)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p2"] },
+      "feedback": {
+        "correct": "Right — step 2 is the flaw. The EVT needs a **compact** domain: closed *and* bounded. $(0,1)$ is bounded but **not closed**, so the theorem does not apply. Indeed $\\sup f = 1$ is never attained, since $1\\notin(0,1)$.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is fine — $f(x)=x$ really is continuous. The error is treating bounded-but-open $(0,1)$ as enough for the EVT." },
+          { "match": "p3", "message": "The conclusion is false, but it stems from the bad hypothesis in step 2: $(0,1)$ is not closed, so it is not compact." },
+          { "match": "p4", "message": "This just restates the (false) conclusion. The real defect is invoking the EVT on a non-closed domain in step 2." },
+          { "match": "*", "message": "The EVT requires a compact domain — closed *and* bounded. Find the step that calls merely-bounded $(0,1)$ sufficient." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["extreme-value-theorem"],
+      "scaffold": "bare",
+      "prompt": "Why does $f(x)=1/x$ on $(0,1)$ fail to attain a maximum, and what does this show?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "It is unbounded ($1/x\\to+\\infty$ as $x\\to 0^+$); $(0,1)$ is not compact, so the EVT does not apply — showing compactness is essential." },
+            { "id": "b", "label": "It is discontinuous on $(0,1)$, so the EVT fails." },
+            { "id": "c", "label": "The EVT is simply false in general." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. On the non-compact $(0,1)$, $1/x$ blows up near $0$, so it is not even bounded — no maximum exists. Drop compactness and the EVT's conclusion can fail entirely.",
+        "incorrect": [
+          { "match": "b", "message": "$1/x$ is perfectly continuous on $(0,1)$ (the point $0$ is excluded). The real culprit is that $(0,1)$ is not compact, so $f$ can be unbounded." },
+          { "match": "c", "message": "The EVT is true — but only with its hypotheses. This example merely shows the *compactness* hypothesis cannot be dropped." },
+          { "match": "*", "message": "Check the hypotheses: $f$ is continuous, but $(0,1)$ is not compact. Without compactness $f$ may be unbounded, so no maximum — compactness is essential." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The Extreme Value Theorem rides on one fact: the continuous image of a compact set is compact. So if $f$ is continuous on a compact $K$, then $f(K)$ is closed and bounded — bounded makes $\\sup f(K)$ finite, closed forces that supremum to lie in $f(K)$, so the maximum (and likewise the minimum) is attained."
+        },
+        {
+          "type": "math",
+          "latex": "f\\text{ continuous on compact }K \\implies \\exists\\,x_*,x^*\\in K:\\ f(x_*)\\le f(x)\\le f(x^*)\\ \\forall x\\in K"
+        },
+        {
+          "type": "text",
+          "content": "Compactness is not optional: $f(x)=x$ on $(0,1)$ is bounded but attains neither extreme, and $f(x)=1/x$ on $(0,1)$ is not even bounded. Closed *and* bounded together are what make extremes real. Next we trade compactness for connectedness and obtain the Intermediate Value Theorem."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Extreme Value Theorem states:",
+          "tags": ["extreme-value-theorem"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "A continuous function on a compact set is bounded and attains its maximum and minimum." },
+                { "id": "b", "label": "Every bounded function attains a maximum." },
+                { "id": "c", "label": "A continuous function on any interval attains a maximum." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — continuity *and* a compact (closed and bounded) domain together force the extremes to be attained.",
+            "incorrect": [
+              { "match": "b", "message": "Boundedness alone is not enough: $f(x)=x$ on $(0,1)$ is bounded yet attains no max. You also need continuity and a *compact* domain." },
+              { "match": "c", "message": "Not *any* interval — open or unbounded ones break it ($x$ on $(0,1)$, $1/x$ on $(0,1)$). The interval must be closed and bounded." },
+              { "match": "*", "message": "EVT: continuous + compact domain ⇒ bounded and attains max and min." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "On which domain might a continuous function fail to attain a maximum?",
+          "tags": ["extreme-value-theorem"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The open interval $(0,1)$ — e.g. $f(x)=x$, whose sup $1$ is never reached." },
+                { "id": "b", "label": "The closed interval $[0,1]$." },
+                { "id": "c", "label": "The closed interval $[-3,3]$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. $(0,1)$ is not closed, so it is not compact; $f(x)=x$ has $\\sup=1$ that lies outside the domain and is never attained.",
+            "incorrect": [
+              { "match": "b", "message": "$[0,1]$ is compact, so the EVT guarantees a max is attained. Look for the *non-compact* domain." },
+              { "match": "c", "message": "$[-3,3]$ is closed and bounded — compact — so the EVT applies and a max is attained. The risky domain is the open one." },
+              { "match": "*", "message": "Failure needs a non-compact domain. Among the choices, only $(0,1)$ is not closed." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Which single fact is the real engine behind the EVT?",
+          "tags": ["compactness"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The continuous image of a compact set is compact (hence closed and bounded)." },
+                { "id": "b", "label": "The continuous image of a bounded set is bounded." },
+                { "id": "c", "label": "Every continuous function is differentiable." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Compactness of $f(K)$ delivers both *bounded* (finite sup) and *closed* (sup attained), which is precisely what the EVT needs.",
+            "incorrect": [
+              { "match": "b", "message": "Continuity does *not* generally preserve boundedness of arbitrary bounded sets — $1/x$ maps the bounded $(0,1)$ to an unbounded set. You need *compactness*, which yields closed *and* bounded." },
+              { "match": "c", "message": "False and irrelevant — continuous functions need not be differentiable (e.g. $|x|$). The EVT rests on compactness of the image." },
+              { "match": "*", "message": "The key structural fact is: continuous image of compact is compact, hence closed and bounded." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "The hypotheses of the Extreme Value Theorem are:",
+      "tags": ["extreme-value-theorem"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f$ continuous and the domain compact (closed and bounded)." },
+            { "id": "b", "label": "$f$ merely bounded on the domain." },
+            { "id": "c", "label": "$f$ continuous and the domain open." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — continuity plus a compact domain. Both are needed.",
+        "incorrect": [
+          { "match": "b", "message": "Boundedness of $f$ is a *conclusion*, not a hypothesis, and alone it does not give attainment. You need continuity and a compact domain." },
+          { "match": "c", "message": "Open domains are exactly where attainment can fail ($x$ on $(0,1)$). The domain must be compact: closed and bounded." },
+          { "match": "*", "message": "EVT hypotheses: continuous $f$, compact domain." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "$f(x)=x$ on the half-open interval $(0,1]$ attains its maximum but not its minimum. Why?",
+      "tags": ["extreme-value-theorem"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "The max value $1$ is attained at $x=1\\in(0,1]$, but the inf $0$ is not attained because $0\\notin(0,1]$; the set is not closed, hence not compact." },
+            { "id": "b", "label": "Because $f$ is discontinuous at $0$." },
+            { "id": "c", "label": "Because linear functions never attain a minimum." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $(0,1]$ misses its left endpoint, so it is not compact; the infimum $0$ sits just outside and is approached but never reached, while the max $1$ happens to live inside.",
+        "incorrect": [
+          { "match": "b", "message": "$f(x)=x$ is continuous everywhere; $0$ simply is not in the domain. The issue is the missing endpoint, i.e. non-compactness." },
+          { "match": "c", "message": "Linear functions attain a minimum on any *closed bounded* interval. The minimum fails here only because $(0,1]$ is not closed." },
+          { "match": "*", "message": "$(0,1]$ is not closed (it omits $0$), so it is not compact; the inf $0$ lies outside and is never attained." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "True or false: a continuous function on a compact set $K$ must be bounded.",
+      "tags": ["extreme-value-theorem", "compactness"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "True — $f(K)$ is compact, hence bounded." },
+            { "id": "b", "label": "False — continuity allows arbitrarily large values." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "True. The continuous image $f(K)$ of a compact set is compact, and compact subsets of $\\mathbb{R}$ are bounded.",
+        "incorrect": [
+          { "match": "b", "message": "On a *compact* domain it cannot: $f(K)$ is compact, hence bounded. Unboundedness like $1/x$ requires a *non-compact* domain such as $(0,1)$." },
+          { "match": "*", "message": "Continuous image of compact is compact, hence bounded — so yes, $f$ is bounded on $K$." }
+        ]
+      }
+    }
+  ]
+}

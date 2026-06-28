@@ -1,0 +1,351 @@
+{
+  "lessonId": "lesson-continuity-01",
+  "title": "Continuity",
+  "tags": ["continuity", "epsilon-delta", "sequential-criterion"],
+  "prerequisites": ["lesson-function-limits-01"],
+  "glossary": {
+    "continuous-at-point": {
+      "term": "Continuous at a Point",
+      "definition": "$f$ is continuous at $p$ (a point of its domain) if $\\lim_{x\\to p} f(x) = f(p)$; equivalently, $\\forall\\varepsilon>0\\,\\exists\\delta>0$ with $|x-p|<\\delta \\Rightarrow |f(x)-f(p)|<\\varepsilon$."
+    },
+    "sequential-continuity": {
+      "term": "Sequential Criterion for Continuity",
+      "definition": "$f$ is continuous at $p$ if and only if $f(x_n)\\to f(p)$ for every sequence $x_n\\to p$ in the domain."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Last lesson the limit $\\lim_{x\\to p}f(x)$ deliberately *ignored* the value $f(p)$ — the clause $0<|x-p|$ deleted the point itself. Continuity is exactly the demand that the limit and the value finally agree."
+        },
+        {
+          "type": "text",
+          "content": "Intuitively a continuous function has 'no jumps': as $x$ closes in on $p$, the outputs close in on the one value $f(p)$, with no surprise gap. We will make that precise three equivalent ways and then meet a function that is continuous nowhere."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Definition.** $f$ is **continuous at $p$** (a point of its domain) when $\\lim_{x\\to p} f(x) = f(p)$. Unwinding the ε–δ definition — and noting $x=p$ now causes no trouble — this reads:"
+        },
+        {
+          "type": "math",
+          "latex": "\\forall\\varepsilon>0\\ \\exists\\delta>0\\ \\text{ s.t. } |x-p|<\\delta \\implies |f(x)-f(p)|<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "A third, equivalent form is **sequential**: $f$ is continuous at $p$ iff $f(x_n)\\to f(p)$ for *every* sequence $x_n\\to p$ in the domain. Sums, products, and compositions of continuous functions are continuous, so every polynomial is continuous on $\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Take $f(x)=x^2$ near $p=1$, where $f(p)=1$. Slide $x$ toward $1$ and watch the output gap $|x^2-1|$ collapse to $0$. Continuity at $1$ is exactly this: as the input nears $1$, the output nears the *value* $f(1)=1$ — no leftover jump.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0,
+          "max": 2,
+          "step": 0.01,
+          "initialValue": 1.6,
+          "label": "x",
+          "readouts": [
+            { "label": "f(x) = x^2", "expression": "x^2" },
+            { "label": "output gap |x^2 - 1|", "expression": "abs(x^2 - 1)" }
+          ],
+          "markers": [{ "value": 1, "label": "p = 1, f(p) = 1" }]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["epsilon-delta"],
+      "prompt": "Worked example: prove $f(x)=x^2$ is continuous at a general point $p$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Scratch work.** $|f(x)-f(p)| = |x^2-p^2| = |x-p|\\,|x+p|$. The factor $|x-p|$ is small, but we must also control $|x+p|$. Restrict attention to $|x-p|<1$; then $|x| < |p|+1$, so $|x+p| \\le |x|+|p| < 2|p|+1$."
+        },
+        {
+          "type": "math",
+          "latex": "|x-p|<1 \\implies |x^2-p^2| = |x-p|\\,|x+p| < (2|p|+1)\\,|x-p|"
+        },
+        {
+          "type": "text",
+          "content": "**Proof.** Given $\\varepsilon>0$, choose $\\delta = \\min\\!\\big(1,\\ \\tfrac{\\varepsilon}{2|p|+1}\\big)$. If $|x-p|<\\delta$ then both bounds apply, so $|x^2-p^2| < (2|p|+1)\\cdot \\tfrac{\\varepsilon}{2|p|+1} = \\varepsilon$. Hence $x^2$ is continuous at $p$."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["epsilon-delta"],
+      "scaffold": "worked",
+      "prompt": "Specialize the worked example to $p=3$ for $f(x)=x^2$. After restricting $|x-3|<1$, we bound $|x^2-9| < k\\,|x-3|$. What is the constant $k$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Factor: $|x^2-9| = |x-3|\\,|x+3|$. Restrict $|x-3|<1$, i.e. $2<x<4$."
+        },
+        {
+          "type": "math",
+          "latex": "2<x<4 \\implies 5 < x+3 < 7 \\implies |x+3| < 7"
+        },
+        {
+          "type": "text",
+          "content": "So $|x^2-9| < 7\\,|x-3|$, matching the general bound $2|p|+1 = 2\\cdot 3 + 1$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "k = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["7"] },
+      "feedback": {
+        "correct": "Exactly. With $|x-3|<1$ we get $|x+3|<7$, so $|x^2-9|<7|x-3|$, and $\\delta=\\min(1,\\varepsilon/7)$ finishes the proof.",
+        "incorrect": [
+          { "match": "6", "message": "Close — that is $2|p|=6$, but the bound is $2|p|+1=7$ once you account for the slack from $|x-3|<1$." },
+          { "match": "9", "message": "$9$ is $f(3)$, not the multiplier. The bound comes from $|x+3|$: with $|x-3|<1$, $|x+3|<7$." },
+          { "match": "*", "message": "Use $|x-3|<1\\Rightarrow 2<x<4\\Rightarrow |x+3|<7$. So $|x^2-9| < 7|x-3|$, giving $k=7$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["continuity"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* argument that $f$ is continuous on $[0,1]$. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "The graph of $f$ on $[0,1]$ can be drawn as one unbroken curve, so it looks connected." },
+            { "id": "p2", "label": "A curve that looks connected has no visible breaks." },
+            { "id": "p3", "label": "Therefore $f$ has no breaks, so $f$ is continuous on $[0,1]$." },
+            { "id": "p4", "label": "Continuity at each point means $\\lim_{x\\to p}f(x)=f(p)$ there." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. 'Looks connected when drawn' is not the definition; continuity is the ε–δ / limit condition $\\lim_{x\\to p}f(x)=f(p)$ at *every* point. Functions like $x\\sin(1/x)$ or pathological ones defy eyeballing entirely.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is only an observation about a picture, not the error. The leap happens when a *picture* is treated as a *proof* of continuity." },
+          { "match": "p2", "message": "This is a harmless description of the drawing. The illegitimate move is concluding *continuity* from how the graph looks." },
+          { "match": "p4", "message": "Step 4 correctly states the definition of continuity. The flaw is the earlier step that infers continuity from a connected-looking graph." },
+          { "match": "*", "message": "Continuity is defined by $\\lim_{x\\to p}f(x)=f(p)$, not by whether a sketch looks unbroken. Find the step that equates 'looks connected' with 'continuous'." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["sequential-criterion"],
+      "scaffold": "bare",
+      "prompt": "The Dirichlet function $D(x)=1$ if $x\\in\\mathbb{Q}$ and $D(x)=0$ if $x\\notin\\mathbb{Q}$ is discontinuous at *every* point $p$. Match each step of the sequential argument to its justification.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "a", "label": "Pick rationals $q_n\\to p$; then $D(q_n)\\to 1$." },
+            { "id": "b", "label": "Pick irrationals $r_n\\to p$; then $D(r_n)\\to 0$." },
+            { "id": "c", "label": "Conclude $D$ is discontinuous at $p$." }
+          ],
+          "justifications": [
+            { "id": "j1", "label": "Each $q_n$ is rational so $D(q_n)=1$, a constant sequence with limit $1$; density of $\\mathbb{Q}$ supplies such $q_n$." },
+            { "id": "j2", "label": "Each $r_n$ is irrational so $D(r_n)=0$, a constant sequence with limit $0$; density of the irrationals supplies such $r_n$." },
+            { "id": "j3", "label": "Two sequences $\\to p$ give image limits $1\\ne 0$, so the sequential criterion $f(x_n)\\to f(p)$ cannot hold for both." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a:j1,b:j2,c:j3"] },
+      "feedback": {
+        "correct": "Exactly. Rationals push the images to $1$, irrationals push them to $0$; since both sequences approach $p$ but the image limits disagree, no value $D(p)$ can satisfy the sequential criterion. $D$ is continuous nowhere.",
+        "incorrect": [
+          { "match": "*", "message": "Pair each step with its engine: rationals give constant outputs $1$ (density of $\\mathbb{Q}$), irrationals give constant outputs $0$, and disagreeing image limits break the sequential criterion." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Continuity at $p$ has three equivalent faces: the limit equals the value, $\\lim_{x\\to p}f(x)=f(p)$; the ε–δ condition $|x-p|<\\delta\\Rightarrow|f(x)-f(p)|<\\varepsilon$; and the sequential criterion $x_n\\to p \\Rightarrow f(x_n)\\to f(p)$."
+        },
+        {
+          "type": "math",
+          "latex": "\\text{continuous at }p \\iff \\lim_{x\\to p} f(x)=f(p)"
+        },
+        {
+          "type": "text",
+          "content": "Sums, products, and compositions preserve continuity, so polynomials are continuous everywhere; meanwhile the Dirichlet function is continuous nowhere. A graph 'looking connected' proves nothing — only the definition does. Next we ask whether a single $\\delta$ can work uniformly across the whole domain."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "$f$ is continuous at $p$ means:",
+          "tags": ["continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\lim_{x\\to p} f(x) = f(p)$." },
+                { "id": "b", "label": "$\\lim_{x\\to p} f(x)$ exists (its value is irrelevant)." },
+                { "id": "c", "label": "$f(p)$ is defined." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Continuity demands the limit not only exist but actually equal the value $f(p)$.",
+            "incorrect": [
+              { "match": "b", "message": "Mere existence of the limit allows a *removable* discontinuity, where $\\lim_{x\\to p}f(x)\\ne f(p)$. Continuity needs equality." },
+              { "match": "c", "message": "Being defined at $p$ is necessary but far from sufficient — $D(x)$ is defined everywhere yet continuous nowhere. You need $\\lim = f(p)$." },
+              { "match": "*", "message": "The defining equation is $\\lim_{x\\to p}f(x)=f(p)$: limit exists *and* matches the value." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "If $f$ and $g$ are continuous at $p$ and $f(p)$ lies in the domain of a function $h$ continuous at $f(p)$, then:",
+          "tags": ["continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$h\\circ f$ is continuous at $p$ (composition of continuous functions)." },
+                { "id": "b", "label": "$h\\circ f$ is continuous only if $h=f$." },
+                { "id": "c", "label": "Compositions of continuous functions are generally discontinuous." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Continuity is preserved under composition: $x_n\\to p \\Rightarrow f(x_n)\\to f(p) \\Rightarrow h(f(x_n))\\to h(f(p))$.",
+            "incorrect": [
+              { "match": "b", "message": "No such restriction — any $h$ continuous at $f(p)$ works. The sequential criterion chains through automatically." },
+              { "match": "c", "message": "The opposite is true: composition *preserves* continuity. Feed a convergent image-sequence into the continuous outer function." },
+              { "match": "*", "message": "Use the sequential criterion twice: $f(x_n)\\to f(p)$, then $h$ continuous sends $h(f(x_n))\\to h(f(p))$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "$g(x)=\\dfrac{x^2-1}{x-1}$ for $x\\ne 1$ has $\\lim_{x\\to 1} g(x)=2$, but $g(1)$ is undefined. This discontinuity at $1$ is best called:",
+          "tags": ["continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Removable — defining $g(1)=2$ would make $g$ continuous at $1$." },
+                { "id": "b", "label": "A jump — the left and right limits differ." },
+                { "id": "c", "label": "Essential — no value at $1$ could ever fix it." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The two-sided limit exists and equals $2$; the only defect is the missing/wrong value, so setting $g(1)=2$ removes the discontinuity.",
+            "incorrect": [
+              { "match": "b", "message": "A jump needs the one-sided limits to *disagree*. Here both sides tend to $2$, so the limit exists — it is removable, not a jump." },
+              { "match": "c", "message": "Essential discontinuities have no two-sided limit. Here $\\lim_{x\\to1}g=2$ exists, so the right value at $1$ fixes it — it is removable." },
+              { "match": "*", "message": "The limit exists ($=2$) but the value is missing. A discontinuity curable by assigning the limit value is *removable*." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "Which is an equivalent definition of '$f$ continuous at $p$'?",
+      "tags": ["sequential-criterion"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f(x_n)\\to f(p)$ for every sequence $x_n\\to p$ in the domain." },
+            { "id": "b", "label": "$f(x_n)\\to f(p)$ for some one sequence $x_n\\to p$." },
+            { "id": "c", "label": "$f$ is increasing in a neighborhood of $p$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — the sequential criterion quantifies over *every* sequence approaching $p$.",
+        "incorrect": [
+          { "match": "b", "message": "One sequence is too weak; a different sequence could betray a discontinuity (as for the Dirichlet function). It must hold for all $x_n\\to p$." },
+          { "match": "c", "message": "Monotonicity is unrelated to continuity — continuous functions need not be increasing, and increasing functions can have jumps." },
+          { "match": "*", "message": "Continuity ⇔ for *every* $x_n\\to p$, $f(x_n)\\to f(p)$." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Why is the Dirichlet function discontinuous at every point $p$?",
+      "tags": ["sequential-criterion"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Rationals approaching $p$ give outputs $\\to 1$ while irrationals approaching $p$ give outputs $\\to 0$, so no single value can be the limit." },
+            { "id": "b", "label": "Because it is unbounded near every point." },
+            { "id": "c", "label": "Because $\\mathbb{Q}$ is countable." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Density gives both rational and irrational sequences into $p$; their images split to $1$ and $0$, so the sequential criterion fails everywhere.",
+        "incorrect": [
+          { "match": "b", "message": "$D$ only takes the values $0$ and $1$, so it is bounded. The failure is two approaching sequences with different image limits." },
+          { "match": "c", "message": "Countability of $\\mathbb{Q}$ is irrelevant here. The discontinuity comes from disagreeing image limits along rational vs. irrational sequences." },
+          { "match": "*", "message": "Use the sequential criterion: $q_n\\to p$ gives $1$, $r_n\\to p$ gives $0$; disagreement kills continuity." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "A function $f$ has $\\lim_{x\\to 2^-}f(x)=1$ and $\\lim_{x\\to 2^+}f(x)=4$. The discontinuity at $2$ is:",
+      "tags": ["continuity"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "A jump discontinuity — the one-sided limits exist but differ." },
+            { "id": "b", "label": "Removable — just redefine $f(2)$." },
+            { "id": "c", "label": "Not a discontinuity at all." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Both one-sided limits exist but disagree ($1\\ne 4$), so the two-sided limit fails to exist — the hallmark of a jump.",
+        "incorrect": [
+          { "match": "b", "message": "Removable requires the two-sided limit to *exist*. Here the sides disagree, so no single value at $2$ can patch it." },
+          { "match": "c", "message": "Disagreeing one-sided limits mean $\\lim_{x\\to2}f$ does not exist, so $f$ cannot be continuous at $2$ — it is a jump." },
+          { "match": "*", "message": "One-sided limits exist but differ ⇒ no two-sided limit ⇒ jump discontinuity." }
+        ]
+      }
+    }
+  ]
+}

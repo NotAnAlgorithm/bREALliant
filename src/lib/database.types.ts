@@ -38,6 +38,20 @@ export type StreakRow = {
   last_activity_date: string | null
 }
 
+export type MasteryStateValue = 'seen' | 'practiced' | 'retained' | 'fluent'
+
+export type ConceptMasteryRow = {
+  user_id: string
+  tag: string
+  strength: number
+  state: MasteryStateValue
+  attempts: number
+  correct: number
+  last_seen: string
+  due_at: string | null
+  review_level: number
+}
+
 export type LessonProgressSnapshot = {
   stepIndex: number
   stepId: string
@@ -119,6 +133,32 @@ export type Database = {
           user_id?: string
           current_streak?: number
           last_activity_date?: string | null
+        }
+        Relationships: []
+      }
+      concept_mastery: {
+        Row: ConceptMasteryRow
+        Insert: {
+          user_id: string
+          tag: string
+          strength?: number
+          state?: MasteryStateValue
+          attempts?: number
+          correct?: number
+          last_seen?: string
+          due_at?: string | null
+          review_level?: number
+        }
+        Update: {
+          user_id?: string
+          tag?: string
+          strength?: number
+          state?: MasteryStateValue
+          attempts?: number
+          correct?: number
+          last_seen?: string
+          due_at?: string | null
+          review_level?: number
         }
         Relationships: []
       }

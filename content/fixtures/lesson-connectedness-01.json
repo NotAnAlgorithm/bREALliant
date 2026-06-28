@@ -1,0 +1,317 @@
+{
+  "lessonId": "lesson-connectedness-01",
+  "title": "Connected Sets",
+  "tags": ["connected", "disconnected", "topology"],
+  "prerequisites": ["lesson-open-closed-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Some sets feel like a single unbroken piece — the interval $[0,1]$ — while others fall apart into separated chunks — like $[0,1]\\cup[2,3]$. **Connectedness** makes that intuition precise, using only the open/closed language from the previous lesson."
+        },
+        {
+          "type": "text",
+          "content": "The subtlety is *relative* openness. When we study a set $E$ on its own, the right notion of 'open' is open *within $E$*: a set $A\\subseteq E$ is **relatively open** in $E$ if $A = E\\cap G$ for some open set $G\\subseteq\\mathbb{R}$. We measure the pieces of $E$ from inside $E$."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A **separation** of $E$ is a pair of sets $A,B$ that splits $E$ cleanly into two relatively-open halves:"
+        },
+        {
+          "type": "math",
+          "latex": "A\\ne\\varnothing,\\;\\; B\\ne\\varnothing,\\;\\; A\\cap B=\\varnothing,\\;\\; A\\cup B=E,\\;\\; A,B \\text{ relatively open in } E."
+        },
+        {
+          "type": "text",
+          "content": "A set $E$ is **connected** if **no** separation of $E$ exists; otherwise it is **disconnected**. So to prove disconnectedness you *exhibit* one separation; to prove connectedness you must rule out *all* of them."
+        },
+        {
+          "type": "text",
+          "content": "The crown jewel of this lesson: the connected subsets of $\\mathbb{R}$ are **exactly the intervals** (including rays, single points, and all of $\\mathbb{R}$). Anything with a gap, like $[0,1]\\cup[2,3]$ or $\\mathbb{Q}$, is disconnected."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Picture $E=[0,1]\\cup[2,3]$. The gap $(1,2)$ between the chunks is what lets us separate them: slip an open set over the left chunk and another over the right chunk so neither touches the other. The empty corridor in the middle is precisely what a connected set is *not* allowed to have.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -0.5,
+          "max": 3.5,
+          "intervals": [
+            { "start": 0, "end": 1, "label": "left chunk [0,1]" },
+            { "start": 2, "end": 3, "label": "right chunk [2,3]" }
+          ],
+          "markers": [{ "value": 1.5, "label": "gap: the separation hides here" }]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "worked_example",
+      "tags": ["disconnected"],
+      "prompt": "Let us prove $E=[0,1]\\cup[2,3]$ is disconnected by exhibiting an explicit separation.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Choose two open sets of $\\mathbb{R}$ that straddle the gap:"
+        },
+        {
+          "type": "math",
+          "latex": "G_1=(-1,\\,1.5),\\qquad G_2=(1.5,\\,4)."
+        },
+        {
+          "type": "text",
+          "content": "Define the relatively-open pieces $A=E\\cap G_1$ and $B=E\\cap G_2$. Concretely $A=[0,1]$ and $B=[2,3]$."
+        },
+        {
+          "type": "text",
+          "content": "Check the four conditions: $A=[0,1]\\ne\\varnothing$ and $B=[2,3]\\ne\\varnothing$; they are disjoint since $G_1\\cap G_2=\\varnothing$; and $A\\cup B=[0,1]\\cup[2,3]=E$. Both are relatively open by construction."
+        },
+        {
+          "type": "text",
+          "content": "All conditions hold, so $A,B$ is a separation. Therefore $E$ is disconnected. $\\blacksquare$"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["connected", "topology"],
+      "prompt": "Which of these subsets of $\\mathbb{R}$ is **connected**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$[0,2]$" },
+            { "id": "b", "label": "$[0,1]\\cup[2,3]$" },
+            { "id": "c", "label": "$\\{0\\}\\cup\\{1\\}$" },
+            { "id": "d", "label": "$\\mathbb{Q}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $[0,2]$ is an interval, and the connected subsets of $\\mathbb{R}$ are exactly the intervals — there is no way to split it into two nonempty relatively-open pieces.",
+        "incorrect": [
+          { "match": "b", "message": "This has a gap at $(1,2)$; the open sets $(-1,1.5)$ and $(1.5,4)$ separate it. It is disconnected." },
+          { "match": "c", "message": "A two-point set is disconnected: $\\{0\\}$ and $\\{1\\}$ are each relatively open in it and form a separation." },
+          { "match": "d", "message": "$\\mathbb{Q}$ is disconnected — an irrational cut like $\\sqrt2$ splits it. It is famously *not* an interval." },
+          { "match": "*", "message": "Use the theorem: connected subsets of $\\mathbb{R}$ are precisely the intervals. Which option is a single interval with no gaps?" }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["disconnected", "topology"],
+      "prompt": "Which pair $A,B$ is a valid **separation** of $E=[0,1]\\cup[2,3]$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$A=E\\cap(-1,1.5)=[0,1]$ and $B=E\\cap(1.5,4)=[2,3]$" },
+            { "id": "b", "label": "$A=[0,1]$ and $B=[1,3]$" },
+            { "id": "c", "label": "$A=E$ and $B=\\varnothing$" },
+            { "id": "d", "label": "$A=[0,3]$ and $B=(1,2)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Both pieces are nonempty, disjoint, relatively open in $E$ (cut out by the open sets $(-1,1.5)$ and $(1.5,4)$), and together they cover $E$. That is a separation.",
+        "incorrect": [
+          { "match": "b", "message": "These overlap at $1$, so $A\\cap B\\ne\\varnothing$. A separation requires the two pieces to be disjoint." },
+          { "match": "c", "message": "$B=\\varnothing$ is forbidden: a separation needs *both* pieces nonempty." },
+          { "match": "d", "message": "Neither set here even lives inside $E$ ($[0,3]$ and $(1,2)$ contain points of the gap not in $E$), so this is not a partition of $E$ into relatively-open pieces." },
+          { "match": "*", "message": "You need two nonempty, disjoint, relatively-open pieces whose union is exactly $E$. Slide one open set over each chunk." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["disconnected", "topology"],
+      "prompt": "Arrange the steps into a correct proof that $\\mathbb{Q}$ is **disconnected**.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "a", "label": "Hence $A,B$ form a separation of $\\mathbb{Q}$, so $\\mathbb{Q}$ is disconnected." },
+            { "id": "b", "label": "Let $A=\\{q\\in\\mathbb{Q} : q<\\sqrt2\\}$ and $B=\\{q\\in\\mathbb{Q} : q>\\sqrt2\\}$." },
+            { "id": "c", "label": "$A\\cup B=\\mathbb{Q}$ since no rational equals $\\sqrt2$, and $A\\cap B=\\varnothing$." },
+            { "id": "d", "label": "Both $A,B$ are nonempty (e.g. $1\\in A$, $2\\in B$) and relatively open, being $\\mathbb{Q}\\cap(-\\infty,\\sqrt2)$ and $\\mathbb{Q}\\cap(\\sqrt2,\\infty)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b,d,c,a"] },
+      "feedback": {
+        "correct": "Perfect order: define the two halves at the irrational cut $\\sqrt2$, note they are nonempty and relatively open, verify they are disjoint and cover $\\mathbb{Q}$, then conclude it is a separation. The trick is that the cut point $\\sqrt2$ is missing from $\\mathbb{Q}$, so no rational is stranded between the halves.",
+        "incorrect": [
+          { "match": "*", "message": "A proof first *defines* the pieces, then checks they are nonempty/open, then checks disjoint-and-covering, and only then *concludes*. Start with the definition at $\\sqrt2$ and end with 'disconnected.'" }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A **separation** of $E$ is a pair of nonempty, disjoint, relatively-open sets whose union is $E$. A set is **connected** when no separation exists, and **disconnected** when one does."
+        },
+        {
+          "type": "text",
+          "content": "To show a set is disconnected, *exhibit* one separation; to show it is connected, *rule out all* separations."
+        },
+        {
+          "type": "math",
+          "latex": "E\\subseteq\\mathbb{R} \\text{ is connected} \\iff E \\text{ is an interval}."
+        },
+        {
+          "type": "text",
+          "content": "So $[0,1]\\cup[2,3]$ is disconnected via the gap, and $\\mathbb{Q}$ is disconnected via the irrational cut at $\\sqrt2$ — neither is an interval. The intervals, and only the intervals, hold together as one piece."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "A set $E$ is **connected** when:",
+          "tags": ["connected"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "There is no separation of $E$ into two nonempty, disjoint, relatively-open sets covering $E$." },
+                { "id": "b", "label": "$E$ is bounded." },
+                { "id": "c", "label": "$E$ can be written as a union of two open sets." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Yes — connectedness is the *non-existence* of any separation.",
+            "incorrect": [
+              { "match": "b", "message": "Boundedness is irrelevant: $\\mathbb{R}$ is connected and unbounded, while bounded $[0,1]\\cup[2,3]$ is disconnected." },
+              { "match": "c", "message": "Almost everything is a union of two open sets; that is not the issue. Connectedness forbids splitting $E$ into two *nonempty disjoint relatively-open* pieces." },
+              { "match": "*", "message": "Connected $=$ no separation exists. A separation is a clean split into two nonempty disjoint relatively-open halves." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "The connected subsets of $\\mathbb{R}$ are exactly:",
+          "tags": ["connected", "topology"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "the intervals" },
+                { "id": "b", "label": "the open sets" },
+                { "id": "c", "label": "the bounded sets" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — a subset of $\\mathbb{R}$ is connected if and only if it is an interval.",
+            "incorrect": [
+              { "match": "b", "message": "Open does not mean connected: $(0,1)\\cup(2,3)$ is open yet disconnected. The characterization is 'interval.'" },
+              { "match": "c", "message": "Bounded does not mean connected ($[0,1]\\cup[2,3]$ is bounded but disconnected), and unbounded intervals like $\\mathbb{R}$ are connected." },
+              { "match": "*", "message": "The theorem says: connected subsets of $\\mathbb{R}$ are precisely the intervals." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is $\\mathbb{Q}$ disconnected?",
+          "tags": ["disconnected", "topology"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "An irrational cut, e.g. at $\\sqrt2$, splits $\\mathbb{Q}$ into $\\{q<\\sqrt2\\}$ and $\\{q>\\sqrt2\\}$ — two nonempty, disjoint, relatively-open sets covering $\\mathbb{Q}$." },
+                { "id": "b", "label": "$\\mathbb{Q}$ is countable." },
+                { "id": "c", "label": "$\\mathbb{Q}$ is dense in $\\mathbb{R}$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Because $\\sqrt2\\notin\\mathbb{Q}$, the cut leaves no rational stranded between the halves, so they form a genuine separation.",
+            "incorrect": [
+              { "match": "b", "message": "Countability is not the reason. The separation comes from cutting at an irrational point that $\\mathbb{Q}$ is missing." },
+              { "match": "c", "message": "Density is true but not the cause; in fact a *dense* set can still be disconnected. The separation is the irrational cut at $\\sqrt2$." },
+              { "match": "*", "message": "Find a point not in $\\mathbb{Q}$ to cut at — an irrational like $\\sqrt2$ — and the two rational halves form a separation." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "Which set is **disconnected**?",
+      "tags": ["disconnected"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$(0,1)\\cup(2,3)$" },
+            { "id": "b", "label": "$[0,5]$" },
+            { "id": "c", "label": "$(-\\infty,\\infty)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes — the gap $[1,2]$ lets the two open intervals separate it.",
+        "incorrect": [
+          { "match": "b", "message": "$[0,5]$ is a single interval, hence connected." },
+          { "match": "c", "message": "$\\mathbb{R}=(-\\infty,\\infty)$ is an interval (the whole line), so it is connected." },
+          { "match": "*", "message": "Look for the set with a gap between two pieces — that is the disconnected one." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "To prove a set $E$ is **disconnected**, it suffices to:",
+      "tags": ["disconnected"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "exhibit a single separation of $E$" },
+            { "id": "b", "label": "show $E$ is unbounded" },
+            { "id": "c", "label": "rule out every possible separation" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — one explicit separation proves disconnectedness.",
+        "incorrect": [
+          { "match": "b", "message": "Unboundedness is unrelated: $\\mathbb{R}$ is unbounded yet connected." },
+          { "match": "c", "message": "Ruling out *all* separations proves the set is *connected* — the opposite goal." },
+          { "match": "*", "message": "Disconnected just needs *one* witnessing separation; connected needs you to exclude them all." }
+        ]
+      }
+    }
+  ]
+}

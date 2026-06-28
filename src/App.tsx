@@ -8,6 +8,8 @@ import { Auth } from './pages/Auth'
 import { Account } from './pages/Account'
 import { Home } from './pages/Home'
 import { Lesson } from './pages/Lesson'
+import { Practice } from './pages/Practice'
+import { Review } from './pages/Review'
 
 export default function App() {
   return (
@@ -22,6 +24,22 @@ export default function App() {
                 element={
                   <RequireAuth>
                     <Lesson />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="review"
+                element={
+                  <RequireAuth>
+                    <Review />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="practice"
+                element={
+                  <RequireAuth>
+                    <Practice />
                   </RequireAuth>
                 }
               />

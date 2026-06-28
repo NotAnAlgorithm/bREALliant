@@ -1,0 +1,399 @@
+{
+  "lessonId": "lesson-abs-conv-01",
+  "title": "Absolute vs Conditional Convergence",
+  "tags": ["absolute-convergence", "conditional-convergence", "alternating-series", "rearrangement"],
+  "prerequisites": ["lesson-series-tests-01"],
+  "glossary": {
+    "absolute-convergence": {
+      "term": "absolute convergence",
+      "definition": "$\\sum a_n$ converges absolutely when $\\sum |a_n|$ converges. Absolute convergence implies convergence."
+    },
+    "conditional-convergence": {
+      "term": "conditional convergence",
+      "definition": "$\\sum a_n$ converges conditionally when $\\sum a_n$ converges but $\\sum |a_n|$ diverges."
+    },
+    "alternating-series": {
+      "term": "alternating series test",
+      "definition": "If $b_n \\downarrow 0$ monotonically, then $\\sum (-1)^n b_n$ converges, with truncation error bounded by the first omitted term."
+    },
+    "rearrangement": {
+      "term": "Riemann rearrangement theorem",
+      "definition": "A conditionally convergent series can be rearranged to sum to any real value (or $\\pm\\infty$); an absolutely convergent series has a rearrangement-invariant sum."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The comparison, ratio, and root tests all measured the *sizes* $|a_n|$ — they really study $\\sum |a_n|$. So let's promote that idea to a definition for series whose terms may be negative."
+        },
+        {
+          "type": "text",
+          "content": "We say $\\sum a_n$ **converges absolutely** if $\\sum |a_n|$ converges. The key theorem: absolute convergence is the *stronger* notion."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum |a_n| \\text{ converges} \\;\\Longrightarrow\\; \\sum a_n \\text{ converges}"
+        },
+        {
+          "type": "text",
+          "content": "Why? The partial sums of $\\sum a_n$ are Cauchy because $\\big|\\sum_{k=n}^{m} a_k\\big| \\le \\sum_{k=n}^{m} |a_k|$, and the right side is small once $\\sum|a_n|$ is Cauchy. So controlling sizes controls signs."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The converse fails, and the gap has a name. A series **converges conditionally** if $\\sum a_n$ converges but $\\sum |a_n|$ **diverges** — convergence that depends on cancellation between $+$ and $-$ terms."
+        },
+        {
+          "type": "text",
+          "content": "The flagship example is the **alternating harmonic series**:"
+        },
+        {
+          "type": "math",
+          "latex": "\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = 1 - \\frac12 + \\frac13 - \\frac14 + \\cdots = \\ln 2"
+        },
+        {
+          "type": "text",
+          "content": "It converges (to $\\ln 2$), yet its absolute version is the harmonic series $\\sum \\tfrac1n$, which diverges. So it converges *conditionally*, surviving only on cancellation."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "How do we know an alternating series converges at all? The **alternating series test** (Leibniz): if the magnitudes $b_n$ decrease monotonically to $0$, the alternating series converges."
+        },
+        {
+          "type": "math",
+          "latex": "b_n \\downarrow 0 \\;\\Longrightarrow\\; \\sum_{n=1}^{\\infty} (-1)^{n+1} b_n \\text{ converges}, \\qquad \\Big| S - s_N \\Big| \\le b_{N+1}"
+        },
+        {
+          "type": "text",
+          "content": "Geometrically, the partial sums hop back and forth in ever-shorter steps, trapping the limit between consecutive sums. A bonus: the truncation error is bounded by the **first omitted term** $b_{N+1}$."
+        }
+      ]
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["alternating-series", "conditional-convergence"],
+      "prompt": "Worked example: show the alternating harmonic series $\\sum_{n=1}^{\\infty} \\dfrac{(-1)^{n+1}}{n}$ converges, and classify it.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Check the AST hypotheses** with $b_n = \\tfrac1n$: it is positive, decreasing ($\\tfrac{1}{n+1} < \\tfrac1n$), and $b_n \\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "**Apply the test.** All three conditions hold, so by the alternating series test the series **converges**."
+        },
+        {
+          "type": "text",
+          "content": "**Classify.** Its absolute version is $\\sum \\tfrac1n$, the harmonic series, which **diverges**. Converging while the absolute series diverges is exactly **conditional convergence**."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["alternating-series"],
+      "scaffold": "worked",
+      "prompt": "Apply the alternating series test to $\\sum_{n=1}^{\\infty} \\dfrac{(-1)^{n+1}}{\\sqrt{n}}$. Which statement is correct?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example: identify $b_n$, then check positive, decreasing, and $\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "Here $b_n = \\dfrac{1}{\\sqrt{n}}$ is positive, decreasing, and tends to $0$ — the three AST hypotheses."
+        }
+      ],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$b_n = 1/\\sqrt{n}$ decreases to $0$, so the alternating series test gives convergence." },
+            { "id": "b", "label": "It diverges, because $1/\\sqrt{n} \\to 0$ too slowly." },
+            { "id": "c", "label": "The test does not apply, because the terms are not alternating." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $1/\\sqrt{n}$ is positive, decreasing, and $\\to 0$, so the alternating series test guarantees convergence. (Its absolute version $\\sum 1/\\sqrt{n}$ is a $p$-series with $p=\\tfrac12$, which diverges — so this is conditional.)",
+        "incorrect": [
+          { "match": "b", "message": "Speed does not matter for the alternating series test — only that $b_n$ decreases monotonically to $0$, which $1/\\sqrt{n}$ does. The slow shrinking only affects the *absolute* series." },
+          { "match": "c", "message": "The factor $(-1)^{n+1}$ flips sign each term, so the series *is* alternating. Apply the AST to $b_n = 1/\\sqrt{n}$." },
+          { "match": "*", "message": "Check the AST hypotheses on $b_n = 1/\\sqrt{n}$: positive, decreasing, and $\\to 0$. All hold, so the series converges." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Every series with terms tending to $0$ now falls into one of three buckets. Test in order: is $\\sum|a_n|$ convergent (**absolute**)? If not, does $\\sum a_n$ still converge (**conditional**)? If neither, it **diverges**."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum \\frac{(-1)^n}{n^2}\\ \\text{(absolute)}, \\qquad \\sum \\frac{(-1)^n}{n}\\ \\text{(conditional)}, \\qquad \\sum (-1)^n\\ \\text{(divergent)}"
+        },
+        {
+          "type": "text",
+          "content": "The third diverges by the nth-term test: $(-1)^n \\not\\to 0$, so cancellation cannot rescue it."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["absolute-convergence", "conditional-convergence"],
+      "scaffold": "bare",
+      "prompt": "Match each series to its correct classification.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{(-1)^n}{n^2}$" },
+            { "id": "st2", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{(-1)^n}{n}$" },
+            { "id": "st3", "label": "$\\sum_{n=1}^{\\infty} (-1)^n$" }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Absolutely convergent: $\\sum 1/n^2$ converges ($p=2$)." },
+            { "id": "j_b", "label": "Conditionally convergent: converges by the AST, but $\\sum 1/n$ diverges." },
+            { "id": "j_c", "label": "Divergent: the terms do not tend to $0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. $\\sum (-1)^n/n^2$ is absolute (its absolute series is the convergent $p$-series $p=2$); $\\sum(-1)^n/n$ is conditional (AST convergent, but $\\sum 1/n$ diverges); $\\sum (-1)^n$ diverges by the nth-term test.",
+        "incorrect": [
+          { "match": "*", "message": "For each, first test $\\sum|a_n|$: convergent means absolute. If $\\sum|a_n|$ diverges but the AST still applies, it is conditional. If terms don't reach $0$, it diverges." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Why insist on the *absolute* vs *conditional* distinction? Because of one of the most startling theorems in analysis — **Riemann's rearrangement theorem**."
+        },
+        {
+          "type": "text",
+          "content": "If $\\sum a_n$ converges **conditionally**, then for *any* target $L \\in \\mathbb{R}$ (or $\\pm\\infty$) you can reorder the very same terms so the new series sums to $L$. The sum is not a property of the terms — it depends on their *order*."
+        },
+        {
+          "type": "text",
+          "content": "The trick: the positive terms alone sum to $+\\infty$ and the negative terms to $-\\infty$. Greedily grab positives until you pass $L$, then negatives until you drop below, and repeat. By contrast, an **absolutely** convergent series sums to the same value under *every* rearrangement — order does not matter."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["rearrangement"],
+      "scaffold": "bare",
+      "prompt": "The alternating harmonic series $\\sum \\dfrac{(-1)^{n+1}}{n} = \\ln 2$ converges conditionally. According to Riemann's theorem, what is possible by rearranging its terms?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "It can be rearranged to sum to any real number you like (or to $\\pm\\infty$)." },
+            { "id": "b", "label": "Every rearrangement still sums to $\\ln 2$, since the terms are unchanged." },
+            { "id": "c", "label": "No rearrangement can converge, because reordering destroys convergence." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — that is exactly the Riemann rearrangement theorem. Because the series is only *conditionally* convergent, reordering can steer the sum to any target at all.",
+        "incorrect": [
+          { "match": "b", "message": "Rearrangement-invariance is the privilege of *absolutely* convergent series. The alternating harmonic series is only conditionally convergent, so its sum is *not* order-independent." },
+          { "match": "c", "message": "Many rearrangements still converge — to different values. Riemann's theorem says you can hit any target, not that convergence is destroyed." },
+          { "match": "*", "message": "Recall the rearrangement theorem: a conditionally convergent series can be reordered to sum to any prescribed real value or $\\pm\\infty$." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Absolute convergence** ($\\sum|a_n|$ converges) implies convergence and is the robust, well-behaved notion. **Conditional convergence** ($\\sum a_n$ converges but $\\sum|a_n|$ diverges) survives only on cancellation; the alternating harmonic series is the model."
+        },
+        {
+          "type": "text",
+          "content": "The **alternating series test** ($b_n \\downarrow 0$) certifies convergence and bounds the error by the first omitted term. Classify any series by testing $\\sum|a_n|$ first, then the AST."
+        },
+        {
+          "type": "text",
+          "content": "**Riemann's rearrangement theorem** is the punchline: conditionally convergent sums depend on order and can be sent anywhere, while absolutely convergent sums are order-invariant. Absolute convergence is what lets us treat infinite sums like finite ones."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["conditional-convergence"],
+          "prompt": "\"$\\sum a_n$ converges conditionally\" means exactly:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\sum a_n$ converges, but $\\sum |a_n|$ diverges." },
+                { "id": "b", "label": "Both $\\sum a_n$ and $\\sum |a_n|$ converge." },
+                { "id": "c", "label": "$\\sum a_n$ diverges, but $\\sum |a_n|$ converges." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — convergence that the absolute series does not share. The alternating harmonic series is the canonical case.",
+            "incorrect": [
+              { "match": "b", "message": "That is *absolute* convergence. Conditional convergence requires $\\sum|a_n|$ to **diverge** while $\\sum a_n$ converges." },
+              { "match": "c", "message": "Impossible: if $\\sum|a_n|$ converges then $\\sum a_n$ converges (absolute $\\Rightarrow$ convergent). Conditional means the absolute series *diverges*." },
+              { "match": "*", "message": "Conditional convergence: $\\sum a_n$ converges while $\\sum|a_n|$ diverges." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["alternating-series"],
+          "prompt": "The alternating series test concludes $\\sum (-1)^{n+1} b_n$ converges provided the $b_n$ satisfy which hypotheses?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$b_n$ is positive, decreases monotonically, and $b_n \\to 0$." },
+                { "id": "b", "label": "$b_n \\to 0$ alone, with no monotonicity needed." },
+                { "id": "c", "label": "$\\sum b_n$ converges." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — monotone decrease *and* limit $0$ together let the partial sums trap the limit in shrinking steps.",
+            "incorrect": [
+              { "match": "b", "message": "Monotonicity is essential: without it, an alternating series with $b_n \\to 0$ can fail to converge. The AST requires $b_n \\downarrow 0$." },
+              { "match": "c", "message": "If $\\sum b_n$ converged we would have absolute convergence already. The AST asks only that $b_n$ decrease monotonically to $0$." },
+              { "match": "*", "message": "AST hypotheses: $b_n$ positive, monotonically decreasing, and tending to $0$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["rearrangement", "absolute-convergence"],
+          "prompt": "Why can a conditionally convergent series be rearranged to any sum, while an absolutely convergent one cannot? (Self-explanation.)",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Because in the conditional case the positive and negative parts each diverge ($\\pm\\infty$), giving room to steer the sum; absolute convergence makes both parts finite, pinning the sum." },
+                { "id": "b", "label": "Because rearranging always changes which terms are added." },
+                { "id": "c", "label": "Because absolutely convergent series have no negative terms." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Conditional convergence means the positive terms sum to $+\\infty$ and the negatives to $-\\infty$; you can grab from each pile to hit any target. Absolute convergence makes both piles finite, so every reordering lands on the same total.",
+            "incorrect": [
+              { "match": "b", "message": "Rearranging keeps the same multiset of terms — only their order changes. The real reason is whether the positive and negative parts are finite or infinite." },
+              { "match": "c", "message": "Absolutely convergent series can certainly have negative terms. What matters is that $\\sum|a_n|<\\infty$ makes both the positive and negative parts finite." },
+              { "match": "*", "message": "Compare the positive/negative parts: conditional $\\Rightarrow$ each part is infinite (steerable); absolute $\\Rightarrow$ each part is finite (sum is fixed)." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["absolute-convergence", "conditional-convergence"],
+      "prompt": "Classify $\\sum_{n=1}^{\\infty} \\dfrac{(-1)^n}{n^2}$.",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Absolutely convergent." },
+            { "id": "b", "label": "Conditionally convergent." },
+            { "id": "c", "label": "Divergent." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $\\sum 1/n^2$ converges ($p=2>1$), so the series converges absolutely.",
+        "incorrect": [
+          { "match": "*", "message": "Test the absolute series: $\\sum 1/n^2$ is a convergent $p$-series, so the original converges absolutely." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["rearrangement"],
+      "prompt": "An absolutely convergent series is rearranged. Its sum:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Stays the same — absolutely convergent sums are rearrangement-invariant." },
+            { "id": "b", "label": "Can be changed to any value, by Riemann's theorem." },
+            { "id": "c", "label": "Becomes undefined." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — only *conditionally* convergent series are at the mercy of rearrangement. Absolute convergence pins the sum.",
+        "incorrect": [
+          { "match": "*", "message": "Riemann's theorem applies to *conditionally* convergent series. Absolutely convergent series sum to the same value under every rearrangement." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["alternating-series"],
+      "prompt": "Estimating $\\sum_{n=1}^{\\infty} \\dfrac{(-1)^{n+1}}{n}$ by its first $N$ terms, the truncation error is at most which quantity?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\dfrac{1}{N+1}$, the first omitted term." },
+            { "id": "b", "label": "$\\dfrac{1}{N}$, the last included term." },
+            { "id": "c", "label": "$0$ — partial sums are exact." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — for an alternating series satisfying the AST, the error is bounded by the first omitted term $b_{N+1} = \\tfrac{1}{N+1}$.",
+        "incorrect": [
+          { "match": "*", "message": "The AST error bound is the *first omitted* term, $b_{N+1} = \\tfrac{1}{N+1}$, not the last included one." }
+        ]
+      }
+    }
+  ]
+}

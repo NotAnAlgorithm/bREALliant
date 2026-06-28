@@ -35,6 +35,39 @@ export function computeLessonStatus(
   return 'unlocked'
 }
 
+/**
+ * Lessons whose every tag has reached `retained` mastery. These satisfy
+ * prerequisites the same way a completion does — the mastery model, not the
+ * completion flag, becomes the gate (F1.4). Completion remains a compatibility
+ * path (see `effectiveSatisfiedIds`) so nothing soft-locks before spaced review
+ * (F2) makes `retained` routinely refreshable.
+ */
+export function retainedLessonIds(
+  lessons: ReadonlyArray<Pick<Lesson, 'lessonId' | 'tags'>>,
+  retainedTags: ReadonlySet<string>,
+): Set<string> {
+  return new Set(
+    lessons
+      .filter(
+        (lesson) =>
+          lesson.tags.length > 0 &&
+          lesson.tags.every((tag) => retainedTags.has(tag)),
+      )
+      .map((lesson) => lesson.lessonId),
+  )
+}
+
+/**
+ * The set used for unlock decisions: a prerequisite is satisfied if its lesson
+ * is completed OR all its concepts are retained.
+ */
+export function effectiveSatisfiedIds(
+  completedIds: ReadonlySet<string>,
+  retainedIds: ReadonlySet<string>,
+): Set<string> {
+  return new Set([...completedIds, ...retainedIds])
+}
+
 export function computeCourseStatuses(
   lessons: ReadonlyArray<LessonLike>,
   progress: CourseProgress,

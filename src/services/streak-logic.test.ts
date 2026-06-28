@@ -1,6 +1,22 @@
 import { describe, expect, it } from 'vitest'
 
-import { computeNextStreak, previousUtcDateString } from './streak-logic'
+import {
+  computeNextStreak,
+  previousUtcDateString,
+  toUtcDateString,
+} from './streak-logic'
+
+describe('date helpers', () => {
+  it('formats a date as a UTC YYYY-MM-DD string', () => {
+    expect(toUtcDateString(new Date('2026-06-22T23:59:59.000Z'))).toBe(
+      '2026-06-22',
+    )
+  })
+
+  it('steps back across a month boundary', () => {
+    expect(previousUtcDateString('2026-07-01')).toBe('2026-06-30')
+  })
+})
 
 describe('computeNextStreak', () => {
   it('starts streak on first activity', () => {

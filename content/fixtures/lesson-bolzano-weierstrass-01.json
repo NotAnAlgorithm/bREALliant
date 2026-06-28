@@ -1,0 +1,347 @@
+{
+  "lessonId": "lesson-bolzano-weierstrass-01",
+  "title": "The Bolzano–Weierstrass Theorem",
+  "tags": ["bolzano-weierstrass", "compactness", "subsequence"],
+  "prerequisites": ["lesson-monotone-01", "lesson-subsequences-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Boundedness alone does not guarantee convergence: $a_n=(-1)^n$ stays trapped in $[-1,1]$ yet never settles. So a bounded sequence can wander forever. But it cannot wander *freely* — there is only so much room inside a finite interval, and infinitely many terms must pile up somewhere."
+        },
+        {
+          "type": "text",
+          "content": "The **Bolzano–Weierstrass theorem** turns that crowding intuition into a theorem: even a wild bounded sequence always hides a well-behaved, convergent subsequence inside it. From the divergent $(-1)^n$ we can still pull out $1,1,1,\\dots \\to 1$."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Bolzano–Weierstrass.** Every bounded sequence in $\\mathbb{R}$ has a convergent subsequence."
+        },
+        {
+          "type": "math",
+          "latex": "(a_n)\\ \\text{bounded in } \\mathbb{R} \\quad \\Longrightarrow \\quad \\exists\\, n_1<n_2<\\cdots \\ \\text{ with } a_{n_k}\\to L \\in \\mathbb{R}"
+        },
+        {
+          "type": "text",
+          "content": "There are two standard routes to the proof. **Route A (monotone subsequence):** every real sequence has a monotone subsequence; if the original is bounded, that monotone subsequence is bounded and hence converges by the Monotone Convergence Theorem. **Route B (bisection):** trap the sequence in an interval, repeatedly cut it in half keeping a half with infinitely many terms, and let the shrinking intervals pin down a limit. We'll work through Route B in detail."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Picture a bounded sequence scattered across $[0,1]$. No matter how it jumps around, infinitely many terms must crowd into some sub-region. Bisection chases that crowd: split $[0,1]$ into $[0,\\tfrac12]$ and $[\\tfrac12,1]$, and at least one half still holds infinitely many terms. Repeat, and the marker zooms in on a cluster point $L$.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 1,
+          "intervals": [
+            { "start": 0, "end": 0.5, "label": "left half" },
+            { "start": 0.5, "end": 1, "label": "right half (keep the crowded one)" }
+          ],
+          "markers": [{ "value": 0.5, "label": "bisection point" }]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["bolzano-weierstrass", "compactness"],
+      "prompt": "Worked example: run the bisection proof on a bounded sequence trapped in $[a,b]$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Setup.** Suppose every term satisfies $a \\le a_n \\le b$. Write $I_0=[a,b]$, an interval of length $b-a$ containing *all* (hence infinitely many) terms."
+        },
+        {
+          "type": "text",
+          "content": "**Bisection step.** Cut $I_0$ at its midpoint into two closed halves. Their union is all of $I_0$, which contains infinitely many terms, so **at least one half contains infinitely many terms.** Call such a half $I_1$; its length is $(b-a)/2$."
+        },
+        {
+          "type": "text",
+          "content": "**Iterate.** Repeating produces nested closed intervals $I_0 \\supseteq I_1 \\supseteq I_2 \\supseteq \\cdots$, each $I_k$ holding infinitely many terms, with"
+        },
+        {
+          "type": "math",
+          "latex": "|I_k| = \\frac{b-a}{2^k} \\longrightarrow 0 \\quad \\text{as } k\\to\\infty."
+        },
+        {
+          "type": "text",
+          "content": "**Choose the subsequence.** Because each $I_k$ contains infinitely many terms, pick indices greedily: choose $n_1$ with $a_{n_1}\\in I_1$, then (since $I_2$ still has infinitely many terms) choose $n_2 > n_1$ with $a_{n_2}\\in I_2$, and so on, always finding a fresh index larger than the last. This keeps $n_1<n_2<\\cdots$ strictly increasing."
+        },
+        {
+          "type": "text",
+          "content": "**Conclude.** By the Nested Interval Property, $\\bigcap_k I_k = \\{L\\}$ for a single point $L$. Since $a_{n_k}$ and $L$ both lie in $I_k$, we get $|a_{n_k}-L|\\le |I_k|=(b-a)/2^k \\to 0$. Hence $a_{n_k}\\to L$. The bounded sequence has a convergent subsequence."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["bolzano-weierstrass", "compactness"],
+      "scaffold": "worked",
+      "prompt": "Put the bisection proof in logical order. Arrange the five steps so each follows from the ones before it.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Start by trapping the terms in a bounded interval. Then bisect and keep a half with infinitely many terms; iterate to get nested intervals whose lengths shrink to $0$."
+        },
+        {
+          "type": "text",
+          "content": "Only after the nested intervals exist can you greedily pick strictly increasing indices, and only then does the nested-interval point give the limit."
+        }
+      ],
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "i3", "label": "Iterate the bisection to get nested intervals $I_0\\supseteq I_1\\supseteq I_2\\supseteq\\cdots$ with $|I_k|=(b-a)/2^k\\to 0$, each containing infinitely many terms." },
+            { "id": "i5", "label": "Since $a_{n_k}, L \\in I_k$ and $|I_k|\\to 0$, conclude $|a_{n_k}-L|\\to 0$, so $a_{n_k}\\to L$." },
+            { "id": "i1", "label": "All terms lie in a bounded closed interval $I_0=[a,b]$." },
+            { "id": "i4", "label": "Greedily pick indices $n_1<n_2<\\cdots$ with $a_{n_k}\\in I_k$ (possible since each $I_k$ has infinitely many terms)." },
+            { "id": "i2", "label": "Bisect the current interval; at least one closed half contains infinitely many terms — keep it." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["i1,i2,i3,i4,i5"] },
+      "feedback": {
+        "correct": "Exactly that order: trap the terms ($I_0$), bisect keeping a crowded half, iterate to nested shrinking intervals, greedily extract a strictly increasing index list, then read off the limit from the nested-interval point.",
+        "incorrect": [
+          { "match": "*", "message": "Order by dependency: you need a bounded interval before you can bisect; nested intervals before you can pick indices inside them; and the shrinking lengths before you can squeeze out the limit. Begin with 'all terms lie in $[a,b]$.'" }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["bolzano-weierstrass"],
+      "prompt": "Which statement does Bolzano–Weierstrass actually guarantee?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Every bounded sequence converges." },
+            { "id": "b", "label": "Every bounded sequence has at least one convergent subsequence." },
+            { "id": "c", "label": "Every sequence has a convergent subsequence." },
+            { "id": "d", "label": "Every monotone sequence is bounded." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Right. The theorem promises a convergent *subsequence*, not convergence of the whole sequence — exactly what saves bounded-but-divergent cases like $(-1)^n$.",
+        "incorrect": [
+          { "match": "a", "message": "Too strong: $(-1)^n$ is bounded but diverges. BW only extracts a convergent subsequence, not convergence of the full sequence." },
+          { "match": "c", "message": "Boundedness is essential. Without it the conclusion fails — see the unbounded counterexample in the next problem." },
+          { "match": "d", "message": "That's false and unrelated: $a_n=n$ is monotone and unbounded. BW is about bounded sequences yielding convergent subsequences." },
+          { "match": "*", "message": "State it precisely: bounded $\\Rightarrow$ some convergent subsequence exists." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["bolzano-weierstrass", "subsequence"],
+      "prompt": "Why does the sequence $a_n = n$ have *no* convergent subsequence, and what does that show about Bolzano–Weierstrass?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Any subsequence $a_{n_k}=n_k \\to \\infty$, so none converges; this shows boundedness is a necessary hypothesis." },
+            { "id": "b", "label": "It does have one — the constant subsequence $1,1,1,\\dots$." },
+            { "id": "c", "label": "It contradicts Bolzano–Weierstrass, so the theorem must be false." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Every subsequence of $n$ is itself increasing without bound, so no subsequence converges. Since $a_n=n$ is *unbounded*, this is no contradiction — it just shows BW genuinely needs the bounded hypothesis.",
+        "incorrect": [
+          { "match": "b", "message": "A subsequence keeps the original terms in order with strictly increasing indices; you can't manufacture a constant $1,1,1,\\dots$ out of $1,2,3,\\dots$. Every subsequence still diverges to $\\infty$." },
+          { "match": "c", "message": "No contradiction: BW assumes the sequence is *bounded*, and $a_n=n$ is unbounded, so the theorem simply doesn't apply." },
+          { "match": "*", "message": "Check the hypothesis. $a_n=n$ is unbounded, every subsequence tends to $\\infty$, and BW only speaks about bounded sequences." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Bolzano–Weierstrass:** every bounded sequence in $\\mathbb{R}$ has a convergent subsequence. Boundedness is not optional — $a_n=n$ shows an unbounded sequence can have no convergent subsequence at all."
+        },
+        {
+          "type": "math",
+          "latex": "(a_n)\\ \\text{bounded} \\ \\Longrightarrow\\ \\exists\\, a_{n_k}\\to L."
+        },
+        {
+          "type": "text",
+          "content": "Two proofs, one conclusion. **Route A:** extract a monotone subsequence, then apply Monotone Convergence. **Route B (bisection):** trap the terms in $[a,b]$, repeatedly keep a half with infinitely many terms, and let the nested intervals of length $(b-a)/2^k$ squeeze out the limit. This existence-of-a-limit-point engine powers compactness in $\\mathbb{R}$ and, next, the proof that Cauchy sequences converge."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "Bolzano–Weierstrass says every bounded real sequence has:",
+          "tags": ["bolzano-weierstrass"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "a limit" },
+                { "id": "b", "label": "a convergent subsequence" },
+                { "id": "c", "label": "a monotone tail" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Yes — a convergent subsequence, even when the full sequence diverges.",
+            "incorrect": [
+              { "match": "a", "message": "Not a limit of the whole sequence — $(-1)^n$ is bounded but has none. Only a convergent *subsequence* is guaranteed." },
+              { "match": "c", "message": "BW gives a convergent subsequence. (A monotone subsequence does exist for any sequence, but that's the *tool* in Route A, not the BW conclusion.)" },
+              { "match": "*", "message": "Recall the exact statement: bounded $\\Rightarrow$ convergent subsequence." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In the bisection proof, why can we always keep a half with infinitely many terms?",
+          "tags": ["bolzano-weierstrass", "compactness"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Because the two halves are equal in length." },
+                { "id": "b", "label": "Because if both halves had only finitely many terms, their union would too — but it contains infinitely many." },
+                { "id": "c", "label": "Because the sequence is monotone." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Exactly — finite plus finite is finite, so at least one half must inherit infinitely many terms from the parent interval.",
+            "incorrect": [
+              { "match": "a", "message": "Equal lengths don't decide where the terms sit. The pigeonhole point is about counts: two finite halves couldn't add up to an infinite whole." },
+              { "match": "c", "message": "Bisection assumes nothing about monotonicity; it works for *any* bounded sequence. The reason is the finite+finite=finite argument." },
+              { "match": "*", "message": "Think pigeonhole: the interval has infinitely many terms, so one of its two halves must as well." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Does the unbounded sequence $a_n = n$ have a convergent subsequence?",
+          "tags": ["bolzano-weierstrass", "subsequence"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "No — every subsequence tends to $\\infty$." },
+                { "id": "b", "label": "Yes — Bolzano–Weierstrass guarantees one." },
+                { "id": "c", "label": "Yes — the even-indexed terms converge." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Any subsequence $n_k$ still increases without bound, so none converges. BW doesn't apply because the sequence is unbounded.",
+            "incorrect": [
+              { "match": "b", "message": "BW requires boundedness, and $a_n=n$ is unbounded, so it makes no promise here." },
+              { "match": "c", "message": "The even-indexed terms are $2,4,6,\\dots$, which diverge to $\\infty$ just like the rest." },
+              { "match": "*", "message": "Every subsequence of $1,2,3,\\dots$ is unbounded and tends to infinity." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "The essential hypothesis in Bolzano–Weierstrass is that the sequence is:",
+      "tags": ["bolzano-weierstrass"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "bounded" },
+            { "id": "b", "label": "monotone" },
+            { "id": "c", "label": "positive" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — boundedness is exactly what forces the terms to cluster.",
+        "incorrect": [
+          { "match": "b", "message": "Monotonicity isn't required; BW applies to any bounded sequence, wild or not." },
+          { "match": "c", "message": "Sign doesn't matter — $(-1)^n$ takes negative values and still satisfies BW. The hypothesis is boundedness." },
+          { "match": "*", "message": "Which property does $a_n=n$ fail that makes BW inapplicable? Boundedness." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "In the bisection proof, the lengths of the nested intervals satisfy:",
+      "tags": ["bolzano-weierstrass", "compactness"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$|I_k| = (b-a)/2^k \\to 0$" },
+            { "id": "b", "label": "$|I_k| = (b-a)\\cdot 2^k \\to \\infty$" },
+            { "id": "c", "label": "$|I_k| = b-a$ for all $k$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes — each bisection halves the length, so $|I_k|=(b-a)/2^k\\to 0$, squeezing out a single point.",
+        "incorrect": [
+          { "match": "b", "message": "Bisection halves, not doubles. The lengths shrink: $(b-a)/2^k$." },
+          { "match": "c", "message": "Only $I_0$ has length $b-a$; every cut halves it." },
+          { "match": "*", "message": "Each step halves the interval, giving length $(b-a)/2^k$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "prompt": "Route A of the proof builds a convergent subsequence by first finding a:",
+      "tags": ["bolzano-weierstrass", "subsequence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "monotone subsequence, then applying Monotone Convergence" },
+            { "id": "b", "label": "constant subsequence" },
+            { "id": "c", "label": "bounded subsequence, which automatically converges" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — every sequence has a monotone subsequence, and a bounded monotone sequence converges.",
+        "incorrect": [
+          { "match": "b", "message": "A constant subsequence needn't exist (e.g. $a_n=1/n$ has no repeated value). Route A uses a *monotone* subsequence." },
+          { "match": "c", "message": "Bounded alone doesn't force convergence — $(-1)^n$ is bounded and divergent. You need bounded *and monotone*." },
+          { "match": "*", "message": "Pair 'every sequence has a monotone subsequence' with the Monotone Convergence Theorem." }
+        ]
+      }
+    }
+  ]
+}

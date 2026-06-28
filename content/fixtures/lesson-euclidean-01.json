@@ -1,0 +1,317 @@
+{
+  "lessonId": "lesson-euclidean-01",
+  "title": "Euclidean Space ℝⁿ",
+  "tags": ["euclidean", "norm", "cauchy-schwarz"],
+  "prerequisites": ["lesson-lub-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "We spent the first unit pinning down the real line $\\mathbb{R}$. But analysis lives in higher dimensions too: a point in the plane is a pair $(x_1,x_2)$, a point in space is a triple, and a configuration of $n$ measurements is a list of $n$ numbers."
+        },
+        {
+          "type": "text",
+          "content": "**Euclidean space** $\\mathbb{R}^n$ is the set of all such lists, called **vectors**:"
+        },
+        {
+          "type": "math",
+          "latex": "\\mathbb{R}^n = \\{\\, x = (x_1, x_2, \\dots, x_n) : x_i \\in \\mathbb{R} \\,\\}"
+        },
+        {
+          "type": "text",
+          "content": "We add vectors and scale them coordinatewise: $x+y = (x_1+y_1,\\dots,x_n+y_n)$ and $cx = (cx_1,\\dots,cx_n)$. The real challenge is to measure *length* and *distance*, so that the analysis of $\\mathbb{R}$ has somewhere to grow."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The key tool is the **dot product** (also called the inner product), which combines two vectors into a single number:"
+        },
+        {
+          "type": "math",
+          "latex": "x\\cdot y = \\sum_{i=1}^{n} x_i y_i = x_1 y_1 + x_2 y_2 + \\dots + x_n y_n"
+        },
+        {
+          "type": "text",
+          "content": "From it we build the **Euclidean norm**, the length of a vector, by taking the dot product of $x$ with itself and a square root:"
+        },
+        {
+          "type": "math",
+          "latex": "\\|x\\| = \\sqrt{x\\cdot x} = \\sqrt{x_1^2 + x_2^2 + \\dots + x_n^2}"
+        },
+        {
+          "type": "text",
+          "content": "In $\\mathbb{R}^2$ this is exactly the Pythagorean theorem: the length of $(x_1,x_2)$ is $\\sqrt{x_1^2+x_2^2}$. The distance between two points is then $\\|x-y\\|$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "The vector $(3,4)$ reaches $3$ across and $4$ up. By the Pythagorean theorem its length is $\\sqrt{3^2+4^2}=\\sqrt{25}=5$. The marker at $5$ is where that diagonal lands when laid flat against the number line.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 6,
+          "intervals": [{ "start": 0, "end": 5, "label": "length of (3,4)" }],
+          "markers": [{ "value": 5, "label": "||(3,4)|| = 5" }]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["cauchy-schwarz", "norm"],
+      "prompt": "Worked example: verify the Cauchy–Schwarz inequality $|x\\cdot y| \\le \\|x\\|\\,\\|y\\|$ for $x=(1,2)$ and $y=(3,1)$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Step 1 — compute the dot product.** Multiply matching coordinates and add:"
+        },
+        {
+          "type": "math",
+          "latex": "x\\cdot y = (1)(3) + (2)(1) = 3 + 2 = 5, \\qquad |x\\cdot y| = 5"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2 — compute the two norms.**"
+        },
+        {
+          "type": "math",
+          "latex": "\\|x\\| = \\sqrt{1^2+2^2} = \\sqrt{5}, \\qquad \\|y\\| = \\sqrt{3^2+1^2} = \\sqrt{10}"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3 — compare.** Multiply the norms and check the inequality:"
+        },
+        {
+          "type": "math",
+          "latex": "\\|x\\|\\,\\|y\\| = \\sqrt{5}\\,\\sqrt{10} = \\sqrt{50} = 5\\sqrt{2} \\approx 7.07"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** $|x\\cdot y| = 5 \\le 5\\sqrt{2} = \\|x\\|\\,\\|y\\|$. Cauchy–Schwarz holds, with room to spare because $x$ and $y$ are not parallel. Equality occurs exactly when one vector is a scalar multiple of the other."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["norm", "euclidean"],
+      "scaffold": "worked",
+      "prompt": "Compute the Euclidean norm $\\|(3,4)\\|$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Use $\\|x\\| = \\sqrt{x_1^2 + x_2^2}$ with $x_1 = 3$ and $x_2 = 4$."
+        },
+        {
+          "type": "math",
+          "latex": "\\|(3,4)\\| = \\sqrt{3^2 + 4^2} = \\sqrt{9+16} = \\sqrt{25}"
+        },
+        {
+          "type": "text",
+          "content": "Now take the square root of $25$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "||(3,4)|| = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["5"] },
+      "feedback": {
+        "correct": "Exactly. $\\sqrt{3^2+4^2}=\\sqrt{25}=5$ — the classic 3-4-5 right triangle.",
+        "incorrect": [
+          { "match": "7", "message": "You added the coordinates: $3+4=7$. The norm squares first, then takes a square root: $\\sqrt{3^2+4^2}$." },
+          { "match": "25", "message": "That is $\\|x\\|^2 = 3^2+4^2$. Don't forget to take the square root." },
+          { "match": "*", "message": "Apply $\\|x\\|=\\sqrt{x_1^2+x_2^2}$: square $3$ and $4$, add, then take the square root." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["cauchy-schwarz", "norm"],
+      "prompt": "The triangle inequality $\\|x+y\\| \\le \\|x\\| + \\|y\\|$ follows from Cauchy–Schwarz. Match each line of the derivation to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "s1", "label": "$\\|x+y\\|^2 = \\|x\\|^2 + 2\\,(x\\cdot y) + \\|y\\|^2$" },
+            { "id": "s2", "label": "$x\\cdot y \\le \\|x\\|\\,\\|y\\|$" },
+            { "id": "s3", "label": "$\\|x+y\\|^2 \\le \\|x\\|^2 + 2\\,\\|x\\|\\,\\|y\\| + \\|y\\|^2 = (\\|x\\|+\\|y\\|)^2$" },
+            { "id": "s4", "label": "$\\|x+y\\| \\le \\|x\\| + \\|y\\|$" }
+          ],
+          "justifications": [
+            { "id": "j1", "label": "Expand $(x+y)\\cdot(x+y)$ using the bilinearity of the dot product." },
+            { "id": "j2", "label": "Apply the Cauchy–Schwarz inequality $x\\cdot y \\le |x\\cdot y| \\le \\|x\\|\\,\\|y\\|$." },
+            { "id": "j3", "label": "Substitute the bound and recognize a perfect square." },
+            { "id": "j4", "label": "Take square roots; both sides are nonnegative and $\\sqrt{\\cdot}$ is increasing." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["s1:j1,s2:j2,s3:j3,s4:j4"] },
+      "feedback": {
+        "correct": "Exactly. Expand, bound the cross term with Cauchy–Schwarz, factor the perfect square, then take roots — the triangle inequality drops out.",
+        "incorrect": [
+          { "match": "s1:j2,s2:j1,s3:j3,s4:j4", "message": "The first two lines are swapped: expanding the square comes from bilinearity, while bounding $x\\cdot y$ is where Cauchy–Schwarz enters." },
+          { "match": "*", "message": "Trace the logic in order: expand the squared norm, bound the middle term $2\\,x\\cdot y$ by Cauchy–Schwarz, factor $(\\|x\\|+\\|y\\|)^2$, then take square roots." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Euclidean space $\\mathbb{R}^n$ is lists of $n$ real numbers, with coordinatewise addition and scaling."
+        },
+        {
+          "type": "text",
+          "content": "The dot product $x\\cdot y = \\sum x_i y_i$ produces the norm $\\|x\\|=\\sqrt{x\\cdot x}$, the length of a vector. Two inequalities govern this geometry: **Cauchy–Schwarz** $|x\\cdot y|\\le\\|x\\|\\,\\|y\\|$, and the **triangle inequality** $\\|x+y\\|\\le\\|x\\|+\\|y\\|$, which follows from it."
+        },
+        {
+          "type": "text",
+          "content": "The triangle inequality is the seed of everything ahead: it lets $\\|x-y\\|$ behave like a genuine distance, and that distance is what the next lesson abstracts into the notion of a metric space."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Euclidean norm $\\|x\\|$ is defined as:",
+          "tags": ["norm", "euclidean"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$x_1 + x_2 + \\dots + x_n$" },
+                { "id": "b", "label": "$\\sqrt{x\\cdot x} = \\sqrt{x_1^2 + \\dots + x_n^2}$" },
+                { "id": "c", "label": "$x\\cdot x = x_1^2 + \\dots + x_n^2$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. The norm is the square root of $x\\cdot x$, generalizing the Pythagorean theorem.",
+            "incorrect": [
+              { "match": "a", "message": "That is just the sum of coordinates, which can even be negative. The norm squares each coordinate first." },
+              { "match": "c", "message": "That is $\\|x\\|^2$, the norm without the square root." },
+              { "match": "*", "message": "The norm is $\\sqrt{x\\cdot x}$: square the coordinates, add, take the square root." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "The Cauchy–Schwarz inequality states that for all $x,y\\in\\mathbb{R}^n$:",
+          "tags": ["cauchy-schwarz"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$|x\\cdot y| \\le \\|x\\|\\,\\|y\\|$" },
+                { "id": "b", "label": "$|x\\cdot y| \\ge \\|x\\|\\,\\|y\\|$" },
+                { "id": "c", "label": "$x\\cdot y = \\|x\\|\\,\\|y\\|$ always" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The dot product is bounded in size by the product of the norms.",
+            "incorrect": [
+              { "match": "b", "message": "The inequality runs the other way: $|x\\cdot y|$ is at most $\\|x\\|\\,\\|y\\|$." },
+              { "match": "c", "message": "Equality only holds when the vectors are parallel; in general it is an inequality." },
+              { "match": "*", "message": "Recall the bound: the size of the dot product never exceeds the product of the lengths." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "For $x=(1,0)$ and $y=(0,1)$ in $\\mathbb{R}^2$, what is $\\|x+y\\|$?",
+          "tags": ["norm", "euclidean"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$2$" },
+                { "id": "b", "label": "$\\sqrt{2}$" },
+                { "id": "c", "label": "$1$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. $x+y=(1,1)$, so $\\|x+y\\|=\\sqrt{1^2+1^2}=\\sqrt2$. Note $\\sqrt2 \\le \\|x\\|+\\|y\\|=2$, as the triangle inequality promises.",
+            "incorrect": [
+              { "match": "a", "message": "$2$ is $\\|x\\|+\\|y\\|$, the upper bound. The actual length of $(1,1)$ is smaller." },
+              { "match": "c", "message": "$x+y=(1,1)$, which is longer than a unit vector. Compute $\\sqrt{1^2+1^2}$." },
+              { "match": "*", "message": "First add: $x+y=(1,1)$. Then take the norm $\\sqrt{1^2+1^2}$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "The dot product $x\\cdot y$ in $\\mathbb{R}^n$ equals:",
+      "tags": ["euclidean"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\sum_{i=1}^n x_i y_i$" },
+            { "id": "b", "label": "$(x_1 y_1, \\dots, x_n y_n)$, a vector" },
+            { "id": "c", "label": "$\\sqrt{x_1 y_1 + \\dots + x_n y_n}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The dot product multiplies matching coordinates and sums them into a single number.",
+        "incorrect": [
+          { "match": "b", "message": "The dot product is a scalar, not a vector. You sum the coordinatewise products." },
+          { "match": "c", "message": "There is no square root in the dot product; that belongs to the norm." },
+          { "match": "*", "message": "The dot product is $\\sum x_i y_i$, a single real number." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "When does Cauchy–Schwarz become an equality, $|x\\cdot y| = \\|x\\|\\,\\|y\\|$?",
+      "tags": ["cauchy-schwarz"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "When $x$ and $y$ are parallel (one is a scalar multiple of the other)." },
+            { "id": "b", "label": "When $x$ and $y$ are perpendicular." },
+            { "id": "c", "label": "It never becomes an equality." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Equality holds precisely when the vectors point along the same line.",
+        "incorrect": [
+          { "match": "b", "message": "Perpendicular vectors give $x\\cdot y = 0$, the opposite extreme. Equality needs parallel vectors." },
+          { "match": "c", "message": "It can be an equality — for instance when $y = cx$ for a scalar $c$." },
+          { "match": "*", "message": "Think about when the dot product is as large as possible relative to the lengths: when the vectors align." }
+        ]
+      }
+    }
+  ]
+}

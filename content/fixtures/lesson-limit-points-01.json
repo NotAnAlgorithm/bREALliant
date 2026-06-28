@@ -1,0 +1,330 @@
+{
+  "lessonId": "lesson-limit-points-01",
+  "title": "Limit Points, Closure, Interior, Boundary",
+  "tags": ["limit-point", "closure", "interior", "boundary"],
+  "prerequisites": ["lesson-open-closed-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Open and closed sets came from asking whether a point sits *inside* a set with room to spare. The dual question is whether a point sits *arbitrarily close* to a set, even if the point itself is not in it. That is the idea of a limit point."
+        },
+        {
+          "type": "text",
+          "content": "A point $p$ is a **limit point** of a set $E$ if every neighborhood of $p$ contains a point of $E$ *other than $p$ itself*."
+        },
+        {
+          "type": "math",
+          "latex": "\\forall\\, r>0,\\quad \\bigl(B_r(p)\\setminus\\{p\\}\\bigr)\\cap E \\ne \\varnothing."
+        },
+        {
+          "type": "text",
+          "content": "The phrase 'other than $p$' is essential: it forces points of $E$ to *accumulate* near $p$, no matter how small the ball. A limit point of $E$ need not belong to $E$ — that is exactly what makes the notion interesting."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Limit points organize a whole vocabulary. Write $E'$ for the set of limit points of $E$."
+        },
+        {
+          "type": "text",
+          "content": "The **closure** is $\\overline{E} = E \\cup E'$: the set together with everything it accumulates at. A point of $E$ that is *not* a limit point — one with a ball around it meeting $E$ only at itself — is called an **isolated point**."
+        },
+        {
+          "type": "text",
+          "content": "The **interior** $E^{\\circ}$ is the set of interior points of $E$ (points with a whole ball inside $E$). The **boundary** $\\partial E = \\overline{E}\\setminus E^{\\circ}$ collects the edge points: those every ball around which meets both $E$ and its complement."
+        },
+        {
+          "type": "text",
+          "content": "The headline theorem ties this back to the previous lesson: **a set is closed if and only if it contains all of its limit points**, i.e. $E$ is closed $\\iff E' \\subseteq E \\iff \\overline{E}=E$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Consider $E=\\{1, \\tfrac12, \\tfrac13, \\tfrac14, \\dots\\}=\\{1/n : n\\in\\mathbb{N}\\}$. The points crowd toward $0$: any ball $(-r,r)$ around $0$, however small, swallows infinitely many of the $1/n$. So $0$ is a limit point — even though $0\\notin E$. Yet each individual $1/n$ is *isolated*: a small enough ball around it catches no other member of $E$.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -0.5,
+          "max": 1.5,
+          "intervals": [{ "start": 0, "end": 0.35, "label": "points 1/n accumulate here" }],
+          "markers": [
+            { "value": 0, "label": "0: limit point (not in E)" },
+            { "value": 1, "label": "1: isolated point of E" },
+            { "value": 0.5, "label": "1/2: isolated" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "worked_example",
+      "tags": ["limit-point"],
+      "prompt": "Let us prove carefully that $0$ is a limit point of $E=\\{1/n : n\\in\\mathbb{N}\\}$, while every $1/n$ is isolated.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**$0$ is a limit point.** Fix any radius $r>0$. By the Archimedean property there is $n\\in\\mathbb{N}$ with $n>1/r$, hence $0<1/n<r$."
+        },
+        {
+          "type": "math",
+          "latex": "\\tfrac1n \\in E,\\quad \\tfrac1n \\ne 0,\\quad \\tfrac1n \\in (-r,r)=B_r(0)."
+        },
+        {
+          "type": "text",
+          "content": "So every ball around $0$ contains a point of $E$ different from $0$. Thus $0$ is a limit point. (And $0\\notin E$, since $1/n>0$ for all $n$.)"
+        },
+        {
+          "type": "text",
+          "content": "**Each $1/n$ is isolated.** The neighbors of $1/n$ in $E$ are $1/(n-1)$ and $1/(n+1)$. Let $r$ be smaller than the distance to the nearer one. Then $B_r(1/n)$ contains no member of $E$ except $1/n$ itself, so $1/n$ is not a limit point — it is isolated."
+        },
+        {
+          "type": "text",
+          "content": "Conclusion: the only limit point of $E$ is $0$, so $E' = \\{0\\}$ and $\\overline{E}=E\\cup\\{0\\}$. $\\blacksquare$"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["limit-point"],
+      "prompt": "What is the set of **limit points** of $E=\\{1/n : n\\in\\mathbb{N}\\}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$E$ itself, $\\{1/n : n\\in\\mathbb{N}\\}$" },
+            { "id": "b", "label": "$\\{0\\}$" },
+            { "id": "c", "label": "$[0,1]$" },
+            { "id": "d", "label": "$\\varnothing$ (there are none)" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Right. Points of $E$ accumulate only at $0$, and each $1/n$ is isolated, so $E'=\\{0\\}$. Note $0\\notin E$, a clean reminder that limit points need not belong to the set.",
+        "incorrect": [
+          { "match": "a", "message": "Each $1/n$ is *isolated*: a small ball around it catches no other point of $E$, so it is not a limit point." },
+          { "match": "c", "message": "Most points of $[0,1]$, say $0.7$, have a ball missing $E$ entirely. Only $0$ has points of $E$ in every neighborhood." },
+          { "match": "d", "message": "There is one: $0$. Every ball $(-r,r)$ contains some $1/n$ with $n>1/r$, by the Archimedean property." },
+          { "match": "*", "message": "Ask where the points pile up arbitrarily closely. The terms $1/n$ shrink toward $0$ and nowhere else." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["closure", "limit-point"],
+      "prompt": "What is the **closure** $\\overline{(0,1)}$ of the open interval $(0,1)$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$(0,1)$" },
+            { "id": "b", "label": "$[0,1]$" },
+            { "id": "c", "label": "$(0,1]$" },
+            { "id": "d", "label": "$\\mathbb{R}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Exactly. Every point of $[0,1]$ is a limit point of $(0,1)$ — including the endpoints $0$ and $1$, which are approached from inside — and nothing outside $[0,1]$ is. So $\\overline{(0,1)} = (0,1)\\cup\\{0,1\\} = [0,1]$.",
+        "incorrect": [
+          { "match": "a", "message": "The closure must add the limit points not already present. Both $0$ and $1$ are limit points of $(0,1)$ but are missing from it." },
+          { "match": "c", "message": "Half-right: $1$ is a limit point and gets added — but so is $0$, by the symmetric argument. The closure is $[0,1]$." },
+          { "match": "d", "message": "A point like $2$ is not a limit point: the ball $(1.5,2.5)$ misses $(0,1)$ completely. The closure stays bounded." },
+          { "match": "*", "message": "Take $\\overline{E}=E\\cup E'$. Which points are approached arbitrarily closely by $(0,1)$? Exactly those in $[0,1]$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["closure", "limit-point", "boundary"],
+      "prompt": "Justify the claim $\\overline{(0,1)}=[0,1]$ by matching each step to the reason that supports it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "$0$ is a limit point of $(0,1)$." },
+            { "id": "st2", "label": "$2$ is not a limit point of $(0,1)$." },
+            { "id": "st3", "label": "Therefore $\\overline{(0,1)} = [0,1]$." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Every ball $(-r,r)$ about $0$ contains points such as $\\min(r,1)/2 \\in (0,1)$, all different from $0$." },
+            { "id": "j_b", "label": "The neighborhood $(1.5,\\,2.5)$ contains no point of $(0,1)$ at all, so the accumulation condition fails." },
+            { "id": "j_c", "label": "The closure adds exactly the limit points $0$ and $1$ that $(0,1)$ was missing, and no others lie outside $[0,1]$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. $0$ qualifies because $(0,1)$ has points in every ball around it; $2$ fails because some ball around it misses $(0,1)$ entirely; and the closure $E\\cup E'$ then supplies precisely the missing endpoints $0$ and $1$.",
+        "incorrect": [
+          { "match": "*", "message": "Pair each statement with its mechanism: a limit point needs nearby set-points in *every* ball ($0$), a non-limit point has *some* empty ball ($2$), and the closure adds exactly the missing limit points to give $[0,1]$." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A **limit point** $p$ of $E$ has a point of $E$ other than $p$ in every neighborhood — points of $E$ accumulate at $p$, whether or not $p\\in E$. A point of $E$ that is not a limit point is **isolated**."
+        },
+        {
+          "type": "text",
+          "content": "From limit points we get: the **closure** $\\overline{E}=E\\cup E'$, the **interior** $E^{\\circ}$ of points with a ball inside $E$, and the **boundary** $\\partial E=\\overline{E}\\setminus E^{\\circ}$ of edge points touching both $E$ and its complement."
+        },
+        {
+          "type": "math",
+          "latex": "E \\text{ is closed} \\iff E' \\subseteq E \\iff \\overline{E}=E."
+        },
+        {
+          "type": "text",
+          "content": "Touchstones: the limit points of $\\{1/n\\}$ are exactly $\\{0\\}$, and $\\overline{(0,1)}=[0,1]$. A set is closed precisely when it has already swallowed all its limit points."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "$p$ is a **limit point** of $E$ means:",
+          "tags": ["limit-point"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Every neighborhood of $p$ contains a point of $E$ different from $p$." },
+                { "id": "b", "label": "$p \\in E$." },
+                { "id": "c", "label": "Some neighborhood of $p$ lies entirely inside $E$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Yes — accumulation in every neighborhood, with the point itself excluded from counting.",
+            "incorrect": [
+              { "match": "b", "message": "Membership is neither needed nor sufficient: $0$ is a limit point of $\\{1/n\\}$ without being in it, and an isolated point of $E$ lies in $E$ yet is not a limit point." },
+              { "match": "c", "message": "That describes an *interior* point, not a limit point. Limit points concern nearby points of $E$, not a ball contained in $E$." },
+              { "match": "*", "message": "The defining feature is the words 'every neighborhood contains a point of $E$ other than $p$.'" }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "A set $E$ is **closed** if and only if:",
+          "tags": ["closure", "limit-point"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$E$ contains all of its limit points (i.e. $\\overline{E}=E$)." },
+                { "id": "b", "label": "$E$ has no limit points." },
+                { "id": "c", "label": "$E$ contains all of its interior points." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — closed means $E'\\subseteq E$, equivalently $\\overline{E}=E$.",
+            "incorrect": [
+              { "match": "b", "message": "Closed sets often have limit points: $[0,1]$ is closed and every one of its points is a limit point. The requirement is that it *contains* them." },
+              { "match": "c", "message": "Every set contains its interior points by definition, so this is always true and cannot characterize closedness." },
+              { "match": "*", "message": "Recall the theorem: closed $\\iff$ it has swallowed all its limit points, i.e. $\\overline{E}=E$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Which point is an **isolated** point of $E=\\{0\\}\\cup\\{1/n : n\\in\\mathbb{N}\\}$?",
+          "tags": ["limit-point", "boundary"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$1$" },
+                { "id": "b", "label": "$0$" },
+                { "id": "c", "label": "$1/2$ is a limit point, not isolated" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Yes — a small ball around $1$ catches no other member of $E$, so $1$ is isolated. (Every $1/n$ is likewise isolated.)",
+            "incorrect": [
+              { "match": "b", "message": "$0$ is the one *limit* point of $E$: every ball around it contains infinitely many $1/n$. It is the opposite of isolated." },
+              { "match": "c", "message": "$1/2$ is actually isolated, not a limit point — a small ball around it meets $E$ only at $1/2$. The accumulation happens at $0$." },
+              { "match": "*", "message": "An isolated point has a ball meeting $E$ only at itself. The terms $1/n$ are spread apart; only $0$ has points of $E$ crowding around it." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "The closure of the open interval $(2,5)$ is:",
+      "tags": ["closure"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$[2,5]$" },
+            { "id": "b", "label": "$(2,5)$" },
+            { "id": "c", "label": "$\\{2,5\\}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes — adding the limit points $2$ and $5$ to $(2,5)$ gives $[2,5]$.",
+        "incorrect": [
+          { "match": "b", "message": "The closure must include the limit points $2$ and $5$, which $(2,5)$ omits." },
+          { "match": "c", "message": "The closure is $E\\cup E'$, so it keeps all of $(2,5)$ too — not just the two endpoints." },
+          { "match": "*", "message": "Closure $=$ the set plus its limit points; for an open interval that is the closed interval." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "Which statement about limit points is correct?",
+      "tags": ["limit-point"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "A limit point of $E$ need not belong to $E$." },
+            { "id": "b", "label": "Every point of $E$ is a limit point of $E$." },
+            { "id": "c", "label": "A finite set always has a limit point." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — e.g. $0$ is a limit point of $\\{1/n\\}$ yet $0\\notin\\{1/n\\}$.",
+        "incorrect": [
+          { "match": "b", "message": "Isolated points are counterexamples: each $1/n\\in\\{1/n\\}$ is a member but not a limit point." },
+          { "match": "c", "message": "A finite set has *no* limit points: around each of its finitely many points you can find a ball excluding the rest." },
+          { "match": "*", "message": "Limit points are about accumulation, independent of membership — $0$ for $\\{1/n\\}$ is the model example." }
+        ]
+      }
+    }
+  ]
+}

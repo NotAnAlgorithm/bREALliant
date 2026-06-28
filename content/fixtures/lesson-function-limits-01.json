@@ -1,0 +1,372 @@
+{
+  "lessonId": "lesson-function-limits-01",
+  "title": "Limits of Functions (ε–δ)",
+  "tags": ["function-limit", "epsilon-delta", "sequential-criterion"],
+  "prerequisites": ["lesson-seq-limits-01"],
+  "glossary": {
+    "function-limit": {
+      "term": "Limit of a Function",
+      "definition": "$\\lim_{x\\to p} f(x) = L$ means: for every $\\varepsilon>0$ there is a $\\delta>0$ such that $0<|x-p|<\\delta$ implies $|f(x)-L|<\\varepsilon$, where $p$ is a limit point of the domain of $f$."
+    },
+    "sequential-criterion": {
+      "term": "Sequential Criterion for Limits",
+      "definition": "$\\lim_{x\\to p} f(x)=L$ if and only if $f(x_n)\\to L$ for every sequence $x_n\\to p$ with $x_n\\ne p$."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Last lesson you tamed the limit of a *sequence* with the ε–N game: for every tolerance $\\varepsilon>0$ there is a cutoff $N$ past which the terms stay within $\\varepsilon$ of $L$. Now we play the same game for a *function* as its input slides toward a point."
+        },
+        {
+          "type": "text",
+          "content": "The slogan '$f(x)$ approaches $L$ as $x$ approaches $p$' sounds clear, but a skeptic can poke holes: how close must $x$ be? Does $f(p)$ itself even matter? We need a definition airtight enough to settle every objection — including limits that look like they exist but secretly do not."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Here is the definition. Let $p$ be a **limit point** of the domain of $f$ (so $x$ can approach $p$ without ever being $p$). We say $\\lim_{x\\to p} f(x)=L$ when, for **every** $\\varepsilon>0$, there is a $\\delta>0$ so that staying within $\\delta$ of $p$ (but not *at* $p$) forces $f(x)$ within $\\varepsilon$ of $L$."
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{x\\to p} f(x)=L \\;\\Longleftrightarrow\\; \\forall\\varepsilon>0\\ \\exists\\delta>0\\ \\text{ s.t. } 0<|x-p|<\\delta \\implies |f(x)-L|<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "Two subtleties matter. The clause $0<|x-p|$ deletes the point $p$ itself, so the value $f(p)$ is irrelevant to the limit. And the opponent moves first with $\\varepsilon$ (the output band); only then do you answer with $\\delta$ (the input window), which is allowed to depend on $\\varepsilon$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Take $f(x)=3x-1$ near $p=2$, where we expect $L=5$. Because $|f(x)-5| = 3|x-2|$, any input window $|x-2|<\\delta$ guarantees the output error is at most $3\\delta$. Slide $\\delta$ down and watch the guaranteed output error $3\\delta$ shrink to match any $\\varepsilon$ the opponent could name — that controllability *is* the ε–δ definition.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0.001,
+          "max": 1,
+          "step": 0.001,
+          "initialValue": 0.5,
+          "label": "delta",
+          "readouts": [
+            { "label": "guaranteed output error 3·delta", "expression": "3*delta" }
+          ],
+          "markers": [
+            { "value": 1, "label": "loose" },
+            { "value": 0.01, "label": "tight" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "There is a bridge straight back to sequences. The **sequential criterion** says $\\lim_{x\\to p}f(x)=L$ holds **iff** for *every* sequence $x_n\\to p$ with $x_n\\ne p$, we have $f(x_n)\\to L$."
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{x\\to p} f(x)=L \\;\\Longleftrightarrow\\; \\big(x_n\\to p,\\ x_n\\ne p \\implies f(x_n)\\to L\\big)"
+        },
+        {
+          "type": "text",
+          "content": "This is the workhorse for proving a limit does **not** exist: find two sequences $x_n\\to p$ and $y_n\\to p$ whose images $f(x_n)$ and $f(y_n)$ head to *different* values. If a single $L$ worked, both image-sequences would have to converge to it — so disagreement kills the limit."
+        }
+      ]
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["epsilon-delta"],
+      "prompt": "Worked example: prove $\\lim_{x\\to 2}(3x-1)=5$ directly from the ε–δ definition.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Scratch work.** Measure the output error: $|f(x)-5| = |3x-1-5| = |3x-6| = 3|x-2|$. We want this below $\\varepsilon$, i.e. $3|x-2|<\\varepsilon$, i.e. $|x-2| < \\varepsilon/3$. That tells us what $\\delta$ to pick."
+        },
+        {
+          "type": "text",
+          "content": "**Proof.** Let $\\varepsilon>0$ be given. Choose $\\delta = \\varepsilon/3$."
+        },
+        {
+          "type": "math",
+          "latex": "0<|x-2|<\\delta=\\tfrac{\\varepsilon}{3} \\implies |f(x)-5| = 3|x-2| < 3\\cdot\\tfrac{\\varepsilon}{3} = \\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** For every $\\varepsilon>0$ the choice $\\delta=\\varepsilon/3$ works, so $\\lim_{x\\to 2}(3x-1)=5$. The key move: solve $|f(x)-L|<\\varepsilon$ for $|x-p|$ to *read off* $\\delta$."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["epsilon-delta"],
+      "scaffold": "worked",
+      "prompt": "Prove $\\lim_{x\\to 1}(2x+1)=3$. Following the worked example, the right choice is $\\delta = \\varepsilon/k$. What is the constant $k$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example. Compute the output error: $|f(x)-3| = |2x+1-3| = |2x-2| = 2|x-1|$."
+        },
+        {
+          "type": "math",
+          "latex": "2|x-1| < \\varepsilon \\iff |x-1| < \\tfrac{\\varepsilon}{2}"
+        },
+        {
+          "type": "text",
+          "content": "So the factor pulled out front of $|x-1|$ is what divides $\\varepsilon$ to give $\\delta$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "delta = epsilon / {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2"] },
+      "feedback": {
+        "correct": "Exactly. $|f(x)-3| = 2|x-1|$, so $\\delta=\\varepsilon/2$ forces the output error below $\\varepsilon$. The constant is whatever multiplies $|x-p|$ after simplifying $|f(x)-L|$.",
+        "incorrect": [
+          { "match": "3", "message": "That was the constant for $3x-1$. Here $f(x)=2x+1$, so $|f(x)-3|=2|x-1|$ — the multiplier is $2$, not $3$." },
+          { "match": "1", "message": "If $\\delta=\\varepsilon$ the output error could reach $2\\delta=2\\varepsilon>\\varepsilon$. You must divide by the factor $2$ that appears in $|f(x)-3|=2|x-1|$." },
+          { "match": "*", "message": "Simplify $|f(x)-3| = |2x-2| = 2|x-1|$. To keep this under $\\varepsilon$ you need $|x-1|<\\varepsilon/2$, so $\\delta=\\varepsilon/2$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["epsilon-delta"],
+      "scaffold": "bare",
+      "prompt": "Below is a *flawed* attempt to prove $\\lim_{x\\to 0} f(x)=0$ for $f(x)=1/x$ on $x\\ne 0$. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $\\varepsilon>0$ be given; we must find $\\delta>0$ with $0<|x|<\\delta \\implies |1/x|<\\varepsilon$." },
+            { "id": "p2", "label": "For a *fixed* $x$, choose $\\delta = |x|$, which is positive since $x\\ne 0$." },
+            { "id": "p3", "label": "Then $0<|x|<\\delta$ pins $x$ near $0$, and we declare $|1/x|<\\varepsilon$ for that $x$." },
+            { "id": "p4", "label": "Hence the ε–δ condition holds and $\\lim_{x\\to 0} 1/x = 0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p2"] },
+      "feedback": {
+        "correct": "Right — step 2 is the flaw. The chosen $\\delta$ must depend only on $\\varepsilon$, not on a particular $x$; letting $\\delta=|x|$ secretly fixes the very point you are supposed to range over. In truth $1/x$ blows up near $0$, so no $\\delta$ works.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 just states the ε–δ goal correctly. Look instead for the step where $\\delta$ is allowed to depend on the point $x$." },
+          { "match": "p3", "message": "Step 3 inherits the error from before; the real mistake is choosing $\\delta$ in terms of $x$. A valid $\\delta$ depends only on $\\varepsilon$." },
+          { "match": "p4", "message": "The conclusion is false, but it follows from an earlier illegal move: picking $\\delta=|x|$. $\\delta$ must be chosen *before* fixing $x$, using only $\\varepsilon$." },
+          { "match": "*", "message": "In a correct ε–δ proof, $\\delta$ is a function of $\\varepsilon$ alone. Find the step that lets $\\delta$ depend on the individual point $x$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["sequential-criterion"],
+      "scaffold": "bare",
+      "prompt": "Why does $\\lim_{x\\to 0}\\sin(1/x)$ fail to exist? Use the sequential criterion.",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Take $x_n = 1/(n\\pi)\\to 0$ (giving $\\sin(n\\pi)=0$) and $y_n = 1/(2\\pi n + \\pi/2)\\to 0$ (giving $\\sin = 1$). The image-sequences tend to $0$ and $1$, so no single $L$ can work." },
+            { "id": "b", "label": "Because $\\sin(1/x)$ is undefined at $x=0$, and a function undefined at a point can never have a limit there." },
+            { "id": "c", "label": "Because $\\sin$ is bounded, and bounded functions never have limits." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Two inputs marching to $0$ produce outputs converging to $0$ and to $1$. If the limit existed, both image-sequences would converge to it — disagreement forces non-existence.",
+        "incorrect": [
+          { "match": "b", "message": "The value at $p$ is irrelevant to a limit (recall $0<|x-p|$ deletes $p$). Functions undefined at $p$ can still have limits there — e.g. $\\sin(x)/x \\to 1$ at $0$." },
+          { "match": "c", "message": "Boundedness does not prevent a limit — $\\sin(x)\\to 0$ as $x\\to 0$. The real issue is two sequences giving different output limits." },
+          { "match": "*", "message": "Find two sequences $x_n,y_n\\to 0$ whose images $\\sin(1/x_n)$ and $\\sin(1/y_n)$ converge to *different* numbers; that violates the sequential criterion." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The limit of a function is the ε–δ game: the opponent names an output band $\\varepsilon>0$, you answer with an input window $\\delta>0$ (depending only on $\\varepsilon$) so that $0<|x-p|<\\delta$ keeps $|f(x)-L|<\\varepsilon$. Solving $|f(x)-L|<\\varepsilon$ for $|x-p|$ reads off $\\delta$."
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{x\\to p}f(x)=L \\iff \\forall\\varepsilon>0\\,\\exists\\delta>0:\\;0<|x-p|<\\delta\\Rightarrow|f(x)-L|<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "The sequential criterion ties this back to sequences and is the fastest disproof tool: two inputs approaching $p$ with disagreeing outputs (like $\\sin(1/x)$ at $0$) show the limit cannot exist. Next we connect limits to the value $f(p)$ itself — that is continuity."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The statement $\\lim_{x\\to p}f(x)=L$ means:",
+          "tags": ["epsilon-delta"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "For every $\\varepsilon>0$ there is a $\\delta>0$ such that $0<|x-p|<\\delta \\implies |f(x)-L|<\\varepsilon$." },
+                { "id": "b", "label": "For every $\\delta>0$ there is an $\\varepsilon>0$ such that $|x-p|<\\delta \\implies |f(x)-L|<\\varepsilon$." },
+                { "id": "c", "label": "$f(p)=L$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. $\\varepsilon$ comes first (output band), then $\\delta$ (input window), and $0<|x-p|$ deletes the point $p$ itself.",
+            "incorrect": [
+              { "match": "b", "message": "The quantifiers are swapped: the opponent chooses $\\varepsilon$ first, and $\\delta$ responds. Also the input clause must be $0<|x-p|<\\delta$." },
+              { "match": "c", "message": "The limit ignores $f(p)$ entirely — the clause $0<|x-p|$ excludes $x=p$. Matching $\\lim$ to $f(p)$ is the *separate* notion of continuity." },
+              { "match": "*", "message": "Recall the game: $\\forall\\varepsilon>0\\,\\exists\\delta>0$ with $0<|x-p|<\\delta\\Rightarrow|f(x)-L|<\\varepsilon$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "The sequential criterion states that $\\lim_{x\\to p}f(x)=L$ iff:",
+          "tags": ["sequential-criterion"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$f(x_n)\\to L$ for every sequence $x_n\\to p$ with $x_n\\ne p$." },
+                { "id": "b", "label": "$f(x_n)\\to L$ for some single sequence $x_n\\to p$." },
+                { "id": "c", "label": "$x_n\\to p$ for every sequence with $f(x_n)\\to L$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. *Every* approaching sequence must send its images to $L$ — which is why one disagreeing pair disproves the limit.",
+            "incorrect": [
+              { "match": "b", "message": "One cooperating sequence is not enough; a different sequence could misbehave. The criterion demands *all* sequences $x_n\\to p$." },
+              { "match": "c", "message": "That reverses the implication. We feed in $x_n\\to p$ and require $f(x_n)\\to L$, not the other way around." },
+              { "match": "*", "message": "It is an 'every sequence' statement: for *all* $x_n\\to p$ (with $x_n\\ne p$), $f(x_n)\\to L$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is exhibiting two sequences $x_n,y_n\\to p$ with $f(x_n)\\to A$ and $f(y_n)\\to B$, $A\\ne B$, a valid proof that $\\lim_{x\\to p}f(x)$ does not exist?",
+          "tags": ["sequential-criterion"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "If the limit were some $L$, the sequential criterion would force both $A=L$ and $B=L$, contradicting $A\\ne B$." },
+                { "id": "b", "label": "Because a function can only have a limit if it is monotone near $p$." },
+                { "id": "c", "label": "Because $x_n$ and $y_n$ are different sequences, and different sequences always give different limits." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The sequential criterion says every approaching sequence must image to the same $L$; two disagreeing limits $A\\ne B$ make that impossible, so no $L$ exists.",
+            "incorrect": [
+              { "match": "b", "message": "Monotonicity is unrelated — plenty of non-monotone functions have limits. The argument runs through the sequential criterion." },
+              { "match": "c", "message": "Different sequences often share the same image limit (that is exactly what a real limit guarantees). The point is that *here* the image limits disagree." },
+              { "match": "*", "message": "Use the sequential criterion: a genuine limit $L$ would force every $f(x_n)\\to L$, so $A=L=B$ — impossible when $A\\ne B$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "In an ε–δ proof of $\\lim_{x\\to p}f(x)=L$, the value $\\delta$ is allowed to depend on:",
+      "tags": ["epsilon-delta"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\varepsilon$ (and $p$), but not on the particular point $x$." },
+            { "id": "b", "label": "The particular point $x$ being tested." },
+            { "id": "c", "label": "Nothing — $\\delta$ must be a fixed universal constant." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. You pick $\\delta$ after seeing $\\varepsilon$ (and knowing $p$), but before $x$ ranges over the window. Letting $\\delta$ depend on $x$ is the classic fallacy.",
+        "incorrect": [
+          { "match": "b", "message": "That is precisely the forbidden move — it makes the bound vacuous. $\\delta$ must be fixed using only $\\varepsilon$ and $p$, before $x$ moves." },
+          { "match": "c", "message": "A single universal $\\delta$ is too strong; $\\delta$ may shrink as $\\varepsilon$ shrinks. It just may not depend on $x$." },
+          { "match": "*", "message": "Order of play: $\\varepsilon$ given, then choose $\\delta(\\varepsilon)$, then let $x$ vary. So $\\delta$ depends on $\\varepsilon$, not $x$." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "To prove $\\lim_{x\\to 3}(4x-2)=10$ from the definition, a working choice of $\\delta$ given $\\varepsilon>0$ is:",
+      "tags": ["epsilon-delta"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\delta = \\varepsilon/4$" },
+            { "id": "b", "label": "$\\delta = 4\\varepsilon$" },
+            { "id": "c", "label": "$\\delta = \\varepsilon$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $|f(x)-10| = |4x-12| = 4|x-3|$, so $|x-3|<\\varepsilon/4$ keeps the output error under $\\varepsilon$.",
+        "incorrect": [
+          { "match": "b", "message": "Multiplying makes the window too wide: with $\\delta=4\\varepsilon$ the error $4|x-3|$ could reach $16\\varepsilon$. You must *divide* by the factor $4$." },
+          { "match": "c", "message": "Then the error $4|x-3|$ could reach $4\\varepsilon>\\varepsilon$. The multiplier $4$ in $|f(x)-10|=4|x-3|$ must divide $\\varepsilon$." },
+          { "match": "*", "message": "Simplify $|f(x)-10|=4|x-3|$; to keep it under $\\varepsilon$ take $\\delta=\\varepsilon/4$." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "Does $\\lim_{x\\to 0}\\operatorname{sgn}(x)$ exist, where $\\operatorname{sgn}(x)=-1$ for $x<0$ and $+1$ for $x>0$?",
+      "tags": ["sequential-criterion"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "No — $x_n=1/n\\to 0$ gives outputs $\\to 1$ while $y_n=-1/n\\to 0$ gives outputs $\\to -1$." },
+            { "id": "b", "label": "Yes — the limit is $0$, the average of $-1$ and $1$." },
+            { "id": "c", "label": "Yes — the limit is $\\operatorname{sgn}(0)=0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Approaching $0$ from the right gives $+1$, from the left gives $-1$; the two image limits disagree, so by the sequential criterion no limit exists.",
+        "incorrect": [
+          { "match": "b", "message": "A limit must be approached by the actual outputs, which are only $\\pm 1$ — never near $0$. Averaging the two sides is not how limits work." },
+          { "match": "c", "message": "The value at $0$ is irrelevant ($0<|x-p|$ deletes it), and the one-sided outputs $\\pm1$ disagree, so the limit does not exist." },
+          { "match": "*", "message": "Test $x_n=1/n$ and $y_n=-1/n$. Their images tend to $+1$ and $-1$; disagreeing image limits mean no limit." }
+        ]
+      }
+    }
+  ]
+}

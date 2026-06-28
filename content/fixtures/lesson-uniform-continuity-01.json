@@ -1,0 +1,339 @@
+{
+  "lessonId": "lesson-uniform-continuity-01",
+  "title": "Uniform Continuity",
+  "tags": ["uniform-continuity", "lipschitz", "compactness"],
+  "prerequisites": ["lesson-continuity-01"],
+  "glossary": {
+    "uniform-continuity": {
+      "term": "Uniform Continuity",
+      "definition": "$f$ is uniformly continuous on $E$ if $\\forall\\varepsilon>0\\,\\exists\\delta>0$ such that for ALL $x,y\\in E$, $|x-y|<\\delta \\Rightarrow |f(x)-f(y)|<\\varepsilon$. The single $\\delta$ does not depend on the point."
+    },
+    "lipschitz": {
+      "term": "Lipschitz Function",
+      "definition": "$f$ is Lipschitz on $E$ if there is $L\\ge 0$ with $|f(x)-f(y)|\\le L|x-y|$ for all $x,y\\in E$. Every Lipschitz function is uniformly continuous (take $\\delta=\\varepsilon/L$)."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall that $f$ is continuous on a set when it is continuous at *each* point — and crucially, the $\\delta$ you pick is allowed to depend on both $\\varepsilon$ *and* the point $p$. Today we ask a sharper question: can one $\\delta$ serve *every* point at once?"
+        },
+        {
+          "type": "text",
+          "content": "When the answer is yes, $f$ is **uniformly continuous**. This is strictly stronger than ordinary (pointwise) continuity, and it is the property that makes integration, extension, and approximation behave. The difference lives entirely in the order of quantifiers."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Definition.** $f$ is **uniformly continuous** on $E$ if for every $\\varepsilon>0$ there is a single $\\delta>0$ that works for *all* pairs of points:"
+        },
+        {
+          "type": "math",
+          "latex": "\\forall\\varepsilon>0\\ \\exists\\delta>0\\ \\text{ s.t. }\\ \\forall x,y\\in E:\\ |x-y|<\\delta \\implies |f(x)-f(y)|<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "Compare pointwise continuity, where $\\delta$ comes *after* fixing the point $p$ (so $\\delta=\\delta(\\varepsilon,p)$). In uniform continuity $\\delta$ is chosen *before* the points, depending on $\\varepsilon$ alone. The danger sign: a function whose required $\\delta$ keeps shrinking as you move along $E$ — there may be no positive $\\delta$ small enough for everywhere at once."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Fix a small step $|x-y|=0.5$ and slide $x$ rightward for $f(x)=x^2$ (with $y=x+0.5$). The output gap $f(y)-f(x) = (x+0.5)^2-x^2 = x+0.25$ *grows without bound*, even though the input gap stays fixed. So no single $\\delta$ can cap the output everywhere — that is the failure of uniform continuity for $x^2$ on $\\mathbb{R}$.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0,
+          "max": 50,
+          "step": 0.5,
+          "initialValue": 1,
+          "label": "x",
+          "readouts": [
+            { "label": "output gap (x+0.5)^2 - x^2", "expression": "x + 0.25" }
+          ],
+          "markers": [
+            { "value": 1, "label": "small x: gap small" },
+            { "value": 50, "label": "large x: gap huge" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A gallery to keep straight. **Not** uniformly continuous: $f(x)=x^2$ on $\\mathbb{R}$ (the gap grows as $x\\to\\infty$) and $f(x)=1/x$ on $(0,1)$ (the gap explodes as $x\\to 0^+$). **Uniformly** continuous: $f(x)=\\sqrt{x}$ on $[0,\\infty)$, and every **Lipschitz** function, since $|f(x)-f(y)|\\le L|x-y|$ lets you take $\\delta=\\varepsilon/L$."
+        },
+        {
+          "type": "text",
+          "content": "And the headline theorem, which ties back to compactness: **a continuous function on a compact set is uniformly continuous.** So $x^2$ *is* uniformly continuous on any closed bounded interval $[a,b]$ — it only fails on the unbounded line $\\mathbb{R}$."
+        }
+      ]
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["uniform-continuity"],
+      "prompt": "Worked example: show $f(x)=x^2$ is NOT uniformly continuous on $\\mathbb{R}$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Strategy.** To *disprove* uniform continuity, find one bad $\\varepsilon$ and two sequences $x_n,y_n$ with $|x_n-y_n|\\to 0$ yet $|f(x_n)-f(y_n)|$ staying bounded away from $0$."
+        },
+        {
+          "type": "text",
+          "content": "**Construction.** Let $x_n=n$ and $y_n=n+\\tfrac1n$. Then the inputs get arbitrarily close: $|x_n-y_n|=\\tfrac1n\\to 0$. But the outputs do not:"
+        },
+        {
+          "type": "math",
+          "latex": "|x_n^2-y_n^2| = \\Big(n+\\tfrac1n\\Big)^2 - n^2 = 2 + \\tfrac{1}{n^2} \\;>\\; 2"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** With $\\varepsilon=2$, no $\\delta>0$ works: once $\\tfrac1n<\\delta$ we have $|x_n-y_n|<\\delta$ but $|f(x_n)-f(y_n)|>2=\\varepsilon$. So $x^2$ is not uniformly continuous on $\\mathbb{R}$, even though it is continuous at every point."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["uniform-continuity"],
+      "scaffold": "worked",
+      "prompt": "Show $f(x)=1/x$ is not uniformly continuous on $(0,1)$ using $x_n=\\tfrac1n$ and $y_n=\\tfrac1{n+1}$. The inputs satisfy $|x_n-y_n|\\to 0$. What is the constant value of $|f(x_n)-f(y_n)|$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example. The inputs close up: $|x_n-y_n| = \\tfrac1n - \\tfrac1{n+1} = \\tfrac{1}{n(n+1)} \\to 0$."
+        },
+        {
+          "type": "math",
+          "latex": "f(x_n)=\\frac{1}{1/n}=n,\\qquad f(y_n)=\\frac{1}{1/(n+1)}=n+1"
+        },
+        {
+          "type": "text",
+          "content": "Now subtract the two output values and take the absolute value — it does not depend on $n$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "|f(x_n) - f(y_n)| = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+      "feedback": {
+        "correct": "Exactly. $f(x_n)=n$ and $f(y_n)=n+1$, so $|f(x_n)-f(y_n)|=1$ for every $n$. The inputs collapse together while the outputs stay a fixed distance $1$ apart, so with $\\varepsilon=1$ no $\\delta$ works.",
+        "incorrect": [
+          { "match": "0", "message": "If the output gap were $0$ the function would be uniformly continuous here. But $f(x_n)=n$ and $f(y_n)=n+1$ differ by exactly $1$." },
+          { "match": "*", "message": "Compute $f(x_n)=n$ and $f(y_n)=n+1$. Then $|f(x_n)-f(y_n)| = |n-(n+1)| = 1$, independent of $n$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["lipschitz", "uniform-continuity"],
+      "scaffold": "bare",
+      "prompt": "Which function is uniformly continuous on the stated set?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f(x)=3x+1$ on $\\mathbb{R}$ — it is Lipschitz with $|f(x)-f(y)|=3|x-y|$." },
+            { "id": "b", "label": "$f(x)=x^2$ on $\\mathbb{R}$." },
+            { "id": "c", "label": "$f(x)=1/x$ on $(0,1)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $|f(x)-f(y)|=3|x-y|$ is Lipschitz with constant $3$, so $\\delta=\\varepsilon/3$ works for every pair — uniform continuity on all of $\\mathbb{R}$.",
+        "incorrect": [
+          { "match": "b", "message": "$x^2$ on $\\mathbb{R}$ fails: $x_n=n$, $y_n=n+1/n$ give $|x_n-y_n|\\to 0$ but $|f(x_n)-f(y_n)|>2$. Look for the Lipschitz function." },
+          { "match": "c", "message": "$1/x$ on $(0,1)$ fails near $0$: $x_n=1/n$, $y_n=1/(n+1)$ keep the output gap at $1$. The uniformly continuous one is Lipschitz." },
+          { "match": "*", "message": "A function with $|f(x)-f(y)|\\le L|x-y|$ (Lipschitz) is uniformly continuous via $\\delta=\\varepsilon/L$. Which choice has a constant slope bound?" }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Uniform continuity moves the $\\delta$ in front of the points: a single $\\delta(\\varepsilon)$ must control $|f(x)-f(y)|$ for *all* pairs with $|x-y|<\\delta$. The standard disproof exhibits sequences with $|x_n-y_n|\\to 0$ but $|f(x_n)-f(y_n)|$ bounded below — as for $x^2$ on $\\mathbb{R}$ and $1/x$ on $(0,1)$."
+        },
+        {
+          "type": "math",
+          "latex": "\\forall\\varepsilon>0\\,\\exists\\delta>0\\,\\forall x,y\\in E:\\ |x-y|<\\delta\\Rightarrow|f(x)-f(y)|<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "Lipschitz functions are automatically uniformly continuous, and — the key theorem — *every continuous function on a compact set is uniformly continuous*. That is why pathologies like $x^2$ only misbehave on unbounded or open domains, never on a closed bounded interval."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "What distinguishes uniform continuity from ordinary continuity?",
+          "tags": ["uniform-continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "In uniform continuity a single $\\delta$ (depending only on $\\varepsilon$) works for all points; in ordinary continuity $\\delta$ may depend on the point." },
+                { "id": "b", "label": "Uniform continuity allows $\\delta$ to depend on the point, ordinary continuity does not." },
+                { "id": "c", "label": "There is no difference; the terms are synonyms." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The quantifier order flips: '$\\exists\\delta\\,\\forall x,y$' (uniform) is stronger than '$\\forall p\\,\\exists\\delta$' (pointwise).",
+            "incorrect": [
+              { "match": "b", "message": "Backwards. It is *ordinary* continuity that lets $\\delta$ depend on the point; uniform continuity forbids that dependence." },
+              { "match": "c", "message": "They differ: $x^2$ is continuous on $\\mathbb{R}$ but not uniformly continuous there. The distinction is whether $\\delta$ can be chosen independent of the point." },
+              { "match": "*", "message": "Uniform: $\\exists\\delta$ first, valid for *all* $x,y$. Pointwise: fix the point, *then* choose $\\delta$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Which sequences best show $f(x)=x^2$ is not uniformly continuous on $\\mathbb{R}$?",
+          "tags": ["uniform-continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$x_n=n,\\ y_n=n+\\tfrac1n$: then $|x_n-y_n|\\to 0$ but $|x_n^2-y_n^2|=2+\\tfrac1{n^2}>2$." },
+                { "id": "b", "label": "$x_n=\\tfrac1n,\\ y_n=\\tfrac2n$: both tend to $0$, so $x^2$ is continuous there." },
+                { "id": "c", "label": "$x_n=n,\\ y_n=2n$: then $|x_n-y_n|=n\\to\\infty$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The inputs squeeze together ($\\tfrac1n\\to0$) yet the squared outputs stay more than $2$ apart — exactly the failure of uniform continuity.",
+            "incorrect": [
+              { "match": "b", "message": "Those inputs converge but the *output* gap also shrinks, so they demonstrate nothing about the failure. You need shrinking input gap with non-shrinking output gap." },
+              { "match": "c", "message": "Here $|x_n-y_n|=n\\to\\infty$, not $\\to 0$. A counterexample needs the inputs to get *close* while outputs stay far." },
+              { "match": "*", "message": "Pick $x_n,y_n$ with $|x_n-y_n|\\to 0$ but $|x_n^2-y_n^2|$ bounded below. The choice $y_n=x_n+1/n$ at $x_n=n$ does it." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is a continuous function on the compact set $[0,1]$ automatically uniformly continuous, while on $\\mathbb{R}$ it may not be?",
+          "tags": ["compactness", "uniform-continuity"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Compactness lets finitely many local $\\delta$'s be combined into one global $\\delta$; an unbounded domain like $\\mathbb{R}$ may force $\\delta\\to 0$." },
+                { "id": "b", "label": "Because every function on $[0,1]$ is Lipschitz." },
+                { "id": "c", "label": "Because $[0,1]$ contains only finitely many points." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Compactness (finite subcovers) turns the infinitely many pointwise $\\delta$'s into a single positive global one; on $\\mathbb{R}$ the required $\\delta$ can shrink to $0$, blocking that.",
+            "incorrect": [
+              { "match": "b", "message": "Not every continuous function on $[0,1]$ is Lipschitz (e.g. $\\sqrt{x}$). Uniform continuity there comes from *compactness*, not a Lipschitz bound." },
+              { "match": "c", "message": "$[0,1]$ has uncountably many points. The relevant finiteness is the *finite subcover* from compactness, not finitely many points." },
+              { "match": "*", "message": "The theorem is: continuous on compact ⇒ uniformly continuous. Compactness compresses the local $\\delta$'s into one global $\\delta$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "The definition of uniform continuity of $f$ on $E$ is:",
+      "tags": ["uniform-continuity"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\forall\\varepsilon>0\\,\\exists\\delta>0\\,\\forall x,y\\in E:\\ |x-y|<\\delta\\Rightarrow|f(x)-f(y)|<\\varepsilon$." },
+            { "id": "b", "label": "$\\forall x\\in E\\,\\forall\\varepsilon>0\\,\\exists\\delta>0\\,\\forall y\\in E:\\ |x-y|<\\delta\\Rightarrow|f(x)-f(y)|<\\varepsilon$." },
+            { "id": "c", "label": "$\\exists\\varepsilon>0\\,\\forall\\delta>0\\,\\forall x,y\\in E:\\ |x-y|<\\delta\\Rightarrow|f(x)-f(y)|<\\varepsilon$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The $\\delta$ is quantified *before* the points $x,y$, so it cannot depend on them.",
+        "incorrect": [
+          { "match": "b", "message": "That is *pointwise* continuity: fixing $x$ first lets $\\delta$ depend on it. Uniform continuity puts $\\exists\\delta$ before $\\forall x,y$." },
+          { "match": "c", "message": "This mangles the quantifiers ($\\exists\\varepsilon\\,\\forall\\delta$). The definition is $\\forall\\varepsilon\\,\\exists\\delta\\,\\forall x,y$." },
+          { "match": "*", "message": "Key is the order: $\\forall\\varepsilon\\,\\exists\\delta\\,\\forall x,y$, so one $\\delta$ serves every pair." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Every Lipschitz function (with $|f(x)-f(y)|\\le L|x-y|$, $L>0$) is uniformly continuous because:",
+      "tags": ["lipschitz"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Given $\\varepsilon>0$, the single choice $\\delta=\\varepsilon/L$ forces $|f(x)-f(y)|\\le L|x-y|<\\varepsilon$ for all $x,y$." },
+            { "id": "b", "label": "Lipschitz functions are constant." },
+            { "id": "c", "label": "Lipschitz functions are defined only on compact sets." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The Lipschitz bound converts an input gap below $\\varepsilon/L$ directly into an output gap below $\\varepsilon$, with $\\delta$ independent of the points.",
+        "incorrect": [
+          { "match": "b", "message": "Lipschitz functions need not be constant — $f(x)=3x$ is Lipschitz with $L=3$ and certainly non-constant." },
+          { "match": "c", "message": "Lipschitz functions can live on any set, including $\\mathbb{R}$. The point is the explicit $\\delta=\\varepsilon/L$." },
+          { "match": "*", "message": "Take $\\delta=\\varepsilon/L$: then $|x-y|<\\delta\\Rightarrow|f(x)-f(y)|\\le L|x-y|<\\varepsilon$, valid for all $x,y$." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "$f(x)=x^2$ on the interval $[0,5]$ is:",
+      "tags": ["uniform-continuity", "compactness"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Uniformly continuous, since it is continuous on a compact set." },
+            { "id": "b", "label": "Not uniformly continuous, just as on $\\mathbb{R}$." },
+            { "id": "c", "label": "Not even continuous on $[0,5]$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $[0,5]$ is closed and bounded, hence compact, and a continuous function on a compact set is uniformly continuous.",
+        "incorrect": [
+          { "match": "b", "message": "The failure on $\\mathbb{R}$ relied on $x\\to\\infty$. On the bounded $[0,5]$ that escape is gone, and compactness restores uniform continuity." },
+          { "match": "c", "message": "$x^2$ is a polynomial, continuous everywhere — including $[0,5]$. The question is uniform continuity, which compactness grants." },
+          { "match": "*", "message": "Apply the theorem: continuous on a compact (closed and bounded) set ⇒ uniformly continuous." }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+{
+  "lessonId": "lesson-pointwise-uniform-01",
+  "title": "Pointwise vs Uniform Convergence",
+  "tags": ["uniform-convergence", "pointwise-convergence", "sup-norm", "sequences-of-functions", "weierstrass-m-test"],
+  "prerequisites": ["lesson-continuity-01", "lesson-series-basics-01"],
+  "glossary": {
+    "pointwise": {
+      "term": "pointwise convergence",
+      "definition": "$f_n \\to f$ pointwise on $E$ means that for each fixed $x\\in E$ the numbers $f_n(x)$ converge to $f(x)$; the threshold $N$ may depend on $x$."
+    },
+    "uniform": {
+      "term": "uniform convergence",
+      "definition": "$f_n \\to f$ uniformly on $E$ means that for every $\\varepsilon>0$ there is a single $N$ (independent of $x$) so that $n\\ge N$ forces $|f_n(x)-f(x)|<\\varepsilon$ for every $x\\in E$."
+    },
+    "supnorm": {
+      "term": "sup-norm criterion",
+      "definition": "Setting $M_n=\\sup_{x\\in E}|f_n(x)-f(x)|$, convergence is uniform if and only if $M_n\\to 0$."
+    },
+    "mtest": {
+      "term": "Weierstrass M-test",
+      "definition": "If $|f_n(x)|\\le M_n$ for all $x\\in E$ and $\\sum M_n<\\infty$, then $\\sum f_n$ converges uniformly on $E$."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall from continuity that a limit of a sequence of numbers is a single number, and from series basics that we can add infinitely many terms by controlling tails. Now we let the terms be **functions**: $f_1, f_2, f_3, \\dots$ marching toward a limit function $f$."
+        },
+        {
+          "type": "text",
+          "content": "The surprise is that there are *two different speeds* at which functions can converge, and they behave very differently. Tell them apart and you can predict whether limits keep nice properties; confuse them and you will 'prove' false theorems."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Pointwise convergence (the weak notion).** We say $f_n\\to f$ pointwise on a set $E$ if, for every fixed point $x\\in E$, the ordinary numerical limit holds:"
+        },
+        {
+          "type": "math",
+          "latex": "\\forall x\\in E:\\quad \\lim_{n\\to\\infty} f_n(x)=f(x)."
+        },
+        {
+          "type": "text",
+          "content": "Unpacked with $\\varepsilon$: for each $x$ and each $\\varepsilon>0$ there is an $N$ with $|f_n(x)-f(x)|<\\varepsilon$ for $n\\ge N$. The catch is that $N$ is allowed to depend on $x$ — different points may converge at wildly different rates."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Uniform convergence (the strong notion).** We say $f_n\\to f$ uniformly on $E$ if a *single* $N$ works for every point at once:"
+        },
+        {
+          "type": "math",
+          "latex": "\\forall \\varepsilon>0\\ \\exists N\\ \\forall n\\ge N\\ \\forall x\\in E:\\quad |f_n(x)-f(x)|<\\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "The order of quantifiers is everything: here $N$ is chosen *before* $x$, so it cannot depend on $x$. The clean test is the **sup-norm**: let $M_n=\\sup_{x\\in E}|f_n(x)-f(x)|$. Then $f_n\\to f$ uniformly $\\iff M_n\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "Two companions worth filing away. The **Cauchy criterion**: $f_n$ converges uniformly iff $\\sup_x|f_n(x)-f_m(x)|\\to 0$ as $n,m\\to\\infty$ (no limit needed in advance). And, tying back to series, the **Weierstrass M-test**: if $|f_n(x)|\\le M_n$ for all $x$ and $\\sum M_n<\\infty$, then $\\sum f_n$ converges uniformly."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "discover",
+      "prompt": "Take $f_n(x)=x/n$ on $[0,1]$. The limit is $f(x)=0$. Slide $n$ upward and watch the worst-case gap $\\sup_{x\\in[0,1]}|x/n-0|=1/n$ collapse toward $0$. Because that single number controls *every* $x$ simultaneously, this convergence is uniform.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "initialValue": 1,
+          "label": "n",
+          "readouts": [{ "label": "sup gap = 1/n", "expression": "1/n" }],
+          "markers": [
+            { "value": 1, "label": "start" },
+            { "value": 100, "label": "n large" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["uniform-convergence", "sup-norm"],
+      "prompt": "Worked example: show $f_n(x)=x/n$ converges uniformly to $0$ on $[0,1]$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Goal.** Use the sup-norm criterion: compute $M_n=\\sup_{x\\in[0,1]}|f_n(x)-f(x)|$ and check $M_n\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1.** The pointwise limit is $f(x)=\\lim_{n\\to\\infty} x/n = 0$ for every fixed $x$, so $|f_n(x)-f(x)|=|x/n|=x/n$ on $[0,1]$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 2.** On $[0,1]$ the function $x\\mapsto x/n$ is increasing, so its supremum sits at the right endpoint $x=1$."
+        },
+        {
+          "type": "math",
+          "latex": "M_n=\\sup_{x\\in[0,1]}\\frac{x}{n}=\\frac{1}{n}."
+        },
+        {
+          "type": "text",
+          "content": "**Answer.** $M_n=1/n\\to 0$, so by the sup-norm criterion $f_n\\to 0$ **uniformly** on $[0,1]$. One $N$ (any $N>1/\\varepsilon$) works for all $x$ at once."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["uniform-convergence", "sup-norm"],
+      "scaffold": "worked",
+      "prompt": "Now the famous one. Let $f_n(x)=x^n$ on $[0,1]$. Its pointwise limit is $f(x)=0$ for $x<1$ and $f(1)=1$. Compute the sup distance $\\displaystyle M_n=\\sup_{x\\in[0,1]}|f_n(x)-f(x)|$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example, but track the gap on two pieces. At $x=1$: $|f_n(1)-f(1)|=|1-1|=0$. For $x<1$: $|f_n(x)-f(x)|=|x^n-0|=x^n$."
+        },
+        {
+          "type": "text",
+          "content": "Now ask how large $x^n$ can get for $x<1$. As $x\\to 1^{-}$, $x^n$ climbs arbitrarily close to $1$ (never reaching it). The supremum is the value it approaches."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "M_n = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+      "feedback": {
+        "correct": "Exactly — $M_n=1$ for every $n$. Since $1\\not\\to 0$, the sup-norm criterion says the convergence is **not** uniform, even though it is pointwise. The trouble lives near $x=1$, where the limit jumps.",
+        "incorrect": [
+          { "match": "0", "message": "Don't only check $x=1$. For $x$ just below $1$, $x^n$ is close to $1$ while $f(x)=0$, so the gap there is nearly $1$. Take the supremum over all of $[0,1]$." },
+          { "match": "1/n", "message": "That was the gap for $x/n$. Here the function is $x^n$, and the gap near $x=1$ does not shrink with $n$ — it stays close to $1$." },
+          { "match": "*", "message": "Split into $x<1$ (gap $=x^n$) and $x=1$ (gap $=0$). The supremum of $x^n$ over $x<1$ is the value approached as $x\\to 1^{-}$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["uniform-convergence", "pointwise-convergence"],
+      "scaffold": "bare",
+      "prompt": "Which statement is the correct definition of $f_n\\to f$ **uniformly** on $E$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "For every $\\varepsilon>0$ there is one $N$ (not depending on $x$) so that $n\\ge N$ gives $|f_n(x)-f(x)|<\\varepsilon$ for all $x\\in E$." },
+            { "id": "b", "label": "For each $x\\in E$ and every $\\varepsilon>0$ there is an $N$ (which may depend on $x$) with $|f_n(x)-f(x)|<\\varepsilon$ for $n\\ge N$." },
+            { "id": "c", "label": "There exists $x\\in E$ with $f_n(x)\\to f(x)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The defining feature of uniform convergence is that one $N$ is chosen *before* $x$, so it serves every point simultaneously.",
+        "incorrect": [
+          { "match": "b", "message": "That is the definition of *pointwise* convergence — the $N$ is allowed to depend on $x$. Uniform convergence forbids that dependence." },
+          { "match": "c", "message": "Convergence at a single point is far weaker than either notion; both pointwise and uniform convergence quantify over all $x\\in E$." },
+          { "match": "*", "message": "Look at the quantifier order. Uniform means $\\forall\\varepsilon\\,\\exists N\\,\\forall x$: the $N$ comes before $x$, so it cannot depend on $x$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["pointwise-convergence", "uniform-convergence"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* argument that pointwise convergence always implies uniform convergence. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Suppose $f_n\\to f$ pointwise on $E$." },
+            { "id": "p2", "label": "Fix $\\varepsilon>0$. For each $x$ there is $N_x$ with $|f_n(x)-f(x)|<\\varepsilon$ whenever $n\\ge N_x$." },
+            { "id": "p3", "label": "Let $N=N_x$; this same $N$ then works for every $x\\in E$ at once." },
+            { "id": "p4", "label": "Hence $f_n\\to f$ uniformly on $E$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. Each $N_x$ depends on $x$, and there may be no finite $N$ that beats all of them. For $f_n(x)=x^n$ on $[0,1]$, points near $1$ demand ever-larger $N_x$, so no single $N$ works.",
+        "incorrect": [
+          { "match": "*", "message": "Steps 1, 2, and 4 are valid given what precedes them. The error is asserting a single $N$ works for all $x$ — but the $N_x$ in step 2 depends on $x$, and their supremum can be infinite (think $x^n$ near $1$)." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["sup-norm", "uniform-convergence"],
+      "scaffold": "bare",
+      "prompt": "Match each claim about the sup-norm $M_n=\\sup_{x\\in E}|f_n(x)-f(x)|$ to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "If $M_n\\to 0$, then $f_n\\to f$ uniformly." },
+            { "id": "st2", "label": "If $M_n\\not\\to 0$, then $f_n\\to f$ is not uniform." },
+            { "id": "st3", "label": "For $f_n(x)=x^n$ on $[0,1]$, the convergence is not uniform." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Once $M_n<\\varepsilon$, every $x$ satisfies $|f_n(x)-f(x)|\\le M_n<\\varepsilon$ with one shared $N$." },
+            { "id": "j_b", "label": "Some $\\varepsilon>0$ is exceeded by the gap at points $x$ for arbitrarily large $n$, so no single $N$ can succeed." },
+            { "id": "j_c", "label": "Its sup distance equals $1$ for every $n$, which does not tend to $0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. The sup-norm packages 'one $N$ for all $x$' into a single number: $M_n\\to 0$ is uniform convergence, and $x^n$ on $[0,1]$ keeps $M_n=1$, so it fails.",
+        "incorrect": [
+          { "match": "*", "message": "Pair each claim with the sup-norm fact behind it: a vanishing sup gives one universal $N$, a non-vanishing sup blocks any $N$, and $x^n$ has $M_n=1$ for all $n$." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Two speeds of convergence. **Pointwise**: each $x$ converges, but the threshold $N$ may depend on $x$. **Uniform**: one $N$ controls every $x$ at once — equivalently, the sup-norm $M_n=\\sup_x|f_n(x)-f(x)|\\to 0$."
+        },
+        {
+          "type": "text",
+          "content": "The canonical warning is $f_n(x)=x^n$ on $[0,1]$: it converges pointwise to a *discontinuous* limit, and the sup gap stays at $1$, so it is not uniform. Contrast $f_n(x)=x/n$, whose sup gap $1/n\\to 0$ makes it uniform."
+        },
+        {
+          "type": "text",
+          "content": "Tools to detect uniformity without knowing the limit: the **Cauchy criterion** ($\\sup_x|f_n-f_m|\\to 0$) and, for series, the **Weierstrass M-test** ($|f_n|\\le M_n$ with $\\sum M_n<\\infty$). Next we will see *why* uniform convergence is worth the trouble: it is exactly what lets limits keep continuity, integrals, and (with care) derivatives."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "What single feature distinguishes uniform convergence from pointwise convergence?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The threshold $N$ can be chosen independently of $x$." },
+                { "id": "b", "label": "Each $f_n$ must be continuous." },
+                { "id": "c", "label": "The limit function $f$ must be bounded." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — uniform convergence is precisely the demand that one $N$ works for all $x$ simultaneously.",
+            "incorrect": [
+              { "match": "b", "message": "Continuity of the $f_n$ is not part of the definition; uniform convergence is about a single $N$ working for every $x$." },
+              { "match": "c", "message": "Boundedness is not the issue. The distinguishing feature is whether $N$ may depend on $x$ (pointwise) or not (uniform)." },
+              { "match": "*", "message": "Compare the quantifier orders: pointwise picks $N$ after $x$; uniform picks $N$ before $x$, independent of it." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Why does $f_n(x)=x^n$ on $[0,1]$ converge pointwise but not uniformly?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Each $x$ converges, but $\\sup_{x}|x^n-f(x)|=1$ for all $n$, so the sup gap never shrinks." },
+                { "id": "b", "label": "Because $x^n$ fails to converge at $x=1$." },
+                { "id": "c", "label": "Because $[0,1]$ is not an open interval." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The pointwise limit exists everywhere, but the worst-case error near $x=1$ stays equal to $1$, so by the sup-norm criterion the convergence cannot be uniform.",
+            "incorrect": [
+              { "match": "b", "message": "It does converge at $x=1$: $1^n=1\\to 1=f(1)$. The failure is the non-vanishing sup gap caused by points just below $1$." },
+              { "match": "c", "message": "The domain shape is irrelevant here. The obstruction is the sup distance staying at $1$ for every $n$." },
+              { "match": "*", "message": "Apply the sup-norm test: compute $\\sup_x|x^n-f(x)|$. It equals $1$ for all $n$, which does not go to $0$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "For a series $\\sum f_n$ with $|f_n(x)|\\le M_n$ on $E$, what does the Weierstrass M-test require to conclude uniform convergence?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "That the numerical series $\\sum M_n$ converges." },
+                { "id": "b", "label": "That each $f_n$ is differentiable." },
+                { "id": "c", "label": "That $M_n\\to 0$ is enough by itself." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. A convergent dominating series $\\sum M_n$ bounds all the tails uniformly, forcing $\\sum f_n$ to converge uniformly.",
+            "incorrect": [
+              { "match": "b", "message": "Differentiability is not required for the M-test; it controls convergence, not derivatives." },
+              { "match": "c", "message": "$M_n\\to 0$ alone is too weak (recall $\\sum 1/n$ has terms $\\to 0$ yet diverges). The M-test needs the *sum* $\\sum M_n$ to converge." },
+              { "match": "*", "message": "The M-test compares to a numerical series: you need $\\sum M_n<\\infty$, a convergent dominating sum." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "In the definition of uniform convergence, the number $N$ may depend on which of the following?",
+      "tags": ["uniform-convergence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "On $\\varepsilon$ only — not on $x$." },
+            { "id": "b", "label": "On both $\\varepsilon$ and $x$." },
+            { "id": "c", "label": "On neither $\\varepsilon$ nor $x$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $N$ depends on $\\varepsilon$ but is independent of $x$, which is what makes the convergence uniform.",
+        "incorrect": [
+          { "match": "b", "message": "If $N$ could depend on $x$, you would only have pointwise convergence. Uniform forbids dependence on $x$." },
+          { "match": "*", "message": "Uniform convergence allows $N$ to depend on $\\varepsilon$ (smaller $\\varepsilon$ needs larger $N$) but not on the point $x$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "Compute the sup-norm distance $\\displaystyle\\sup_{x\\in[0,1]}\\left|\\frac{x}{n}-0\\right|$ for the sequence $f_n(x)=x/n$.",
+      "tags": ["sup-norm", "uniform-convergence"],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "sup = {{answer}}", "placeholder": "in terms of n" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1/n"] },
+      "feedback": {
+        "correct": "Exactly — the maximum of $x/n$ on $[0,1]$ is at $x=1$, giving $1/n$, which $\\to 0$, so the convergence is uniform.",
+        "incorrect": [
+          { "match": "*", "message": "On $[0,1]$ the function $x/n$ increases, so its supremum is at $x=1$: the value is $1/n$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "prompt": "True or false: if $f_n\\to f$ uniformly on $E$, then $\\sup_{x\\in E}|f_n(x)-f(x)|\\to 0$.",
+      "tags": ["sup-norm"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "True — this sup-norm condition is equivalent to uniform convergence." },
+            { "id": "b", "label": "False — uniform convergence says nothing about the supremum." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "True. Uniform convergence and $M_n\\to 0$ are two ways of saying the same thing.",
+        "incorrect": [
+          { "match": "*", "message": "The sup-norm criterion is exactly equivalent to uniform convergence: $f_n\\to f$ uniformly $\\iff M_n=\\sup_x|f_n-f|\\to 0$." }
+        ]
+      }
+    }
+  ]
+}

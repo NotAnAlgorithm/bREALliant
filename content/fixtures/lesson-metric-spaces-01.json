@@ -1,0 +1,299 @@
+{
+  "lessonId": "lesson-metric-spaces-01",
+  "title": "Metric Spaces",
+  "tags": ["metric-space", "distance", "triangle-inequality"],
+  "prerequisites": ["lesson-euclidean-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "In $\\mathbb{R}^n$ we measured distance with $d(x,y)=\\|x-y\\|$. But distance is a more general idea than coordinates. The distance between two cities along roads, the number of edits between two words, the gap between two functions — none of these are Euclidean lengths, yet all behave like distances."
+        },
+        {
+          "type": "text",
+          "content": "Rather than rebuild the theory for each example, we isolate the few properties a distance *must* have, and study every space that satisfies them at once. That abstraction is a **metric space**."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A **metric space** is a set $X$ together with a **metric** (or distance function) $d : X \\times X \\to \\mathbb{R}$ satisfying four axioms for all $x,y,z \\in X$:"
+        },
+        {
+          "type": "math",
+          "latex": "\\textbf{(M1)}\\ d(x,y) \\ge 0 \\qquad \\textbf{(M2)}\\ d(x,y)=0 \\iff x=y"
+        },
+        {
+          "type": "math",
+          "latex": "\\textbf{(M3)}\\ d(x,y)=d(y,x) \\qquad \\textbf{(M4)}\\ d(x,z) \\le d(x,y)+d(y,z)"
+        },
+        {
+          "type": "text",
+          "content": "These say distances are nonnegative (M1), vanish only between a point and itself (M2), are symmetric (M3), and obey the **triangle inequality** (M4): a detour through $y$ is never shorter than going straight from $x$ to $z$."
+        },
+        {
+          "type": "text",
+          "content": "Many distances fit: the **Euclidean metric** $d_2(x,y)=\\|x-y\\|$; the **taxicab** (or $\\ell^1$) metric $d_1(x,y)=\\sum_i |x_i-y_i|$; the **sup metric** $d_\\infty(x,y)=\\max_i |x_i-y_i|$; and the **discrete metric**, which is $0$ when $x=y$ and $1$ otherwise."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "On the real line the metric is $d(x,y)=|x-y|$. Here $x=-1$ and $y=2$, so $d(x,y)=|-1-2|=3$ — the length of the highlighted segment. Notice it is the same whether you travel left-to-right or right-to-left: that is symmetry (M3).",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -3,
+          "max": 3,
+          "intervals": [{ "start": -1, "end": 2, "label": "d(-1, 2) = 3" }],
+          "markers": [
+            { "value": -1, "label": "x = -1" },
+            { "value": 2, "label": "y = 2" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["metric-space"],
+      "prompt": "Worked example: verify that the discrete metric is genuinely a metric. Define $d(x,y)=0$ if $x=y$, and $d(x,y)=1$ if $x\\ne y$, on any set $X$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**(M1) Nonnegativity.** Every value of $d$ is either $0$ or $1$, so $d(x,y)\\ge 0$ always."
+        },
+        {
+          "type": "text",
+          "content": "**(M2) Identity of indiscernibles.** By definition $d(x,y)=0$ happens exactly when $x=y$, which is precisely what M2 demands."
+        },
+        {
+          "type": "text",
+          "content": "**(M3) Symmetry.** Whether $x=y$ or $x\\ne y$ does not depend on the order, so $d(x,y)=d(y,x)$."
+        },
+        {
+          "type": "text",
+          "content": "**(M4) Triangle inequality.** We need $d(x,z)\\le d(x,y)+d(y,z)$. If $x=z$ the left side is $0$ and the inequality is automatic. If $x\\ne z$ the left side is $1$, and then $y$ cannot equal both $x$ and $z$, so at least one of $d(x,y),d(y,z)$ is $1$. Hence the right side is at least $1$."
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** All four axioms hold, so the discrete metric is a valid metric on any set — even one with no notion of geometry at all."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["distance", "metric-space"],
+      "scaffold": "worked",
+      "prompt": "Using the taxicab metric $d_1(x,y)=|x_1-y_1|+|x_2-y_2|$ in $\\mathbb{R}^2$, what is the distance from $(0,0)$ to $(3,4)$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "The taxicab metric adds the coordinate gaps instead of combining them with a square root."
+        },
+        {
+          "type": "math",
+          "latex": "d_1\\big((0,0),(3,4)\\big) = |0-3| + |0-4| = 3 + 4"
+        },
+        {
+          "type": "text",
+          "content": "Now add the two absolute differences."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "d_1((0,0),(3,4)) = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["7"] },
+      "feedback": {
+        "correct": "Exactly. Taxicab distance is $|3|+|4|=7$ — you can only travel along grid lines, so the diagonal shortcut is unavailable.",
+        "incorrect": [
+          { "match": "5", "message": "That is the Euclidean distance $\\sqrt{3^2+4^2}=5$. The taxicab metric *adds* $|3|+|4|$ instead." },
+          { "match": "*", "message": "Use $d_1=|x_1-y_1|+|x_2-y_2| = 3 + 4$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["triangle-inequality", "metric-space"],
+      "prompt": "Someone claims $d(x,y)=(x-y)^2$ is a metric on $\\mathbb{R}$ and offers this 'proof'. Exactly one step is wrong. Which one?",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "a", "label": "$d(x,y)=(x-y)^2 \\ge 0$, and equals $0$ iff $x=y$. So (M1) and (M2) hold." },
+            { "id": "b", "label": "$d(x,y)=(x-y)^2=(y-x)^2=d(y,x)$, so (M3) symmetry holds." },
+            { "id": "c", "label": "For all $x,y,z$, $(x-z)^2 \\le (x-y)^2+(y-z)^2$, so (M4) holds." },
+            { "id": "d", "label": "Therefore $d(x,y)=(x-y)^2$ is a metric on $\\mathbb{R}$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. The triangle inequality fails. Take $x=0,y=1,z=2$: $(0-2)^2=4$, but $(0-1)^2+(1-2)^2=1+1=2$, and $4 \\le 2$ is false. (This $d$ is the *square* of the metric; squaring breaks M4.)",
+        "incorrect": [
+          { "match": "a", "message": "Step (a) is fine: a square is $\\ge 0$ and equals $0$ only when $x=y$. Look for where the reasoning actually breaks." },
+          { "match": "b", "message": "Step (b) is fine: $(x-y)^2=(y-x)^2$, so symmetry genuinely holds. The flaw is elsewhere." },
+          { "match": "d", "message": "Step (d) only restates the conclusion; it is the earlier claimed step that is false. Test the triangle inequality with concrete numbers." },
+          { "match": "*", "message": "Try plugging $x=0,y=1,z=2$ into each claimed inequality and see which one fails." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A metric space is a set $X$ with a distance function $d$ obeying four axioms: nonnegativity, $d(x,y)=0\\iff x=y$, symmetry, and the triangle inequality."
+        },
+        {
+          "type": "text",
+          "content": "Stripping distance down to these axioms lets one theory cover the Euclidean, taxicab, sup, and discrete metrics — and many spaces with no coordinates at all. The triangle inequality (M4) is the most delicate axiom and the one bogus 'metrics' most often violate."
+        },
+        {
+          "type": "text",
+          "content": "With distance abstracted, every notion built from it travels with us. The next lesson uses $d$ to define open balls and neighborhoods, the foundation of continuity and limits in any metric space."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "Which property is the **triangle inequality**?",
+          "tags": ["triangle-inequality", "metric-space"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$d(x,y)=d(y,x)$" },
+                { "id": "b", "label": "$d(x,z) \\le d(x,y) + d(y,z)$" },
+                { "id": "c", "label": "$d(x,y) \\ge 0$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right. Going straight from $x$ to $z$ is never longer than detouring through $y$.",
+            "incorrect": [
+              { "match": "a", "message": "That is symmetry (M3), not the triangle inequality." },
+              { "match": "c", "message": "That is nonnegativity (M1). The triangle inequality compares a direct distance to a detour." },
+              { "match": "*", "message": "Look for the axiom involving three points and a detour: $d(x,z)\\le d(x,y)+d(y,z)$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In the discrete metric, what is $d(x,y)$ when $x \\ne y$?",
+          "tags": ["metric-space", "distance"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$0$" },
+                { "id": "b", "label": "$1$" },
+                { "id": "c", "label": "$|x-y|$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Exactly. Distinct points are always exactly distance $1$ apart in the discrete metric.",
+            "incorrect": [
+              { "match": "a", "message": "The discrete metric is $0$ only when the points are equal; here $x\\ne y$." },
+              { "match": "c", "message": "That is the usual metric on $\\mathbb{R}$. The discrete metric ignores magnitude and returns $1$ for any two distinct points." },
+              { "match": "*", "message": "The discrete metric returns $0$ if the points coincide and $1$ otherwise." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is $d(x,y)=(x-y)^2$ **not** a metric on $\\mathbb{R}$?",
+          "tags": ["triangle-inequality", "metric-space"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "It can be negative." },
+                { "id": "b", "label": "It is not symmetric." },
+                { "id": "c", "label": "It violates the triangle inequality (e.g. $x=0,y=1,z=2$ gives $4 > 1+1$)." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Right. Squaring inflates large gaps too much, so the detour can beat the direct route.",
+            "incorrect": [
+              { "match": "a", "message": "A square is never negative, so M1 holds. The failure is the triangle inequality." },
+              { "match": "b", "message": "$(x-y)^2=(y-x)^2$, so it *is* symmetric. The failure is the triangle inequality." },
+              { "match": "*", "message": "Test M4 with $x=0,y=1,z=2$: the direct squared distance $4$ exceeds the detour sum $1+1$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "Which condition is axiom (M2), the identity of indiscernibles?",
+      "tags": ["metric-space"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$d(x,y)=0 \\iff x=y$" },
+            { "id": "b", "label": "$d(x,y) \\le d(x,z)+d(z,y)$" },
+            { "id": "c", "label": "$d(x,y)=d(y,x)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Distance is zero exactly between a point and itself — nothing else can be at distance zero.",
+        "incorrect": [
+          { "match": "b", "message": "That is the triangle inequality (M4)." },
+          { "match": "c", "message": "That is symmetry (M3)." },
+          { "match": "*", "message": "M2 pins down when the distance is zero: only when the two points coincide." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "The taxicab metric $d_1$ on $\\mathbb{R}^2$ is defined by:",
+      "tags": ["distance"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$|x_1-y_1| + |x_2-y_2|$" },
+            { "id": "b", "label": "$\\sqrt{(x_1-y_1)^2 + (x_2-y_2)^2}$" },
+            { "id": "c", "label": "$\\max(|x_1-y_1|, |x_2-y_2|)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Taxicab distance sums the coordinate gaps, like driving along a city grid.",
+        "incorrect": [
+          { "match": "b", "message": "That is the Euclidean metric $d_2$." },
+          { "match": "c", "message": "That is the sup metric $d_\\infty$." },
+          { "match": "*", "message": "Taxicab ($\\ell^1$) distance adds the absolute coordinate differences." }
+        ]
+      }
+    }
+  ]
+}

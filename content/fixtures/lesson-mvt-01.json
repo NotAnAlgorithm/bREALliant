@@ -1,0 +1,338 @@
+{
+  "lessonId": "lesson-mvt-01",
+  "title": "Rolle & the Mean Value Theorem",
+  "tags": ["mean-value-theorem", "rolle", "interior-extremum", "monotonicity"],
+  "prerequisites": ["lesson-derivative-01", "lesson-evt-01"],
+  "glossary": {
+    "interior-extremum": {
+      "term": "interior extremum (Fermat)",
+      "definition": "If $f$ has a local max or min at an interior point $c$ and $f'(c)$ exists, then $f'(c)=0$."
+    },
+    "rolle-theorem": {
+      "term": "Rolle's theorem",
+      "definition": "If $f$ is continuous on $[a,b]$, differentiable on $(a,b)$, and $f(a)=f(b)$, then $f'(c)=0$ for some $c\\in(a,b)$."
+    },
+    "mean-value-theorem": {
+      "term": "Mean Value Theorem (MVT)",
+      "definition": "If $f$ is continuous on $[a,b]$ and differentiable on $(a,b)$, then $f'(c)=\\frac{f(b)-f(a)}{b-a}$ for some $c\\in(a,b)$."
+    },
+    "critical-point": {
+      "term": "critical point",
+      "definition": "A point $c$ where $f'(c)=0$ (or $f'(c)$ fails to exist)."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall the prerequisites: the **derivative** $f'(c)$ is the slope of the tangent at $c$, and the **Extreme Value Theorem** says a continuous function on a closed interval $[a,b]$ attains a maximum and a minimum. We are about to fuse these two facts."
+        },
+        {
+          "type": "text",
+          "content": "Drive from $a$ to $b$. Your *average* velocity is $\\frac{f(b)-f(a)}{b-a}$, the slope of the secant joining the endpoints. Intuition: at some instant your *instantaneous* velocity $f'(c)$ must equal that average — the tangent must run parallel to the secant somewhere."
+        },
+        {
+          "type": "text",
+          "content": "That is the Mean Value Theorem. To prove it cleanly we first isolate two smaller truths: where extrema force a flat tangent (Fermat), and the flat-secant special case (Rolle)."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Interior extremum theorem (Fermat).** If $f$ has a local maximum or minimum at an interior point $c$ and $f'(c)$ exists, then $f'(c)=0$." },
+        { "type": "text", "content": "**Why.** Suppose $c$ is a local max. For $x$ slightly less than $c$, $\\frac{f(x)-f(c)}{x-c}\\ge 0$ (numerator $\\le 0$, denominator $<0$), so the left limit gives $f'(c)\\ge 0$. For $x$ slightly greater, the quotient is $\\le 0$, so the right limit gives $f'(c)\\le 0$." },
+        { "type": "math", "latex": "f'(c)\\ge 0 \\ \\text{and}\\ f'(c)\\le 0 \\ \\Longrightarrow\\ f'(c)=0." },
+        { "type": "text", "content": "The two one-sided sign constraints can only agree at $0$. (A minimum is the same argument with inequalities reversed.) Note 'interior' is essential — at an endpoint only one side exists." }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Rolle's theorem.** If $f$ is continuous on $[a,b]$, differentiable on $(a,b)$, and $f(a)=f(b)$, then there is some $c\\in(a,b)$ with $f'(c)=0$." },
+        { "type": "text", "content": "**Proof.** By the Extreme Value Theorem $f$ attains a max $M$ and a min $m$ on $[a,b]$. If both occur only at the endpoints, then $M=m=f(a)=f(b)$, so $f$ is constant and $f'\\equiv 0$. Otherwise an extremum occurs at some interior $c$, and Fermat gives $f'(c)=0$." },
+        { "type": "text", "content": "So Rolle is EVT (to *find* an extremum) plus Fermat (to *flatten* it). Equal endpoints guarantee the high or low point lives strictly inside." }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "discover",
+      "prompt": "Consolidate the MVT picture for $f(x)=x^2$ on $[0,2]$. The endpoint secant has slope $\\frac{f(2)-f(0)}{2-0}=2$. Slide $c$ and watch the tangent slope $2c$; it equals the secant slope exactly when $c=1$. The tangent there is parallel to the secant.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0,
+          "max": 2,
+          "step": 0.05,
+          "initialValue": 1,
+          "label": "c",
+          "readouts": [
+            { "label": "tangent slope f'(c)=2c", "expression": "2 * c" },
+            { "label": "secant slope", "expression": "2" }
+          ],
+          "markers": [
+            { "value": 1, "label": "c = 1" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["mean-value-theorem"],
+      "prompt": "Worked example: apply the MVT to $f(x)=x^2$ on $[0,2]$ and find $c$.",
+      "blocks": [
+        { "type": "text", "content": "**Check hypotheses.** $f(x)=x^2$ is continuous on $[0,2]$ and differentiable on $(0,2)$, so the MVT applies." },
+        { "type": "text", "content": "**Compute the secant slope.**" },
+        { "type": "math", "latex": "\\frac{f(2)-f(0)}{2-0}=\\frac{4-0}{2}=2." },
+        { "type": "text", "content": "**Solve $f'(c)=$ secant slope.** Since $f'(x)=2x$, set $2c=2$." },
+        { "type": "math", "latex": "2c=2 \\ \\Longrightarrow\\ c=1\\in(0,2)." },
+        { "type": "text", "content": "**Answer.** $c=1$. The tangent at $x=1$ has slope $2$, parallel to the endpoint secant — exactly what the MVT promises." }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["mean-value-theorem"],
+      "scaffold": "worked",
+      "prompt": "Apply the MVT to $f(x)=x^2$ on $[1,5]$. Find the value $c\\in(1,5)$ guaranteed by the theorem.",
+      "workedExample": [
+        { "type": "text", "content": "Mirror the worked example. First the secant slope:" },
+        { "type": "math", "latex": "\\frac{f(5)-f(1)}{5-1}=\\frac{25-1}{4}=6." },
+        { "type": "text", "content": "Now set $f'(c)=2c$ equal to $6$ and solve for $c$." }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "c = {{answer}}", "placeholder": "a number in (1,5)" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["3"] },
+      "feedback": {
+        "correct": "Exactly. The secant slope is $6$, and $2c=6$ gives $c=3\\in(1,5)$.",
+        "incorrect": [
+          { "match": "6", "message": "$6$ is the secant slope (the target for $f'(c)$), not $c$ itself. Solve $2c=6$." },
+          { "match": "*", "message": "Set the tangent slope equal to the secant slope: $f'(c)=2c$ and $\\frac{f(5)-f(1)}{4}=6$, so $2c=6$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["mean-value-theorem"],
+      "scaffold": "completion",
+      "prompt": "Put the proof of the MVT in order. The idea is to tilt $f$ so its endpoints match, then use Rolle.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "d1", "label": "Define $g(x)=f(x)-\\left[f(a)+\\frac{f(b)-f(a)}{b-a}(x-a)\\right]$, i.e. $f$ minus the secant line." },
+            { "id": "d2", "label": "Verify $g(a)=g(b)=0$, and $g$ is continuous on $[a,b]$, differentiable on $(a,b)$." },
+            { "id": "d3", "label": "Apply Rolle's theorem to $g$ to get $c\\in(a,b)$ with $g'(c)=0$." },
+            { "id": "d4", "label": "Since $g'(x)=f'(x)-\\frac{f(b)-f(a)}{b-a}$, conclude $f'(c)=\\frac{f(b)-f(a)}{b-a}$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["d1,d2,d3,d4"] },
+      "feedback": {
+        "correct": "Exactly. Subtracting the secant makes the endpoints equal, Rolle hands back a flat point of $g$, and $g'(c)=0$ unwinds to $f'(c)=$ the secant slope. The MVT is Rolle in disguise.",
+        "incorrect": [
+          { "match": "*", "message": "Canonical order: (1) build $g=f-\\text{secant}$, (2) check $g(a)=g(b)=0$ and the smoothness hypotheses, (3) apply Rolle to get $g'(c)=0$, (4) translate back to $f'(c)$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Consequences.** The MVT turns information about $f'$ on an interval into information about $f$ itself." },
+        { "type": "text", "content": "If $f'(x)=0$ for all $x$ in an interval, then for any two points $f(y)-f(x)=f'(c)(y-x)=0$, so $f$ is **constant**. (This is why two antiderivatives differ by a constant.)" },
+        { "type": "text", "content": "If $f'(x)>0$ throughout, then for $x<y$ we get $f(y)-f(x)=f'(c)(y-x)>0$, so $f$ is **strictly increasing**. Likewise $f'<0$ forces strictly decreasing. The sign of the derivative dictates monotonicity." }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["mean-value-theorem"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* application of the MVT. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $f(x)=|x|$ on $[-1,1]$; $f$ is continuous on $[-1,1]$." },
+            { "id": "p2", "label": "The endpoint secant slope is $\\frac{f(1)-f(-1)}{1-(-1)}=\\frac{1-1}{2}=0$." },
+            { "id": "p3", "label": "By the MVT there is $c\\in(-1,1)$ with $f'(c)=0$." },
+            { "id": "p4", "label": "So $|x|$ has a point with horizontal tangent in $(-1,1)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 misapplies the MVT. The theorem requires differentiability on the *whole* open interval $(-1,1)$, but $|x|$ is not differentiable at $0\\in(-1,1)$. Indeed $f'(x)=\\pm 1$ everywhere it exists, so no $c$ has $f'(c)=0$ — the conclusion is actually false here.",
+        "incorrect": [
+          { "match": "p4", "message": "Step 4 is just the false conclusion; the real error is the step that *invokes* the MVT. Check whether every hypothesis of the MVT holds for $|x|$ on $(-1,1)$." },
+          { "match": "p1", "message": "$|x|$ really is continuous on $[-1,1]$, so step 1 is fine. The missing hypothesis is differentiability on the open interval — find the step that ignores it." },
+          { "match": "*", "message": "The MVT needs differentiability on all of $(a,b)$. $|x|$ fails this at $0$, so the step that applies the theorem is invalid." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        { "type": "text", "content": "**Fermat:** an interior extremum with a derivative forces $f'(c)=0$. **Rolle:** equal endpoints (with continuity on $[a,b]$, differentiability on $(a,b)$) force a flat tangent inside — it is EVT plus Fermat." },
+        { "type": "text", "content": "**MVT:** under the same smoothness, some interior $c$ has $f'(c)=\\frac{f(b)-f(a)}{b-a}$. Proof: apply Rolle to $g=f-\\text{secant}$. The hypotheses matter — drop differentiability on the open interval (as with $|x|$) and the conclusion can fail." },
+        { "type": "text", "content": "**Payoff:** $f'\\equiv 0\\Rightarrow f$ constant; $f'>0\\Rightarrow f$ strictly increasing. The MVT is the bridge from local slopes to global behavior — and, next, to approximating functions by polynomials." }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["mean-value-theorem"],
+          "prompt": "The Mean Value Theorem guarantees a $c\\in(a,b)$ with $f'(c)=\\frac{f(b)-f(a)}{b-a}$ provided that:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$f$ is continuous on $[a,b]$ and differentiable on $(a,b)$." },
+                { "id": "b", "label": "$f$ is differentiable on $[a,b]$ and $f(a)=f(b)$." },
+                { "id": "c", "label": "$f$ is merely continuous on $(a,b)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — continuity on the closed interval and differentiability on the open interior are exactly the hypotheses.",
+            "incorrect": [
+              { "match": "b", "message": "That extra condition $f(a)=f(b)$ is Rolle's special case (it forces the secant slope to $0$). The general MVT does not require equal endpoints." },
+              { "match": "c", "message": "Continuity alone is not enough — you also need differentiability on $(a,b)$, and continuity must hold on the *closed* interval $[a,b]$." },
+              { "match": "*", "message": "Hypotheses: continuous on $[a,b]$, differentiable on $(a,b)$. Then a parallel-tangent point exists." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["rolle"],
+          "prompt": "How is Rolle's theorem related to the MVT?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Rolle is the special case of the MVT where $f(a)=f(b)$, making the secant slope $0$." },
+                { "id": "b", "label": "Rolle is a strictly stronger theorem that implies nothing about the MVT." },
+                { "id": "c", "label": "They are unrelated results about different kinds of functions." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — set $f(a)=f(b)$ in the MVT and the guaranteed slope is $0$, which is Rolle. Conversely, applying Rolle to $f-\\text{secant}$ proves the MVT.",
+            "incorrect": [
+              { "match": "b", "message": "Rolle is actually the *special case* $f(a)=f(b)$ of the MVT; the MVT is the more general statement (and is proved *from* Rolle)." },
+              { "match": "c", "message": "They are tightly linked: Rolle is the flat-secant case of the MVT, and the MVT is proved by applying Rolle to $f$ minus its secant line." },
+              { "match": "*", "message": "Put $f(a)=f(b)$ into the MVT: the secant slope becomes $0$, recovering Rolle." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["mean-value-theorem"],
+          "prompt": "Why does the MVT *need* differentiability on the entire open interval — what goes wrong otherwise? (Self-explanation.)",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Without it the conclusion can fail: $|x|$ on $[-1,1]$ has secant slope $0$, yet $f'$ is never $0$ because of the non-differentiable corner at $x=0$." },
+                { "id": "b", "label": "It is not really needed; continuity alone always yields the parallel tangent." },
+                { "id": "c", "label": "Because differentiability guarantees $f(a)=f(b)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — the corner of $|x|$ is exactly where the would-be parallel tangent should live, but no derivative exists there, so the guaranteed $c$ simply does not appear. The hypothesis is load-bearing.",
+            "incorrect": [
+              { "match": "b", "message": "Continuity alone is not enough: $|x|$ is continuous on $[-1,1]$ but has no point with $f'(c)=0$, so the MVT conclusion fails without differentiability on $(a,b)$." },
+              { "match": "c", "message": "Differentiability does not force equal endpoints. Its role is to guarantee a tangent slope exists at every interior point so the parallel-tangent argument can land somewhere." },
+              { "match": "*", "message": "Test the hypothesis against $|x|$ on $[-1,1]$: secant slope $0$, but the corner at $0$ means no interior $c$ has $f'(c)=0$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["mean-value-theorem"],
+      "prompt": "For $f(x)=x^2$ on $[0,6]$, find the $c$ guaranteed by the MVT.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "c = {{answer}}", "placeholder": "a number in (0,6)" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["3"] },
+      "feedback": {
+        "correct": "Yes — secant slope $\\frac{36-0}{6}=6$, and $2c=6$ gives $c=3$.",
+        "incorrect": [
+          { "match": "6", "message": "$6$ is the secant slope, the value $f'(c)$ must hit. Solve $2c=6$ to get $c$." },
+          { "match": "*", "message": "Secant slope is $\\frac{f(6)-f(0)}{6}=6$; set $f'(c)=2c=6$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["monotonicity"],
+      "prompt": "If $f'(x)=0$ for every $x$ in an interval, the MVT tells us that $f$ is:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "constant on that interval" },
+            { "id": "b", "label": "strictly increasing" },
+            { "id": "c", "label": "equal to $0$ everywhere" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $f(y)-f(x)=f'(c)(y-x)=0$ for any two points, so $f$ is constant.",
+        "incorrect": [
+          { "match": "b", "message": "Strictly increasing comes from $f'>0$. A *zero* derivative gives no change at all: $f$ is constant." },
+          { "match": "c", "message": "The function is constant, but that constant need not be $0$ — e.g. $f\\equiv 7$ has $f'\\equiv 0$." },
+          { "match": "*", "message": "Apply the MVT between any two points: $f(y)-f(x)=f'(c)(y-x)=0$, so $f$ is constant." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["interior-extremum"],
+      "prompt": "Fermat's interior extremum theorem says that if $f$ has a local extremum at an interior point $c$ and $f'(c)$ exists, then:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f'(c)=0$" },
+            { "id": "b", "label": "$f(c)=0$" },
+            { "id": "c", "label": "$f'(c)>0$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — the one-sided slope signs ($\\ge 0$ from one side, $\\le 0$ from the other) can only agree at $f'(c)=0$.",
+        "incorrect": [
+          { "match": "b", "message": "$f(c)$ is the extreme *value*, which can be anything. It is the *slope* that must vanish: $f'(c)=0$." },
+          { "match": "c", "message": "A strictly positive slope would mean $f$ is still rising through $c$, so $c$ could not be a local extremum. The slope must be $0$." },
+          { "match": "*", "message": "At an interior extremum the tangent is horizontal: $f'(c)=0$." }
+        ]
+      }
+    }
+  ]
+}

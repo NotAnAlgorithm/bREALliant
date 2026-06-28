@@ -47,6 +47,19 @@ export function getInitialWidgetState(
       }
       return { aNum, aDen }
     }
+    case 'slider': {
+      const props = widget.props as {
+        min?: number
+        max?: number
+        initialValue?: number
+      }
+      const min = props.min ?? 0
+      const max = props.max ?? 10
+      const lo = Math.min(min, max)
+      const hi = Math.max(min, max)
+      const initial = props.initialValue ?? lo
+      return { value: Math.min(Math.max(initial, lo), hi) }
+    }
     case 'fill_blank':
       return { answer: '' }
     case 'rational_input': {
@@ -61,6 +74,21 @@ export function getInitialWidgetState(
     }
     case 'multiple_choice':
       return { selectedId: '' }
+    case 'spot_the_flaw':
+      return { selectedId: '' }
+    case 'justify_step': {
+      const props = widget.props as {
+        steps?: Array<{ id?: unknown }>
+      }
+      const steps = Array.isArray(props.steps) ? props.steps : []
+      const matches: Record<string, string> = {}
+      for (const step of steps) {
+        if (step && typeof step.id === 'string') {
+          matches[step.id] = ''
+        }
+      }
+      return { matches }
+    }
     case 'drag_order': {
       const props = widget.props as {
         items?: Array<{ id?: unknown }>

@@ -7,6 +7,9 @@ import { widgetSchema } from './widgets'
 
 const stepBaseSchema = z.object({
   id: z.string().min(1),
+  // F3.1: optional concept tags for this step. When absent, the step inherits
+  // its lesson's tags. Enables fine-grained interleaving and mastery credit.
+  tags: z.array(z.string()).optional(),
 })
 
 export const motivationStepSchema = stepBaseSchema.extend({
@@ -21,16 +24,31 @@ export const discoverStepSchema = stepBaseSchema.extend({
   widget: widgetSchema,
 })
 
+// F4: fading scaffold levels for a problem. 'worked' shows the worked solution
+// up front, 'completion' offers it on demand, 'bare' withholds it. Selection
+// fades as mastery grows (see src/lib/lesson/scaffold.ts).
+export const scaffoldLevelSchema = z.enum(['worked', 'completion', 'bare'])
+
 export const problemStepSchema = stepBaseSchema.extend({
   type: z.literal('problem'),
   prompt: z.string().optional(),
   widget: widgetSchema,
   validator: validatorSchema,
   feedback: feedbackSchema,
+  // F4: optional worked solution shown (worked-example-first) and faded as the
+  // learner gains mastery. `scaffold` is the authored default starting level.
+  workedExample: z.array(blockSchema).optional(),
+  scaffold: scaffoldLevelSchema.optional(),
 })
 
 export const summaryStepSchema = stepBaseSchema.extend({
   type: z.literal('summary'),
+  blocks: z.array(blockSchema),
+})
+
+export const workedExampleStepSchema = stepBaseSchema.extend({
+  type: z.literal('worked_example'),
+  prompt: z.string().optional(),
   blocks: z.array(blockSchema),
 })
 
@@ -40,6 +58,8 @@ export const quizItemSchema = z.object({
   widget: widgetSchema,
   validator: validatorSchema.optional(),
   feedback: feedbackSchema.optional(),
+  // F3.1: optional concept tags for this item (falls back to lesson tags).
+  tags: z.array(z.string()).optional(),
 })
 
 export const quizStepSchema = stepBaseSchema.extend({
@@ -52,6 +72,7 @@ export const stepSchema = z.discriminatedUnion('type', [
   discoverStepSchema,
   problemStepSchema,
   summaryStepSchema,
+  workedExampleStepSchema,
   quizStepSchema,
 ])
 
@@ -60,8 +81,10 @@ export type MotivationStep = z.infer<typeof motivationStepSchema>
 export type DiscoverStep = z.infer<typeof discoverStepSchema>
 export type ProblemStep = z.infer<typeof problemStepSchema>
 export type SummaryStep = z.infer<typeof summaryStepSchema>
+export type WorkedExampleStep = z.infer<typeof workedExampleStepSchema>
 export type QuizStep = z.infer<typeof quizStepSchema>
 export type QuizItem = z.infer<typeof quizItemSchema>
+export type ScaffoldLevel = z.infer<typeof scaffoldLevelSchema>
 
 function assertUniqueStepIds(steps: Step[]): boolean {
   const ids = steps.map((s) => s.id)
@@ -81,6 +104,9 @@ export const lessonSchema = z
       )
       .default({}),
     steps: z.array(stepSchema).min(1),
+    // F2: optional pool of graded items used for spaced review of this lesson's
+    // concepts. When absent, the lesson's quiz items serve as the default bank.
+    retrievalBank: z.array(quizItemSchema).optional(),
   })
   .refine((lesson) => assertUniqueStepIds(lesson.steps), {
     message: 'Lesson steps must have unique ids',

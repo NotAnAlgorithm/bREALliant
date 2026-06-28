@@ -1,0 +1,428 @@
+{
+  "lessonId": "lesson-compactness-01",
+  "title": "Compactness & the Heine–Borel Theorem",
+  "tags": ["compactness", "open-cover", "heine-borel", "closed-and-bounded"],
+  "prerequisites": ["lesson-limit-points-01"],
+  "glossary": {
+    "open-cover": {
+      "term": "Open Cover",
+      "definition": "A collection of open sets whose union contains $K$. A finite subcover is a finite subcollection that still covers $K$."
+    },
+    "compact": {
+      "term": "Compact Set",
+      "definition": "A set $K$ such that every open cover of $K$ has a finite subcover."
+    },
+    "heine-borel": {
+      "term": "Heine–Borel Theorem",
+      "definition": "A subset of $\\mathbb{R}^n$ is compact if and only if it is closed and bounded."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Last lesson a **closed** set was one containing all its limit points. Closedness traps boundary points; today we add a second property that tames *infinity* itself."
+        },
+        {
+          "type": "text",
+          "content": "Here is the hook. Cover the open interval $(0,1)$ with the open sets $(1/n, 1)$ for $n = 2, 3, 4, \\dots$ Their union is all of $(0,1)$ — every point eventually gets in. But pick *finitely many* of them: there is a largest denominator $N$, the union is just $(1/N, 1)$, and everything in $(0, 1/N]$ is left out in the cold."
+        },
+        {
+          "type": "text",
+          "content": "On $(0,1)$ you can never trim the cover down to a finite list. On the closed interval $[0,1]$ you always can. That single difference — *can finitely many always replace infinitely many?* — is **compactness**, and it is exactly what makes theorems like the Extreme Value Theorem work."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Let us state it precisely. An **open cover** of a set $K$ is a collection $\\{G_\\alpha\\}$ of open sets whose union contains $K$. A **finite subcover** is a finite subcollection $G_{\\alpha_1}, \\dots, G_{\\alpha_k}$ that *still* covers $K$."
+        },
+        {
+          "type": "math",
+          "latex": "K \\subseteq \\bigcup_\\alpha G_\\alpha \\quad\\text{(open cover)} \\qquad K \\subseteq G_{\\alpha_1} \\cup \\cdots \\cup G_{\\alpha_k} \\quad\\text{(finite subcover)}"
+        },
+        {
+          "type": "text",
+          "content": "**Definition.** $K$ is **compact** if *every* open cover of $K$ has a finite subcover. The word *every* is the whole game: to prove a set is compact you must handle all covers at once, but to prove it is **not** compact you need just **one** bad cover with no finite subcover."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Slide $n$ upward and watch the open set $(1/n, 1)$ stretch leftward toward $0$. Each individual set is captured by the union, yet $0$'s neighborhood is reached only in the *limit* — no single set, and no finite batch, ever covers everything down to $0$. This is the cover $\\{(1/n,1)\\}$ that defeats $(0,1)$.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 2,
+          "max": 200,
+          "step": 1,
+          "initialValue": 2,
+          "label": "n",
+          "readouts": [{ "label": "left endpoint 1/n", "expression": "1/n" }],
+          "markers": [
+            { "value": 2, "label": "(1/2, 1)" },
+            { "value": 200, "label": "still leaves (0, 1/200]" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["compactness", "open-cover"],
+      "prompt": "Worked example: prove that $(0,1)$ is **not** compact.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Strategy.** Exhibit one open cover with no finite subcover. We use $\\mathcal{G} = \\{\\, (1/n, 1) : n \\ge 2 \\,\\}$."
+        },
+        {
+          "type": "text",
+          "content": "**It is a cover.** If $x \\in (0,1)$ then $x > 0$, so the Archimedean property gives an $n$ with $1/n < x$; hence $x \\in (1/n, 1)$. Thus $(0,1) \\subseteq \\bigcup_{n\\ge 2}(1/n,1)$."
+        },
+        {
+          "type": "text",
+          "content": "**No finite subcover.** Take any finite subcollection $(1/n_1,1), \\dots, (1/n_k,1)$ and let $N = \\max_i n_i$. Since these intervals are nested, their union is the single largest one:"
+        },
+        {
+          "type": "math",
+          "latex": "(1/n_1,1) \\cup \\cdots \\cup (1/n_k,1) = (1/N,\\, 1)"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** The point $1/N$ (and everything in $(0, 1/N]$) lies in $(0,1)$ but is missed. So no finite subcollection covers $(0,1)$, and $(0,1)$ is not compact. $\\blacksquare$"
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["compactness", "open-cover"],
+      "scaffold": "worked",
+      "prompt": "Same cover $\\{(1/n,1) : n \\ge 2\\}$, but now of the half-open interval $(0, 1]$. You pick the finite subcollection with largest denominator $N$; its union is $(1/N, 1]$ restricted to the set — i.e. it covers everything except a leftover near $0$. Which set of points is left uncovered?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example. A finite subcollection has a largest denominator $N$, and the union of nested intervals is the single largest interval $(1/N, 1)$."
+        },
+        {
+          "type": "text",
+          "content": "Now ask which points of the target set are *not* inside $(1/N,1)$ — they are the small positive numbers at or below $1/N$."
+        }
+      ],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "The points in $(0,\\, 1/N]$ — a sliver near $0$." },
+            { "id": "b", "label": "None; the finite subcollection already covers everything." },
+            { "id": "c", "label": "Only the single point $1$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The finite union is $(1/N,1)$, so every $x$ with $0 < x \\le 1/N$ escapes. A leftover near $0$ survives every finite choice, so $(0,1]$ is not compact either.",
+        "incorrect": [
+          { "match": "b", "message": "A finite subcollection has a *largest* denominator $N$ and unions to $(1/N,1)$. That cannot reach below $1/N$, so points must be left over." },
+          { "match": "c", "message": "The trouble is always at the open end near $0$, not at $1$. Find the largest $N$ used and ask what sits at or below $1/N$." },
+          { "match": "*", "message": "Use the no-finite-subcover move: largest denominator $N$ gives union $(1/N,1)$, leaving the sliver $(0,1/N]$ uncovered." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Which sets *are* compact? Two facts hold in **any** metric space:"
+        },
+        {
+          "type": "text",
+          "content": "**(1) Compact $\\Rightarrow$ bounded.** Cover $K$ by the balls $B(p, n)$ of radius $n = 1, 2, 3, \\dots$ around a fixed point $p$. These cover everything, so compactness yields a finite subcover; the largest ball $B(p, N)$ then contains all of $K$. A set that is not bounded (like $[0,\\infty)$ or $\\mathbb{R}$) can never be compact."
+        },
+        {
+          "type": "text",
+          "content": "**(2) Compact $\\Rightarrow$ closed.** A point outside a compact set can be separated from it by a cover of small balls, so the complement is open. Together: every compact set is **closed and bounded**."
+        },
+        {
+          "type": "text",
+          "content": "**Heine–Borel** says the converse holds in $\\mathbb{R}^n$:"
+        },
+        {
+          "type": "math",
+          "latex": "K \\subseteq \\mathbb{R}^n \\text{ is compact} \\iff K \\text{ is closed and bounded.}"
+        },
+        {
+          "type": "text",
+          "content": "Two more tools: a **closed subset of a compact set is compact**, and (a preview of the next unit) the **continuous image of a compact set is compact** — the engine behind the Extreme Value Theorem."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["compactness", "heine-borel"],
+      "scaffold": "bare",
+      "prompt": "Working in $\\mathbb{R}$, which of these sets is **compact**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$[0,1]$" },
+            { "id": "b", "label": "$(0,1)$" },
+            { "id": "c", "label": "$[0,\\infty)$" },
+            { "id": "d", "label": "$\\mathbb{R}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes. $[0,1]$ is closed and bounded, so Heine–Borel makes it compact.",
+        "incorrect": [
+          { "match": "b", "message": "$(0,1)$ is bounded but **not closed** (it misses its limit points $0$ and $1$). The cover $\\{(1/n,1)\\}$ has no finite subcover." },
+          { "match": "c", "message": "$[0,\\infty)$ is closed but **not bounded**, so it fails Heine–Borel. Unbounded sets are never compact." },
+          { "match": "d", "message": "$\\mathbb{R}$ is closed but unbounded. Compactness requires closed **and** bounded." },
+          { "match": "*", "message": "Apply Heine–Borel: the compact set must be both closed and bounded. Only one option is both." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["compactness", "heine-borel"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* proof that the closed set $[0,\\infty)$ is compact. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "$[0,\\infty)$ is closed: it contains all of its limit points." },
+            { "id": "p2", "label": "By Heine–Borel, every closed subset of $\\mathbb{R}$ is compact." },
+            { "id": "p3", "label": "Therefore $[0,\\infty)$ is compact." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p2"] },
+      "feedback": {
+        "correct": "Right — step 2 drops a hypothesis. Heine–Borel requires closed **and bounded**, not closed alone. Indeed the cover $\\{(-1, n) : n \\in \\mathbb{N}\\}$ of $[0,\\infty)$ has no finite subcover, so $[0,\\infty)$ is not compact.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is correct: $[0,\\infty)$ really is closed. The error is in how Heine–Borel is then applied." },
+          { "match": "p3", "message": "Step 3 follows logically from step 2; the rot is in step 2 itself. Recall the *full* hypothesis of Heine–Borel." },
+          { "match": "*", "message": "Heine–Borel is an 'iff' with **two** conditions — closed AND bounded. Find the step that uses only half of them." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["compactness", "open-cover"],
+      "scaffold": "bare",
+      "prompt": "Reconstruct the proof that **every compact set $K$ is bounded**. Match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "The balls $B(p,n)$, $n = 1, 2, 3, \\dots$, form an open cover of $K$." },
+            { "id": "st2", "label": "There is a finite subcover $B(p,n_1), \\dots, B(p,n_k)$." },
+            { "id": "st3", "label": "Hence $K \\subseteq B(p,N)$ where $N = \\max_i n_i$, so $K$ is bounded." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Each ball is open and every point lies within some finite distance of $p$, so their union contains $K$." },
+            { "id": "j_b", "label": "Compactness: every open cover of $K$ has a finite subcover." },
+            { "id": "j_c", "label": "Finitely many nested balls have a largest one that contains all the rest, giving a single bounding radius." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. Cover $K$ by growing balls, extract a finite subcover by compactness, and the largest ball bounds $K$. Compactness converts an infinite cover into one radius.",
+        "incorrect": [
+          { "match": "*", "message": "Trace the canonical move: building the cover (the balls are open and exhaust the space), invoking compactness (finite subcover), then collapsing finitely many nested balls into the largest one." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Compactness** is the finite-subcover property: $K$ is compact when every open cover of $K$ admits a finite subcover. To *disprove* compactness, exhibit one cover with no finite subcover — as $\\{(1/n,1)\\}$ does for $(0,1)$."
+        },
+        {
+          "type": "text",
+          "content": "In any metric space, compact $\\Rightarrow$ closed and bounded. In $\\mathbb{R}^n$ the converse also holds — that is **Heine–Borel**: compact $\\iff$ closed and bounded. So $[0,1]$ and $\\{0\\}\\cup\\{1/n\\}$ are compact, while $(0,1)$ (not closed) and $[0,\\infty)$ (not bounded) are not."
+        },
+        {
+          "type": "math",
+          "latex": "K \\subseteq \\mathbb{R}^n \\text{ compact} \\iff K \\text{ closed and bounded}"
+        },
+        {
+          "type": "text",
+          "content": "Why it matters: compactness lets *finitely many* stand in for *infinitely many*. That is precisely what powers the Extreme Value Theorem, uniform continuity on $[a,b]$, and the fact that continuous images of compact sets are compact — the arc the next unit picks up."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["heine-borel"],
+          "prompt": "The Heine–Borel theorem states that a subset of $\\mathbb{R}^n$ is compact if and only if it is:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "closed and bounded" },
+                { "id": "b", "label": "open and bounded" },
+                { "id": "c", "label": "closed and infinite" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — in $\\mathbb{R}^n$, compact means closed and bounded, no more and no less.",
+            "incorrect": [
+              { "match": "b", "message": "Compact sets are closed, not open: a non-empty open set in $\\mathbb{R}^n$ is never compact. The two conditions are closed and *bounded*." },
+              { "match": "c", "message": "Boundedness, not infinitude, is the second condition. $\\{0\\}$ is finite and compact; $\\mathbb{N}$ is infinite, closed, yet not compact." },
+              { "match": "*", "message": "Recall the exact pair of hypotheses in Heine–Borel: closed AND bounded." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["compactness", "closed-and-bounded"],
+          "prompt": "Which set is **closed but not compact** (in $\\mathbb{R}$)?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$[0,\\infty)$" },
+                { "id": "b", "label": "$[0,1]$" },
+                { "id": "c", "label": "$(0,1)$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. $[0,\\infty)$ is closed but unbounded, so Heine–Borel fails — unboundedness blocks compactness.",
+            "incorrect": [
+              { "match": "b", "message": "$[0,1]$ is closed *and* bounded, hence compact. We want closed but **not** compact, i.e. closed and unbounded." },
+              { "match": "c", "message": "$(0,1)$ is not closed at all (it misses $0$ and $1$). We need a set that is closed yet fails to be compact — look for an unbounded one." },
+              { "match": "*", "message": "Compact = closed and bounded. 'Closed but not compact' means closed and **unbounded**." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["compactness", "open-cover"],
+          "prompt": "Self-explanation: arrange the steps proving $(0,1)$ is **not** compact via the cover $\\{(1/n,1)\\}$, from first to last.",
+          "widget": {
+            "kind": "drag_order",
+            "props": {
+              "items": [
+                { "id": "i1", "label": "Take any finite subcollection of $\\{(1/n,1)\\}$." },
+                { "id": "i2", "label": "Let $N$ be the largest denominator appearing in it." },
+                { "id": "i3", "label": "Since the intervals are nested, their union is just $(1/N, 1)$." },
+                { "id": "i4", "label": "The sliver $(0, 1/N]$ is left uncovered, so no finite subcover exists." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["i1,i2,i3,i4"] },
+          "feedback": {
+            "correct": "Exactly the logic. The reason this works: a *finite* list always has a largest denominator $N$, and a finite union of nested intervals can only reach down to $1/N$ — never all the way to $0$.",
+            "incorrect": [
+              { "match": "*", "message": "Order the canonical no-finite-subcover move: start with an arbitrary finite subcollection, extract its largest denominator $N$, collapse the nested union to $(1/N,1)$, then point to the uncovered sliver $(0,1/N]$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["open-cover"],
+      "prompt": "An **open cover** of a set $K$ is best described as:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "a collection of open sets whose union contains $K$" },
+            { "id": "b", "label": "a single open set equal to $K$" },
+            { "id": "c", "label": "a finite list of points dense in $K$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes — any collection of open sets whose union swallows $K$. Compactness then asks whether finitely many of them already suffice.",
+        "incorrect": [
+          { "match": "b", "message": "A cover may use many open sets, and it need not equal $K$ — it only has to *contain* $K$ in its union." },
+          { "match": "c", "message": "A cover is made of open *sets*, not points. The defining property is that their union contains $K$." },
+          { "match": "*", "message": "Open cover = a family of open sets whose union contains $K$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["compactness", "closed-and-bounded"],
+      "prompt": "Which set is **bounded but not compact** (in $\\mathbb{R}$)?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$(0,1)$" },
+            { "id": "b", "label": "$[0,1]$" },
+            { "id": "c", "label": "$\\mathbb{R}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $(0,1)$ is bounded but not closed, and the cover $\\{(1/n,1)\\}$ shows it is not compact.",
+        "incorrect": [
+          { "match": "b", "message": "$[0,1]$ is closed and bounded, hence compact. We want bounded but **not** compact, i.e. bounded and not closed." },
+          { "match": "c", "message": "$\\mathbb{R}$ is unbounded, so it fails the *bounded* requirement entirely. Look for a bounded set that is not closed." },
+          { "match": "*", "message": "Compact = closed and bounded. 'Bounded but not compact' means bounded and **not closed** — an open interval works." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["compactness", "heine-borel"],
+      "prompt": "Is the set $\\{0\\} \\cup \\{\\, 1/n : n \\in \\mathbb{N} \\,\\}$ compact?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Yes — it is closed (it contains its only limit point $0$) and bounded." },
+            { "id": "b", "label": "No — it has infinitely many points." },
+            { "id": "c", "label": "No — the points $1/n$ form an open cover with no finite subcover." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Its sole limit point is $0$, which is included, so the set is closed; it sits inside $[0,1]$, so it is bounded. Heine–Borel makes it compact.",
+        "incorrect": [
+          { "match": "b", "message": "Infinitely many points is no obstacle: $[0,1]$ is infinite and compact. Apply Heine–Borel — check closed and bounded." },
+          { "match": "c", "message": "Single points are not open sets, so the $1/n$ do not form an open cover. The right test is closed and bounded, both of which hold here." },
+          { "match": "*", "message": "Find the limit points: the only one is $0$, and it is in the set, so the set is closed; it is also bounded. Hence compact." }
+        ]
+      }
+    }
+  ]
+}

@@ -58,9 +58,73 @@
       }
     },
     {
+      "id": "s3b",
+      "type": "discover",
+      "prompt": "Now sweep a single slider for $n$ and watch $1/n$ collapse toward $0$. However small a positive target you picture, some $n$ pushes $1/n$ below it — that is the Archimedean property in motion.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "initialValue": 1,
+          "label": "n",
+          "readouts": [{ "label": "1/n", "expression": "1/n" }],
+          "markers": [
+            { "value": 1, "label": "start" },
+            { "value": 200, "label": "n large" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["archimedean"],
+      "prompt": "Worked example: find the smallest natural number $n$ with $1/n < 1/20$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Goal.** Find the smallest $n\\in\\mathbb{N}$ with $\\tfrac1n < \\tfrac1{20}$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1.** Both sides are positive, so comparing the fractions is the same as comparing denominators in reverse: a smaller fraction needs a *larger* denominator."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac1n < \\frac1{20} \\iff n > 20"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2.** The smallest natural number strictly greater than $20$ is $21$."
+        },
+        {
+          "type": "text",
+          "content": "**Answer.** $n = 21$. The Archimedean property guarantees such an $n$ always exists for any positive bound."
+        }
+      ]
+    },
+    {
       "id": "s4",
       "type": "problem",
+      "tags": ["archimedean"],
+      "scaffold": "worked",
       "prompt": "What is the smallest natural number $n$ with $1/n < 1/100$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example: $\\tfrac1n < \\tfrac1{100}$ has positive sides, so it becomes a comparison of denominators."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac1n < \\frac1{100} \\iff n > 100"
+        },
+        {
+          "type": "text",
+          "content": "Now take the smallest natural number strictly greater than $100$."
+        }
+      ],
       "widget": {
         "kind": "fill_blank",
         "props": { "template": "n = {{answer}}", "placeholder": "a whole number" }

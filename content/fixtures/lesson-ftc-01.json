@@ -1,0 +1,401 @@
+{
+  "lessonId": "lesson-ftc-01",
+  "title": "The Fundamental Theorem of Calculus",
+  "tags": ["ftc", "antiderivative", "accumulation", "evaluation"],
+  "prerequisites": ["lesson-riemann-01", "lesson-derivative-01"],
+  "glossary": {
+    "accumulation-function": {
+      "term": "Accumulation Function",
+      "definition": "For integrable $f$, the function $F(x)=\\int_a^x f(t)\\,dt$ records the signed area accumulated from $a$ to $x$."
+    },
+    "ftc1": {
+      "term": "FTC, Part 1",
+      "definition": "If $f$ is continuous on $[a,b]$ and $F(x)=\\int_a^x f(t)\\,dt$, then $F$ is differentiable and $F'(x)=f(x)$."
+    },
+    "ftc2": {
+      "term": "FTC, Part 2",
+      "definition": "If $f$ is integrable and $F'=f$ on $[a,b]$, then $\\int_a^b f = F(b)-F(a)$."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "We now hold two machines built separately. The **derivative** measures instantaneous rate of change; the **Riemann integral** accumulates a function over an interval as a limit of upper and lower sums. So far they have nothing to do with each other."
+        },
+        {
+          "type": "text",
+          "content": "The Fundamental Theorem of Calculus reveals they are two sides of one coin: differentiation and integration **undo each other**. This is the bridge that makes the integral computable without ever returning to partitions."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**FTC, Part 1.** Let $f$ be continuous on $[a,b]$ and define the accumulation function $F(x)=\\int_a^x f(t)\\,dt$. Then $F$ is differentiable and $F'(x)=f(x)$ for every $x$ in $(a,b)$."
+        },
+        {
+          "type": "math",
+          "latex": "F(x)=\\int_a^x f(t)\\,dt \\quad\\Longrightarrow\\quad F'(x)=f(x)."
+        },
+        {
+          "type": "text",
+          "content": "**Why.** The difference quotient is an average value of $f$: $\\dfrac{F(x+h)-F(x)}{h}=\\dfrac1h\\int_x^{x+h} f(t)\\,dt$. As $h\\to0$ this averages $f$ over a shrinking window around $x$, and **continuity** drags that average to $f(x)$. So accumulation, differentiated, returns the original integrand."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**FTC, Part 2 (evaluation).** If $f$ is integrable on $[a,b]$ and $F$ is *any* antiderivative ($F'=f$), then"
+        },
+        {
+          "type": "math",
+          "latex": "\\int_a^b f(x)\\,dx = F(b)-F(a)."
+        },
+        {
+          "type": "text",
+          "content": "**Why.** Take any partition $a=x_0<\\cdots<x_n=b$. On each piece the Mean Value Theorem gives a point $t_i$ with $F(x_i)-F(x_{i-1})=f(t_i)\\,\\Delta x_i$. Summing **telescopes** the left side to $F(b)-F(a)$, while the right side is a Riemann sum trapped between $L(P,f)$ and $U(P,f)$. Refining squeezes it onto $\\int_a^b f$."
+        }
+      ]
+    },
+    {
+      "id": "s3b",
+      "type": "discover",
+      "prompt": "Watch the accumulation function for $f(t)=2t$ on $[0,x]$. Slide $x$ and read off $F(x)=\\int_0^x 2t\\,dt$ (the area of a triangle, $x^2$) alongside the integrand $f(x)=2x$. Notice the slope of $F$ at each $x$ equals the current height $f(x)$ — that is FTC Part 1 in motion.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "initialValue": 1,
+          "label": "x",
+          "readouts": [
+            { "label": "F(x)=area", "expression": "x^2" },
+            { "label": "f(x)=height", "expression": "2*x" },
+            { "label": "F'(x)", "expression": "2*x" }
+          ],
+          "markers": [
+            { "value": 0, "label": "start" },
+            { "value": 5, "label": "x large" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["ftc", "evaluation"],
+      "prompt": "Worked example: use FTC Part 2 to compute $\\int_0^1 x^2\\,dx$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Check the hypotheses.** $f(x)=x^2$ is continuous on $[0,1]$, hence integrable (from the Riemann lesson). So FTC Part 2 applies."
+        },
+        {
+          "type": "text",
+          "content": "**Find an antiderivative.** We need $F$ with $F'(x)=x^2$. Since $\\dfrac{d}{dx}\\Big(\\dfrac{x^3}{3}\\Big)=x^2$, take $F(x)=\\dfrac{x^3}{3}$."
+        },
+        {
+          "type": "text",
+          "content": "**Evaluate at the endpoints.** Subtract bottom from top:"
+        },
+        {
+          "type": "math",
+          "latex": "\\int_0^1 x^2\\,dx = F(1)-F(0)=\\frac{1^3}{3}-\\frac{0^3}{3}=\\frac13."
+        },
+        {
+          "type": "text",
+          "content": "No partitions, no sums — once an antiderivative is in hand, evaluation is just $F(b)-F(a)$. That is the power FTC Part 2 buys us."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["ftc", "evaluation"],
+      "scaffold": "worked",
+      "prompt": "Use FTC Part 2 to evaluate $\\int_0^1 3x^2\\,dx$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example. You need an antiderivative of $3x^2$: a function whose derivative is $3x^2$."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{d}{dx}\\big(x^3\\big)=3x^2 \\quad\\Longrightarrow\\quad F(x)=x^3."
+        },
+        {
+          "type": "text",
+          "content": "Now evaluate $F(1)-F(0)$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\int_0^1 3x^2\\,dx = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+      "feedback": {
+        "correct": "Exactly. With $F(x)=x^3$ an antiderivative of $3x^2$, FTC Part 2 gives $F(1)-F(0)=1-0=1$.",
+        "incorrect": [
+          { "match": "1/3", "message": "$1/3$ is $\\int_0^1 x^2\\,dx$. Here the integrand is $3x^2$, three times larger, so the answer is $3\\cdot\\tfrac13=1$. Its antiderivative is $x^3$, not $x^3/3$." },
+          { "match": "3", "message": "Close, but recheck the antiderivative: $\\tfrac{d}{dx}x^3=3x^2$, so $F(x)=x^3$ and $F(1)-F(0)=1$, not $3$." },
+          { "match": "*", "message": "Find $F$ with $F'(x)=3x^2$ (that is $F(x)=x^3$), then compute $F(1)-F(0)$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["ftc", "accumulation"],
+      "prompt": "Reconstruct the proof of FTC Part 1: that $F(x)=\\int_a^x f$ satisfies $F'(x)=f(x)$. Put the steps in logical order.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "c", "label": "So $\\dfrac{F(x+h)-F(x)}{h}=\\dfrac1h\\int_x^{x+h} f(t)\\,dt$, the average value of $f$ over $[x,x+h]$." },
+            { "id": "a", "label": "Fix $x$ and form the difference quotient $\\dfrac{F(x+h)-F(x)}{h}$." },
+            { "id": "e", "label": "Therefore the limit of the difference quotient is $f(x)$, i.e. $F'(x)=f(x)$." },
+            { "id": "b", "label": "By additivity of the integral, $F(x+h)-F(x)=\\int_x^{x+h} f(t)\\,dt$." },
+            { "id": "d", "label": "As $h\\to0$ this average runs over a shrinking window, and continuity of $f$ forces it to $f(x)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a,b,c,d,e"] },
+      "feedback": {
+        "correct": "Exactly. Form the difference quotient, rewrite the numerator as $\\int_x^{x+h} f$, recognize it as an average value, let continuity pull that average to $f(x)$, and conclude $F'(x)=f(x)$.",
+        "incorrect": [
+          { "match": "*", "message": "Follow the dependencies: start with the difference quotient, turn the numerator into $\\int_x^{x+h} f$, read it as an *average value*, then use *continuity* to send the average to $f(x)$, giving $F'=f$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["ftc"],
+      "prompt": "The two parts of the FTC fit together. Match each part to the role it plays.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "FTC Part 1 manufactures an antiderivative of any continuous $f$." },
+            { "id": "st2", "label": "FTC Part 2 evaluates a definite integral from any antiderivative." },
+            { "id": "st3", "label": "Together they show differentiation and integration are inverse operations." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Defining $F(x)=\\int_a^x f$ yields $F'=f$, so every continuous function has an antiderivative." },
+            { "id": "j_b", "label": "If $F'=f$ then $\\int_a^b f = F(b)-F(a)$, turning antidifferentiation into a subtraction." },
+            { "id": "j_c", "label": "Differentiating an accumulation returns $f$, and integrating a derivative returns the net change — each operation undoes the other." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. Part 1 *produces* an antiderivative ($F'=f$); Part 2 *uses* one to evaluate ($\\int_a^b f=F(b)-F(a)$); and the two together say differentiation and integration are inverse processes.",
+        "incorrect": [
+          { "match": "*", "message": "Part 1 builds an antiderivative via accumulation ($F'=f$); Part 2 cashes an antiderivative in for $F(b)-F(a)$; jointly they make the two operations inverses." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["ftc", "evaluation"],
+      "prompt": "Here is a *flawed* evaluation of $\\int_{-1}^{1}\\dfrac{1}{x^2}\\,dx$. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $f(x)=1/x^2$ on $[-1,1]$." },
+            { "id": "p2", "label": "A function with derivative $1/x^2$ is $F(x)=-1/x$ (valid where $x\\ne0$)." },
+            { "id": "p3", "label": "By FTC Part 2, $\\int_{-1}^{1}\\frac{1}{x^2}\\,dx=F(1)-F(-1)=(-1)-(1)=-2$." },
+            { "id": "p4", "label": "So the integral equals $-2$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. FTC Part 2 requires $f$ to be integrable on the whole interval, but $1/x^2$ blows up at $0\\in[-1,1]$: it is unbounded and not even defined there, so it is not Riemann integrable on $[-1,1]$. The theorem simply does not apply, and the negative 'answer' for a positive integrand is the tell.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 only names the function; nothing is wrong with writing down $1/x^2$." },
+          { "match": "p2", "message": "Step 2 is correct *away from* $0$: indeed $\\tfrac{d}{dx}(-1/x)=1/x^2$. The trouble is invoking it across a point where things break." },
+          { "match": "p4", "message": "Step 4 just restates step 3's number; the actual error is applying FTC Part 2 where its hypotheses fail." },
+          { "match": "*", "message": "Check the hypotheses of FTC Part 2: $f$ must be integrable on $[a,b]$. Is $1/x^2$ bounded and defined on all of $[-1,1]$? Which step ignores that?" }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The Fundamental Theorem of Calculus links the two halves of calculus. **Part 1:** differentiating the accumulation $F(x)=\\int_a^x f$ recovers the integrand, $F'(x)=f(x)$, whenever $f$ is continuous. **Part 2:** any antiderivative evaluates a definite integral as $\\int_a^b f=F(b)-F(a)$."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x), \\qquad \\int_a^b F'(x)\\,dx = F(b)-F(a)."
+        },
+        {
+          "type": "text",
+          "content": "Read together, differentiation and integration are **inverse operations**. But the hypotheses matter: Part 1 needs continuity for the average value to converge to $f(x)$, and Part 2 needs $f$ integrable on all of $[a,b]$. Ignore them — as with $1/x^2$ across $0$ — and the theorem produces nonsense."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "FTC Part 1 states that if $f$ is continuous and $F(x)=\\int_a^x f(t)\\,dt$, then:",
+          "tags": ["ftc", "accumulation"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$F'(x)=f(x)$." },
+                { "id": "b", "label": "$F(x)=f'(x)$." },
+                { "id": "c", "label": "$F(x)=f(b)-f(a)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Differentiating the accumulation function returns the integrand: $F'(x)=f(x)$.",
+            "incorrect": [
+              { "match": "b", "message": "That reverses the roles. $F$ is the *integral* of $f$; differentiating $F$ (not $f$) gives back $f$, so $F'=f$." },
+              { "match": "c", "message": "That mixes in the evaluation idea and uses $f$ instead of $F$. Part 1 is a statement about the *derivative* of $F$: $F'=f$." },
+              { "match": "*", "message": "Accumulate then differentiate: $\\tfrac{d}{dx}\\int_a^x f=f(x)$, i.e. $F'(x)=f(x)$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "FTC Part 2 lets you compute $\\int_a^b f$ as:",
+          "tags": ["ftc", "evaluation"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$F(b)-F(a)$ for any antiderivative $F$ of $f$." },
+                { "id": "b", "label": "$f(b)-f(a)$." },
+                { "id": "c", "label": "$F(b)+F(a)$ for any antiderivative $F$ of $f$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Pick any $F$ with $F'=f$ and subtract: $\\int_a^b f=F(b)-F(a)$.",
+            "incorrect": [
+              { "match": "b", "message": "You evaluate the *antiderivative* $F$, not $f$ itself, at the endpoints. The rule is $F(b)-F(a)$." },
+              { "match": "c", "message": "It is a *difference*, not a sum: $F(b)-F(a)$. The telescoping of $\\sum (F(x_i)-F(x_{i-1}))$ leaves top minus bottom." },
+              { "match": "*", "message": "Find an antiderivative $F$ ($F'=f$), then take $F(b)-F(a)$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is continuity of $f$ needed in FTC Part 1 to conclude $F'(x)=f(x)$?",
+          "tags": ["ftc", "accumulation"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The difference quotient is the average of $f$ over $[x,x+h]$, and only continuity forces that average to approach $f(x)$ as $h\\to0$." },
+                { "id": "b", "label": "Without continuity the integral $\\int_a^x f$ cannot be defined at all." },
+                { "id": "c", "label": "Continuity guarantees $f$ is its own antiderivative." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The difference quotient equals the average value $\\tfrac1h\\int_x^{x+h}f$; continuity at $x$ is precisely what makes that shrinking average converge to $f(x)$. Without it, $F'(x)$ can disagree with $f(x)$ at a jump.",
+            "incorrect": [
+              { "match": "b", "message": "Many discontinuous functions are still integrable, so $F=\\int_a^x f$ exists. Continuity is needed for the *derivative* step, where the average must reach $f(x)$." },
+              { "match": "c", "message": "No function is its own antiderivative in general. The role of continuity is to make the average value of $f$ over a shrinking interval converge to $f(x)$." },
+              { "match": "*", "message": "Trace the proof: $\\tfrac{F(x+h)-F(x)}{h}$ is an average of $f$; what hypothesis makes that average tend to $f(x)$?" }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "In one phrase, the Fundamental Theorem of Calculus says that differentiation and integration are:",
+      "tags": ["ftc"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "inverse operations" },
+            { "id": "b", "label": "the same operation" },
+            { "id": "c", "label": "completely unrelated" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Differentiating an accumulation returns $f$ (Part 1) and integrating a derivative returns net change (Part 2): each undoes the other.",
+        "incorrect": [
+          { "match": "b", "message": "They are not identical — one measures rate, the other accumulates. The theorem says one *undoes* the other: they are inverse." },
+          { "match": "c", "message": "Far from unrelated — the whole point of the FTC is the tight link between them: they are inverse operations." },
+          { "match": "*", "message": "Part 1 differentiates an integral back to $f$; Part 2 integrates a derivative to net change. That is the signature of inverse operations." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Using an antiderivative, $\\int_0^2 x\\,dx$ equals:",
+      "tags": ["evaluation"],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\int_0^2 x\\,dx = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2"] },
+      "feedback": {
+        "correct": "Right. With $F(x)=x^2/2$ an antiderivative of $x$, FTC Part 2 gives $F(2)-F(0)=2-0=2$.",
+        "incorrect": [
+          { "match": "4", "message": "Recheck the antiderivative: $\\tfrac{d}{dx}\\tfrac{x^2}{2}=x$, so use $F(x)=x^2/2$, giving $F(2)-F(0)=2$, not $4$." },
+          { "match": "*", "message": "Take $F(x)=x^2/2$ (since $F'(x)=x$) and compute $F(2)-F(0)$." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "If $F(x)=\\int_0^x f(t)\\,dt$ with $f$ continuous, then $F'(3)$ equals:",
+      "tags": ["ftc", "accumulation"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f(3)$" },
+            { "id": "b", "label": "$\\int_0^3 f(t)\\,dt$" },
+            { "id": "c", "label": "$f'(3)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. By FTC Part 1, $F'(x)=f(x)$, so $F'(3)=f(3)$.",
+        "incorrect": [
+          { "match": "b", "message": "That is $F(3)$, the accumulated area, not its derivative. FTC Part 1 gives $F'(3)=f(3)$." },
+          { "match": "c", "message": "$F$ differentiates to $f$, not to $f'$. So $F'(3)=f(3)$." },
+          { "match": "*", "message": "FTC Part 1: differentiating the accumulation returns the integrand, so $F'(3)=f(3)$." }
+        ]
+      }
+    }
+  ]
+}

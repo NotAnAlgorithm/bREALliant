@@ -13,6 +13,82 @@
         "lesson-nth-roots-01",
         "lesson-archimedean-01"
       ]
+    },
+    {
+      "unitId": "ch2-metric-euclidean",
+      "title": "Metric & Euclidean Spaces",
+      "lessonIds": [
+        "lesson-euclidean-01",
+        "lesson-metric-spaces-01",
+        "lesson-balls-nbhds-01"
+      ]
+    },
+    {
+      "unitId": "ch2-topology",
+      "title": "Topology of Metric Spaces",
+      "lessonIds": [
+        "lesson-open-closed-01",
+        "lesson-limit-points-01",
+        "lesson-compactness-01",
+        "lesson-connectedness-01"
+      ]
+    },
+    {
+      "unitId": "ch3-sequences",
+      "title": "Sequences & Convergence",
+      "lessonIds": [
+        "lesson-seq-limits-01",
+        "lesson-limit-laws-01",
+        "lesson-monotone-01",
+        "lesson-subsequences-01",
+        "lesson-bolzano-weierstrass-01",
+        "lesson-cauchy-01"
+      ]
+    },
+    {
+      "unitId": "ch3-series",
+      "title": "Series",
+      "lessonIds": [
+        "lesson-series-basics-01",
+        "lesson-series-tests-01",
+        "lesson-abs-conv-01"
+      ]
+    },
+    {
+      "unitId": "ch4-continuity",
+      "title": "Continuity",
+      "lessonIds": [
+        "lesson-function-limits-01",
+        "lesson-continuity-01",
+        "lesson-uniform-continuity-01",
+        "lesson-evt-01",
+        "lesson-ivt-01"
+      ]
+    },
+    {
+      "unitId": "ch5-differentiation",
+      "title": "Differentiation",
+      "lessonIds": [
+        "lesson-derivative-01",
+        "lesson-mvt-01",
+        "lesson-taylor-01"
+      ]
+    },
+    {
+      "unitId": "ch6-integration",
+      "title": "The Riemann Integral",
+      "lessonIds": [
+        "lesson-riemann-01",
+        "lesson-ftc-01"
+      ]
+    },
+    {
+      "unitId": "ch7-function-sequences",
+      "title": "Sequences & Series of Functions",
+      "lessonIds": [
+        "lesson-pointwise-uniform-01",
+        "lesson-uniform-preserve-01"
+      ]
     }
   ]
 }

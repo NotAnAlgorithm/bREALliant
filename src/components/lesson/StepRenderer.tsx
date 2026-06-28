@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import type { QuizItem, Step } from '@content/schemas'
+import type { QuizItem, ScaffoldLevel, Step } from '@content/schemas'
+import type { Block } from '@content/schemas/blocks'
 import type { EvaluationResult } from '../../lib/feedback/feedback-engine'
 import type { WidgetState } from '../../widgets/types'
 
@@ -14,6 +15,7 @@ const STEP_LABELS: Record<Step['type'], string> = {
   discover: 'Discover',
   problem: 'Problem',
   summary: 'Summary',
+  worked_example: 'Worked example',
   quiz: 'Quiz',
 }
 
@@ -40,6 +42,8 @@ type StepRendererProps = {
   onWidgetStateChange: (state: WidgetState) => void
   problemResult?: EvaluationResult | null
   onCheckAnswer?: () => void
+  /** F4: chosen fading level for a problem's worked example (default 'bare'). */
+  scaffoldLevel?: ScaffoldLevel
 } & Partial<QuizItemHandlers> &
   HintHandlers
 
@@ -53,6 +57,7 @@ export function StepRenderer({
   onWidgetStateChange,
   problemResult,
   onCheckAnswer,
+  scaffoldLevel = 'bare',
   quizItemState,
   quizItemResult,
   onQuizItemStateChange,
@@ -82,6 +87,18 @@ export function StepRenderer({
 
       {step.type === 'motivation' || step.type === 'summary' ? (
         <BlockRenderer blocks={step.blocks} />
+      ) : null}
+
+      {step.type === 'worked_example' ? (
+        <div className="rounded-xl border border-border bg-surface-elevated p-5">
+          <BlockRenderer blocks={step.blocks} />
+        </div>
+      ) : null}
+
+      {step.type === 'problem' &&
+      step.workedExample &&
+      step.workedExample.length > 0 ? (
+        <ProblemScaffold blocks={step.workedExample} level={scaffoldLevel} />
       ) : null}
 
       {step.type === 'discover' || step.type === 'problem' ? (
@@ -222,6 +239,70 @@ function QuizStepRenderer({
         >
           Next question
         </button>
+      ) : null}
+    </div>
+  )
+}
+
+// F4: render a problem's worked example at the chosen fading level.
+//  - 'worked'     → full solution, open up front (novice).
+//  - 'completion' → all but the final step, open, with a prompt to finish it
+//                   (completion-problem effect: the learner supplies the last move).
+//  - 'bare'       → collapsed; available on demand only (expert).
+function ProblemScaffold({
+  blocks,
+  level,
+}: {
+  blocks: Block[]
+  level: ScaffoldLevel
+}) {
+  if (level === 'completion' && blocks.length > 1) {
+    return (
+      <WorkedExampleDisclosure
+        blocks={blocks.slice(0, -1)}
+        defaultOpen
+        title="Worked example — finish the last step"
+        caption="The final step is left for you to complete."
+      />
+    )
+  }
+
+  return (
+    <WorkedExampleDisclosure blocks={blocks} defaultOpen={level !== 'bare'} />
+  )
+}
+
+function WorkedExampleDisclosure({
+  blocks,
+  defaultOpen,
+  title = 'Worked example',
+  caption,
+}: {
+  blocks: Block[]
+  defaultOpen: boolean
+  title?: string
+  caption?: string
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+
+  return (
+    <div className="rounded-xl border border-border bg-surface-elevated">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex min-h-11 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium text-ink"
+      >
+        <span>{title}</span>
+        <span className="text-xs text-ink-muted">{open ? 'Hide' : 'Show'}</span>
+      </button>
+      {open ? (
+        <div className="space-y-3 border-t border-border px-4 py-3">
+          <BlockRenderer blocks={blocks} />
+          {caption ? (
+            <p className="text-xs font-medium text-brand">{caption}</p>
+          ) : null}
+        </div>
       ) : null}
     </div>
   )

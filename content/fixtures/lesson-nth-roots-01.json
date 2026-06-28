@@ -99,6 +99,70 @@
       }
     },
     {
+      "id": "s4b",
+      "type": "problem",
+      "prompt": "Here is a *flawed* argument that every non-empty set $A \\subseteq \\mathbb{R}$ bounded above has a maximum. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Let $A$ be non-empty and bounded above." },
+            { "id": "p2", "label": "By completeness, $\\sup A$ exists in ℝ." },
+            { "id": "p3", "label": "Since $\\sup A$ is an upper bound of $A$, we have $\\sup A \\in A$." },
+            { "id": "p4", "label": "Hence $\\sup A$ is the maximum (largest element) of $A$." }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": ["p3"]
+      },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. An upper bound need not belong to the set: $\\sup(0,1) = 1$, yet $1 \\notin (0,1)$. The supremum exists by completeness, but it is the maximum only when it happens to lie in $A$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Steps 1, 2, and 4 are each valid given what precedes them. Look for the step that assumes the supremum must be an *element* of $A$ — consider the open interval $(0,1)$, whose supremum 1 is not in the set."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s4c",
+      "type": "problem",
+      "prompt": "Recall why $x = \\sup\\{t>0 : t^2 < 2\\}$ must satisfy $x^2 = 2$. Match each step of the argument to the reason that rules out its case.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "The case $x^2 < 2$ cannot happen." },
+            { "id": "st2", "label": "The case $x^2 > 2$ cannot happen." },
+            { "id": "st3", "label": "Therefore $x^2 = 2$." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "A slightly larger number would still be in the set, so $x$ would not be an upper bound." },
+            { "id": "j_b", "label": "A slightly smaller number would still bound the set, so $x$ would not be the *least* upper bound." },
+            { "id": "j_c", "label": "By trichotomy, the only remaining possibility once both inequalities fail." }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": ["st1:j_a,st2:j_b,st3:j_c"]
+      },
+      "feedback": {
+        "correct": "Exactly. If $x^2<2$ you can push $x$ up and stay inside the set (so $x$ wasn't an upper bound); if $x^2>2$ you can pull $x$ down and still bound the set (so $x$ wasn't *least*). Trichotomy forces $x^2=2$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Pair each impossible case with the contradiction it creates: $x^2<2$ breaks the *upper bound* property, $x^2>2$ breaks the *least* part, and the conclusion follows by trichotomy."
+          }
+        ]
+      }
+    },
+    {
       "id": "s5",
       "type": "summary",
       "blocks": [

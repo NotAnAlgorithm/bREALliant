@@ -28,6 +28,8 @@ function setProgress(completed: string[] = []) {
   mockedUseCourseProgress.mockReturnValue({
     completedIds: new Set(completed),
     inProgressIds: new Set(),
+    masteryByTag: new Map(),
+    mastery: [],
     loading: false,
     refresh: vi.fn(),
   })

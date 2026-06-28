@@ -1,0 +1,402 @@
+{
+  "lessonId": "lesson-series-basics-01",
+  "title": "Series: Adding Infinitely Many Terms",
+  "tags": ["series", "partial-sums", "geometric-series", "nth-term-test"],
+  "prerequisites": ["lesson-cauchy-01"],
+  "glossary": {
+    "series": {
+      "term": "series",
+      "definition": "Given a sequence $(a_n)$, the series $\\sum a_n$ is the formal sum of its terms, studied through its partial sums."
+    },
+    "partial-sum": {
+      "term": "partial sum",
+      "definition": "The $n$-th partial sum is $s_n = a_1 + a_2 + \\cdots + a_n$. The series converges to $S$ when $s_n \\to S$."
+    },
+    "geometric-series": {
+      "term": "geometric series",
+      "definition": "A series $\\sum r^n$ whose ratio between consecutive terms is constant; it converges to $1/(1-r)$ exactly when $|r|<1$."
+    },
+    "nth-term-test": {
+      "term": "nth-term test",
+      "definition": "If $\\sum a_n$ converges then $a_n \\to 0$; equivalently, if $a_n \\not\\to 0$ the series diverges."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Last lesson we learned that a sequence converges exactly when it is **Cauchy** — its tail terms eventually huddle together. Hold onto that: a series is secretly just a sequence in disguise."
+        },
+        {
+          "type": "text",
+          "content": "What could it possibly mean to add infinitely many numbers, like $1 + \\tfrac12 + \\tfrac14 + \\tfrac18 + \\cdots$? You cannot perform infinitely many additions. So we do not *define* an infinite sum by adding; we define it as a **limit**."
+        },
+        {
+          "type": "text",
+          "content": "Given a sequence $(a_n)$, build its **partial sums** $s_n = a_1 + a_2 + \\cdots + a_n$. Each $s_n$ is an ordinary finite sum, so $(s_n)$ is an ordinary sequence."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum_{n=1}^{\\infty} a_n = S \\quad\\overset{\\text{def}}{\\Longleftrightarrow}\\quad s_n = \\sum_{k=1}^{n} a_k \\longrightarrow S"
+        },
+        {
+          "type": "text",
+          "content": "So the series $\\sum a_n$ **converges to $S$** precisely when the sequence of partial sums converges to $S$. This is the whole game: every question about a series becomes a question about the sequence $(s_n)$, which we already know how to handle."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The cleanest example is the **geometric series** $\\sum_{n=0}^{\\infty} r^n$. Its partial sums collapse to a closed form. Multiply $s_n = 1 + r + \\cdots + r^n$ by $r$ and subtract:"
+        },
+        {
+          "type": "math",
+          "latex": "s_n = \\frac{1 - r^{\\,n+1}}{1 - r} \\qquad (r \\neq 1)"
+        },
+        {
+          "type": "text",
+          "content": "If $|r|<1$ then $r^{\\,n+1} \\to 0$, so $s_n \\to \\dfrac{1}{1-r}$. If $|r| \\ge 1$ the terms do not shrink to $0$ and the series diverges."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum_{n=0}^{\\infty} r^n = \\frac{1}{1-r} \\quad (|r| < 1)"
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "discover",
+      "prompt": "Take $r = \\tfrac12$. Slide $n$ upward and watch the partial sum $s_n = \\dfrac{1-(1/2)^{n+1}}{1-1/2}$ climb toward its limit $\\dfrac{1}{1-1/2} = 2$ — never overshooting, always closing the gap.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "initialValue": 0,
+          "label": "n",
+          "readouts": [
+            { "label": "s_n", "expression": "(1 - (1/2)^(n+1)) / (1 - 1/2)" },
+            { "label": "limit", "expression": "2" }
+          ],
+          "markers": [
+            { "value": 0, "label": "first term" },
+            { "value": 30, "label": "n large" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["geometric-series"],
+      "prompt": "Worked example: evaluate $\\sum_{n=0}^{\\infty} \\left(\\tfrac12\\right)^n$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Identify.** This is geometric with first index $n=0$ and ratio $r = \\tfrac12$. Since $|r| = \\tfrac12 < 1$, it converges."
+        },
+        {
+          "type": "text",
+          "content": "**Apply the formula.** For a series starting at $n=0$, $\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1-r}$."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum_{n=0}^{\\infty} \\left(\\tfrac12\\right)^n = \\frac{1}{1 - \\tfrac12} = \\frac{1}{\\tfrac12} = 2"
+        },
+        {
+          "type": "text",
+          "content": "**Sanity check.** The partial sums $1, \\tfrac32, \\tfrac74, \\tfrac{15}{8}, \\dots$ creep up to $2$ — matching the slider."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["geometric-series"],
+      "scaffold": "worked",
+      "prompt": "Evaluate $\\sum_{n=0}^{\\infty} \\left(\\tfrac13\\right)^n$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example: this is geometric with $r = \\tfrac13$, and $|r| < 1$, so it converges and starts at $n = 0$."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum_{n=0}^{\\infty} \\left(\\tfrac13\\right)^n = \\frac{1}{1 - \\tfrac13}"
+        },
+        {
+          "type": "text",
+          "content": "Now simplify $\\dfrac{1}{1 - 1/3}$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\sum_{n=0}^{\\infty} (1/3)^n = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["3/2"] },
+      "feedback": {
+        "correct": "Exactly. With $r=\\tfrac13$, the geometric formula gives $\\dfrac{1}{1-1/3} = \\dfrac{1}{2/3} = \\dfrac32$.",
+        "incorrect": [
+          { "match": "3", "message": "That would be the sum if it started at $n=1$ times something — but here use $\\dfrac{1}{1-r}$ directly with $r=\\tfrac13$, giving $\\dfrac{1}{2/3}$." },
+          { "match": "*", "message": "Use the geometric-series formula $\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1-r}$ with $r = \\tfrac13$, then simplify $\\dfrac{1}{1-1/3}$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Notice the geometric series diverged precisely when its terms failed to shrink to $0$. That is a general necessary condition, the **nth-term test** (or divergence test)."
+        },
+        {
+          "type": "math",
+          "latex": "\\sum a_n \\text{ converges} \\;\\Longrightarrow\\; a_n \\to 0 \\qquad\\text{(contrapositive: } a_n \\not\\to 0 \\Rightarrow \\text{diverges)}"
+        },
+        {
+          "type": "text",
+          "content": "Why? If $s_n \\to S$, then $a_n = s_n - s_{n-1} \\to S - S = 0$. The test is a one-way street: it can only **prove divergence**. The converse is false, as the next step shows."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["nth-term-test"],
+      "prompt": "Here is a *flawed* argument that the harmonic series $\\sum \\tfrac1n$ converges. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Consider the harmonic series $\\sum_{n=1}^{\\infty} \\tfrac1n$." },
+            { "id": "p2", "label": "Its terms satisfy $\\tfrac1n \\to 0$ as $n \\to \\infty$." },
+            { "id": "p3", "label": "Since the terms tend to $0$, the series converges." },
+            { "id": "p4", "label": "Therefore $\\sum \\tfrac1n$ has a finite sum." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. The nth-term test only says convergence *implies* $a_n \\to 0$; it does **not** run backwards. The harmonic series has $\\tfrac1n \\to 0$ yet diverges (its partial sums grow without bound).",
+        "incorrect": [
+          { "match": "p2", "message": "Step 2 is true: $\\tfrac1n$ really does tend to $0$. The error is using that fact to *conclude* convergence." },
+          { "match": "*", "message": "The nth-term test is one-directional. $a_n \\to 0$ is necessary but not sufficient — find the step that treats it as sufficient." }
+        ]
+      }
+    },
+    {
+      "id": "we2",
+      "type": "worked_example",
+      "tags": ["partial-sums"],
+      "prompt": "Worked example: a telescoping series, $\\sum_{n=1}^{\\infty} \\dfrac{1}{n(n+1)}$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Decompose.** Partial fractions split each term so that neighbors cancel:"
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{1}{n(n+1)} = \\frac{1}{n} - \\frac{1}{n+1}"
+        },
+        {
+          "type": "text",
+          "content": "**Telescope the partial sum.** Almost everything cancels:"
+        },
+        {
+          "type": "math",
+          "latex": "s_N = \\sum_{n=1}^{N}\\left(\\frac1n - \\frac1{n+1}\\right) = 1 - \\frac{1}{N+1}"
+        },
+        {
+          "type": "text",
+          "content": "**Take the limit.** As $N \\to \\infty$, $\\tfrac{1}{N+1} \\to 0$, so $s_N \\to 1$. Thus $\\sum \\tfrac{1}{n(n+1)} = 1$."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["nth-term-test"],
+      "scaffold": "bare",
+      "prompt": "Which one of these series must **diverge** by the nth-term test?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{n}{n+1}$" },
+            { "id": "b", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{n^2}$" },
+            { "id": "c", "label": "$\\sum_{n=0}^{\\infty} \\left(\\tfrac12\\right)^n$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Here $\\dfrac{n}{n+1} \\to 1 \\neq 0$, so by the nth-term test the series diverges. The other two have terms $\\to 0$, so the test is silent (and both in fact converge).",
+        "incorrect": [
+          { "match": "b", "message": "For $\\sum \\tfrac1{n^2}$ the terms tend to $0$, so the nth-term test cannot conclude anything — it is inconclusive here (and this series actually converges)." },
+          { "match": "c", "message": "The geometric series with $r=\\tfrac12$ has terms $\\to 0$ and converges to $2$; the nth-term test does not apply." },
+          { "match": "*", "message": "The nth-term test detects divergence only when $a_n \\not\\to 0$. Find the series whose terms do not approach $0$." }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A series $\\sum a_n$ is **defined** as the limit of its partial sums $s_n = a_1 + \\cdots + a_n$. Every series question is a sequence question about $(s_n)$."
+        },
+        {
+          "type": "text",
+          "content": "The geometric series $\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1-r}$ for $|r|<1$ and diverges otherwise. The nth-term test says convergence forces $a_n \\to 0$ — but $a_n \\to 0$ never guarantees convergence (the harmonic series $\\sum \\tfrac1n$ diverges)."
+        },
+        {
+          "type": "text",
+          "content": "Because a series is just the sequence $(s_n)$, the **Cauchy criterion** ports straight over: $\\sum a_n$ converges iff $\\big|\\sum_{k=n}^{m} a_k\\big| < \\varepsilon$ for all large $m \\ge n$ (taking $m=n$ recovers the nth-term test). Next we build a toolkit of tests to decide convergence without computing $s_n$ exactly."
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["partial-sums"],
+          "prompt": "\"The series $\\sum a_n$ converges to $S$\" means precisely that:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The partial sums $s_n = a_1 + \\cdots + a_n$ satisfy $s_n \\to S$." },
+                { "id": "b", "label": "The terms satisfy $a_n \\to S$." },
+                { "id": "c", "label": "Every $a_n$ equals $S/n$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — convergence of a series is, by definition, convergence of its sequence of partial sums.",
+            "incorrect": [
+              { "match": "b", "message": "That confuses terms with partial sums. The terms tending to a limit is the nth-term condition, and even then they must tend to $0$, not $S$." },
+              { "match": "*", "message": "Recall the definition: $\\sum a_n = S$ means $s_n = \\sum_{k=1}^{n} a_k \\to S$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["nth-term-test"],
+          "prompt": "We know $a_n \\to 0$. What can we conclude about $\\sum a_n$?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "It converges." },
+                { "id": "b", "label": "It diverges." },
+                { "id": "c", "label": "Nothing yet — $a_n \\to 0$ is necessary but not sufficient." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Exactly. The nth-term test runs one way only. The harmonic series shows $a_n \\to 0$ can still diverge.",
+            "incorrect": [
+              { "match": "a", "message": "Beware the converse error: $a_n \\to 0$ does not imply convergence. $\\sum \\tfrac1n$ is the standard counterexample." },
+              { "match": "b", "message": "The nth-term test only forces divergence when $a_n \\not\\to 0$. Here $a_n \\to 0$, so it stays silent." },
+              { "match": "*", "message": "The nth-term test gives convergence $\\Rightarrow a_n \\to 0$, not the reverse. With $a_n \\to 0$ alone, we cannot decide." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["nth-term-test"],
+          "prompt": "Why does $a_n \\to 0$ fail to guarantee that $\\sum a_n$ converges? (Explain via the canonical example.)",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Because for the harmonic series $\\sum \\tfrac1n$ the terms shrink to $0$, yet the partial sums grow without bound, so it diverges." },
+                { "id": "b", "label": "Because $a_n \\to 0$ is actually impossible for a convergent series." },
+                { "id": "c", "label": "Because no series with positive terms can converge." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Terms shrinking to $0$ does not control how *fast* they shrink. The harmonic terms shrink too slowly, so the partial sums diverge even though $\\tfrac1n \\to 0$.",
+            "incorrect": [
+              { "match": "b", "message": "On the contrary, the nth-term test says a convergent series *must* have $a_n \\to 0$. The point is the reverse implication fails." },
+              { "match": "c", "message": "Plenty of positive-term series converge, e.g. $\\sum \\tfrac{1}{n^2}$. The issue is purely that $a_n \\to 0$ is not sufficient." },
+              { "match": "*", "message": "Use the harmonic series: $\\tfrac1n \\to 0$ but the partial sums are unbounded, so it diverges." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["geometric-series"],
+      "prompt": "Evaluate the geometric series $\\sum_{n=0}^{\\infty} \\left(\\tfrac14\\right)^n$.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\sum_{n=0}^{\\infty} (1/4)^n = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["4/3"] },
+      "feedback": {
+        "correct": "Yes — $\\dfrac{1}{1-1/4} = \\dfrac{1}{3/4} = \\dfrac43$.",
+        "incorrect": [
+          { "match": "*", "message": "Apply $\\sum_{n=0}^{\\infty} r^n = \\dfrac{1}{1-r}$ with $r=\\tfrac14$, then simplify $\\dfrac{1}{3/4}$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["nth-term-test"],
+      "prompt": "The series $\\sum_{n=1}^{\\infty} \\dfrac{n}{2n+1}$ — what does the nth-term test say?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Diverges, since the terms tend to $\\tfrac12 \\neq 0$." },
+            { "id": "b", "label": "Converges, since the terms tend to $\\tfrac12$." },
+            { "id": "c", "label": "Inconclusive, since the terms tend to $0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $\\dfrac{n}{2n+1} \\to \\tfrac12 \\neq 0$, so the nth-term test forces divergence.",
+        "incorrect": [
+          { "match": "*", "message": "Compute $\\lim \\dfrac{n}{2n+1} = \\tfrac12 \\neq 0$. A nonzero limit means the nth-term test proves divergence." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["partial-sums"],
+      "prompt": "Using $\\dfrac{1}{n(n+1)} = \\dfrac1n - \\dfrac1{n+1}$, the value of $\\sum_{n=1}^{\\infty} \\dfrac{1}{n(n+1)}$ is:",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "\\sum = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+      "feedback": {
+        "correct": "Yes — the partial sum telescopes to $1 - \\tfrac{1}{N+1} \\to 1$.",
+        "incorrect": [
+          { "match": "*", "message": "Telescope: $s_N = 1 - \\dfrac{1}{N+1}$, whose limit as $N \\to \\infty$ is the answer." }
+        ]
+      }
+    }
+  ]
+}

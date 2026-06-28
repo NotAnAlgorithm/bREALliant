@@ -1,0 +1,314 @@
+{
+  "lessonId": "lesson-open-closed-01",
+  "title": "Open & Closed Sets",
+  "tags": ["open-set", "closed-set", "topology"],
+  "prerequisites": ["lesson-balls-nbhds-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "In the previous lesson we built the open ball $B_r(p) = \\{\\, x : d(x,p) < r \\,\\}$ — the set of points within distance $r$ of $p$. Balls are the lens through which all of topology is seen. We now use them to classify sets by how their points sit inside."
+        },
+        {
+          "type": "text",
+          "content": "Call $p$ an **interior point** of a set $E$ if some ball around $p$ stays entirely inside $E$ — that is, there is a radius $r>0$ with $B_r(p) \\subseteq E$. Intuitively, $p$ has a little breathing room: a whole neighborhood of $p$ is still in $E$."
+        },
+        {
+          "type": "text",
+          "content": "A set $E$ is **open** if *every* one of its points is an interior point. No point of an open set sits on its edge; each one has room to spare."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The partner notion is defined by complements. A set $E$ is **closed** if its complement $E^c$ is open."
+        },
+        {
+          "type": "math",
+          "latex": "E \\text{ is closed} \\iff E^c \\text{ is open}."
+        },
+        {
+          "type": "text",
+          "content": "Beware a common trap: open and closed are **not** opposites. A set can be both — $\\mathbb{R}$ and $\\varnothing$ are each open and closed. And a set can be neither: the half-open interval $[a,b)$ is the classic example, as we will see."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Look at the interval $(-1,1)$ and its two endpoints. Pick any point strictly inside, say $0.6$: you can draw a tiny ball around it that stays inside $(-1,1)$, so it is an interior point. But $\\pm 1$ are *not* in $(-1,1)$, and any ball around an endpoint would spill past it. Every interior point having room is exactly what 'open' means.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": -2,
+          "max": 2,
+          "intervals": [{ "start": -1, "end": 1, "label": "(-1,1): every point has room" }],
+          "markers": [
+            { "value": -1, "label": "−1 excluded" },
+            { "value": 1, "label": "1 excluded" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "type": "worked_example",
+      "tags": ["open-set"],
+      "prompt": "Let us prove the open interval $(a,b)$ really is an open set.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Take any $p \\in (a,b)$, so $a < p < b$. To show $p$ is an interior point we must produce a radius $r>0$ with $(p-r,\\,p+r) \\subseteq (a,b)$."
+        },
+        {
+          "type": "math",
+          "latex": "r = \\min\\{\\, p-a,\\; b-p \\,\\}."
+        },
+        {
+          "type": "text",
+          "content": "Since $a<p<b$ we have $p-a>0$ and $b-p>0$, so this $r$ is strictly positive."
+        },
+        {
+          "type": "math",
+          "latex": "p-r \\ge p-(p-a) = a \\qquad\\text{and}\\qquad p+r \\le p+(b-p) = b."
+        },
+        {
+          "type": "text",
+          "content": "Therefore $(p-r,\\,p+r) \\subseteq (a,b)$, so $p$ is an interior point. Because $p$ was arbitrary, every point of $(a,b)$ is interior, and $(a,b)$ is open. $\\blacksquare$"
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["open-set", "closed-set"],
+      "prompt": "Take $a<b$. Among these subsets of $\\mathbb{R}$, which one is **neither open nor closed**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$(a,b)$" },
+            { "id": "b", "label": "$[a,b]$" },
+            { "id": "c", "label": "$[a,b)$" },
+            { "id": "d", "label": "$\\mathbb{R}$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. $[a,b)$ is not open because the endpoint $a$ belongs to it but every ball around $a$ contains points $<a$ that are outside. It is not closed either, because its complement contains $b$, and no ball around $b$ avoids the set (points just below $b$ are in $[a,b)$). So it is neither.",
+        "incorrect": [
+          { "match": "a", "message": "$(a,b)$ is open: we just proved every point of it is interior." },
+          { "match": "b", "message": "$[a,b]$ is closed: its complement $(-\\infty,a)\\cup(b,\\infty)$ is a union of open intervals, hence open." },
+          { "match": "d", "message": "$\\mathbb{R}$ is open (every ball stays inside) and also closed (its complement $\\varnothing$ is open). It is the wrong kind of example here." },
+          { "match": "*", "message": "Look for the half-open interval. It includes one endpoint (so it is not open there) and excludes the other (so its complement is not open there either)." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["open-set", "topology"],
+      "prompt": "Here is a *flawed* argument that the intersection $\\bigcap_{n=1}^{\\infty} G_n$ of the open sets $G_n=\\left(-\\tfrac1n,\\tfrac1n\\right)$ is open. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "Each $G_n=\\left(-\\tfrac1n,\\tfrac1n\\right)$ is an open interval, hence open, and $0\\in G_n$ for every $n$." },
+            { "id": "p2", "label": "For each $n$, the ball of radius $r_n=\\tfrac1n$ about $0$ satisfies $\\left(-r_n,r_n\\right)\\subseteq G_n$." },
+            { "id": "p3", "label": "Let $r=\\min_{n} r_n$; then $r>0$ and $(-r,r)\\subseteq G_n$ for every $n$, so $(-r,r)\\subseteq\\bigcap_n G_n$." },
+            { "id": "p4", "label": "Hence $0$ is an interior point of the intersection, so $\\bigcap_n G_n$ is open." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Exactly — step 3 is the flaw. The numbers $r_n=1/n$ have infimum $0$, and there is no *smallest* one, so $\\min_n r_n$ does not exist as a positive number; the would-be minimum is $0$. With no positive $r$ working for all $n$, the argument collapses. In fact $\\bigcap_n G_n=\\{0\\}$, which is **not** open — confirming infinite intersections of open sets can fail to be open.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is fine: each $(-1/n,1/n)$ is a genuine open interval and clearly contains $0$." },
+          { "match": "p2", "message": "Step 2 is correct: the ball of radius $1/n$ about $0$ is exactly $G_n$, so it certainly sits inside $G_n$." },
+          { "match": "p4", "message": "Step 4 follows validly *if* the previous step held — the error is upstream, in the claim that a positive $r$ works for all $n$ at once." },
+          { "match": "*", "message": "Ask which step quietly assumes infinitely many positive numbers have a positive minimum. The radii $1/n$ shrink to $0$, so no single positive $r$ fits inside every $G_n$." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["open-set", "topology"],
+      "prompt": "Which statement about open sets in a metric space is **true**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "The union of *any* collection of open sets is open, and the intersection of *finitely many* open sets is open." },
+            { "id": "b", "label": "The intersection of *any* collection of open sets is open." },
+            { "id": "c", "label": "The union of two open sets is open, but the union of infinitely many open sets is never open." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct. Arbitrary unions of open sets are open: any point of the union lies in some member, and that member supplies a ball. Finite intersections stay open because you can take the *minimum* of finitely many positive radii. Infinitude is exactly where the second part must stop.",
+        "incorrect": [
+          { "match": "b", "message": "Infinite intersections can fail: $\\bigcap_n(-1/n,1/n)=\\{0\\}$ is not open. The min-of-radii trick needs *finitely* many sets." },
+          { "match": "c", "message": "Arbitrary unions of open sets *are* open — even infinitely many. For instance $\\bigcup_n(-1+1/n,\\,1-1/n)=(-1,1)$. Unions are the unrestricted operation." },
+          { "match": "*", "message": "Unions: unrestricted. Intersections: only *finitely* many are guaranteed to stay open." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A set is **open** when every point is interior — each point sits inside some ball contained in the set. A set is **closed** when its complement is open. These are not opposites: $\\mathbb{R}$ and $\\varnothing$ are both, while $[a,b)$ is neither."
+        },
+        {
+          "type": "text",
+          "content": "Standard examples: $(a,b)$ is open, $[a,b]$ is closed, and a half-open interval is neither."
+        },
+        {
+          "type": "text",
+          "content": "The operation rules are asymmetric. **Arbitrary** unions of open sets are open, and **finite** intersections of open sets are open — but infinite intersections may fail, the witness being $\\bigcap_n(-1/n,1/n)=\\{0\\}$. By taking complements, arbitrary intersections of closed sets are closed and finite unions of closed sets are closed."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "A set $E$ in a metric space is **open** when:",
+          "tags": ["open-set"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "For every $p\\in E$ there is $r>0$ with $B_r(p)\\subseteq E$." },
+                { "id": "b", "label": "$E$ contains all of its endpoints." },
+                { "id": "c", "label": "$E$ is bounded and nonempty." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Yes — openness means every point is interior: each has a ball staying inside.",
+            "incorrect": [
+              { "match": "b", "message": "Containing endpoints is closer to being *closed*; open sets in fact exclude their boundary points." },
+              { "match": "c", "message": "Openness has nothing to do with boundedness. $\\mathbb{R}$ is open and unbounded; $\\varnothing$ is open and empty." },
+              { "match": "*", "message": "Use the definition: every point must have *some* ball around it that lies entirely within the set." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Which is the correct definition of a **closed** set $E$?",
+          "tags": ["closed-set"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$E$ is not open." },
+                { "id": "b", "label": "The complement $E^c$ is open." },
+                { "id": "c", "label": "$E$ is a finite set." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right — closed is *defined* by its complement being open.",
+            "incorrect": [
+              { "match": "a", "message": "Not-open and closed are different: $[a,b)$ is not open, yet it is also not closed. And $\\mathbb{R}$ is both open and closed." },
+              { "match": "c", "message": "Finiteness is unrelated. $[0,1]$ is closed and infinite; $\\{1/n:n\\in\\mathbb{N}\\}$ is infinite and not closed." },
+              { "match": "*", "message": "Closedness is defined via complements: $E$ is closed exactly when $E^c$ is open." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "What does the example $\\bigcap_{n=1}^{\\infty}\\left(-\\tfrac1n,\\tfrac1n\\right)$ demonstrate?",
+          "tags": ["open-set", "topology"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "An infinite intersection of open sets can fail to be open: here it equals $\\{0\\}$, which is not open." },
+                { "id": "b", "label": "An infinite union of open sets can fail to be open." },
+                { "id": "c", "label": "The intersection is empty." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Every $(-1/n,1/n)$ is open, but their intersection is the single point $\\{0\\}$, which has no ball inside it — so it is not open.",
+            "incorrect": [
+              { "match": "b", "message": "This is an *intersection*, not a union — and arbitrary unions of open sets are always open. The lesson is that infinite *intersections* can fail." },
+              { "match": "c", "message": "The intersection is not empty: $0$ lies in every $(-1/n,1/n)$, so $\\bigcap_n(-1/n,1/n)=\\{0\\}$." },
+              { "match": "*", "message": "Only $0$ survives every set, giving $\\{0\\}$ — a single point, which is not open. That shows infinite intersections need not be open." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "Which interval is **open**?",
+      "tags": ["open-set"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$(0,1)$" },
+            { "id": "b", "label": "$[0,1]$" },
+            { "id": "c", "label": "$[0,1)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Yes — $(0,1)$ is open; every point has a ball staying inside.",
+        "incorrect": [
+          { "match": "b", "message": "$[0,1]$ is closed, not open: no ball around the endpoint $0$ stays inside it." },
+          { "match": "c", "message": "$[0,1)$ is neither open nor closed: the endpoint $0$ has no ball staying inside." },
+          { "match": "*", "message": "An open interval excludes both endpoints, leaving every point with room around it." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "Arbitrary unions of open sets are ___, and finite intersections of open sets are ___.",
+      "tags": ["open-set", "topology"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "open; open" },
+            { "id": "b", "label": "closed; closed" },
+            { "id": "c", "label": "open; closed" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — unions (any number) and finite intersections both preserve openness.",
+        "incorrect": [
+          { "match": "b", "message": "These operations preserve *openness*, not closedness. It is intersections of *closed* sets that stay closed." },
+          { "match": "c", "message": "A finite intersection of open sets is open (take the minimum of finitely many radii), not closed." },
+          { "match": "*", "message": "Both blanks are 'open': arbitrary unions and finite intersections of open sets are open." }
+        ]
+      }
+    }
+  ]
+}

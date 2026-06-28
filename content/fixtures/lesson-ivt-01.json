@@ -1,0 +1,353 @@
+{
+  "lessonId": "lesson-ivt-01",
+  "title": "Connectedness ⇒ The Intermediate Value Theorem",
+  "tags": ["intermediate-value-theorem", "connectedness", "continuity"],
+  "prerequisites": ["lesson-continuity-01", "lesson-connectedness-01"],
+  "glossary": {
+    "ivt": {
+      "term": "Intermediate Value Theorem",
+      "definition": "If $f$ is continuous on $[a,b]$ and $y$ lies between $f(a)$ and $f(b)$, then there exists $c\\in[a,b]$ with $f(c)=y$."
+    },
+    "connected-image": {
+      "term": "Continuous Image of a Connected Set",
+      "definition": "If $f$ is continuous and $E$ is connected, then $f(E)$ is connected. In $\\mathbb{R}$ the connected sets are exactly the intervals, so $f(E)$ is an interval."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall two facts we now fuse: continuity means convergent inputs force convergent outputs, and a set is **connected** when it cannot be split into two separated open pieces — and the connected subsets of $\\mathbb{R}$ are precisely the **intervals**."
+        },
+        {
+          "type": "text",
+          "content": "Together they answer a primal question: if a continuous function starts below a target value and ends above it, must it hit the target on the way? Intuition screams yes — you cannot cross a line without touching it. The Intermediate Value Theorem (IVT) makes that rigorous, and the proof is pure connectedness."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The structural fact is the twin of last time: **the continuous image of a connected set is connected.** Since the connected subsets of $\\mathbb{R}$ are exactly the intervals, $f([a,b])$ is an interval."
+        },
+        {
+          "type": "math",
+          "latex": "[a,b]\\text{ connected},\\ f\\text{ continuous} \\implies f([a,b])\\text{ is an interval}"
+        },
+        {
+          "type": "text",
+          "content": "An interval has no gaps: if it contains $f(a)$ and $f(b)$, it contains *every* value $y$ between them. So such a $y$ is some $f(c)$ — that is the **IVT**: $f$ continuous on $[a,b]$ and $y$ between $f(a),f(b)$ guarantee a $c\\in[a,b]$ with $f(c)=y$. A favorite use: if $f$ changes sign on $[a,b]$, it has a **root** inside."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Take $p(x)=x^3-x-1$ on $[1,2]$. Its endpoint values straddle $0$: $p(1)=-1<0$ and $p(2)=5>0$. The IVT says the continuous graph cannot leap from negative to positive without crossing $0$, so a root is trapped somewhere in $(1,2)$. The markers show the sign flip that brackets it.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 3,
+          "intervals": [{ "start": 1, "end": 2, "label": "root bracketed here" }],
+          "markers": [
+            { "value": 1, "label": "p(1) = -1 < 0" },
+            { "value": 2, "label": "p(2) = 5 > 0" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["intermediate-value-theorem"],
+      "prompt": "Worked example: prove $p(x)=x^3-x-1$ has a real root in $(1,2)$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Continuity.** $p$ is a polynomial, hence continuous on $[1,2]$ — the IVT's hypothesis is met."
+        },
+        {
+          "type": "text",
+          "content": "**Endpoint signs.** Evaluate at the endpoints:"
+        },
+        {
+          "type": "math",
+          "latex": "p(1) = 1-1-1 = -1 < 0, \\qquad p(2) = 8-2-1 = 5 > 0"
+        },
+        {
+          "type": "text",
+          "content": "**Apply the IVT.** The target value $y=0$ lies between $p(1)=-1$ and $p(2)=5$. Since $p$ is continuous on $[1,2]$, the IVT gives a $c\\in(1,2)$ with $p(c)=0$."
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** That $c$ is a real root of $x^3-x-1$. The pattern — *continuous + sign change ⇒ root* — is the workhorse for proving existence without ever computing the root."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["intermediate-value-theorem"],
+      "scaffold": "worked",
+      "prompt": "Consider $h(x)=x^3-2x-5$. There is an integer $n$ such that $h$ changes sign between $n$ and $n+1$, so $h$ has a root in $(n,n+1)$. Find that integer $n$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example: test integer endpoints and look for a sign flip. $h$ is a polynomial, hence continuous, so a sign change forces a root by the IVT."
+        },
+        {
+          "type": "math",
+          "latex": "h(2)=8-4-5=-1<0, \\qquad h(3)=27-6-5=16>0"
+        },
+        {
+          "type": "text",
+          "content": "The sign flips from $h(2)<0$ to $h(3)>0$. Read off the left endpoint of that bracketing interval."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "n = {{answer}}", "placeholder": "an integer" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2"] },
+      "feedback": {
+        "correct": "Exactly. $h(2)=-1<0$ and $h(3)=16>0$, so the continuous $h$ must hit $0$ somewhere in $(2,3)$; the bracketing interval is $(2,3)$, so $n=2$.",
+        "incorrect": [
+          { "match": "1", "message": "Check $h(1)=1-2-5=-6$ and $h(2)=-1$ — both negative, no sign change on $(1,2)$. Keep testing until the sign flips." },
+          { "match": "3", "message": "That is the right *endpoint* of the bracket. The sign change is between $2$ and $3$, so the integer $n$ (the left end) is $2$." },
+          { "match": "*", "message": "Evaluate $h$ at consecutive integers until the sign flips. $h(2)=-1<0$ while $h(3)=16>0$, so $n=2$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["intermediate-value-theorem", "connectedness"],
+      "scaffold": "bare",
+      "prompt": "Put the connectedness proof of the IVT in logical order. Drag the steps so each follows from the previous.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "d1", "label": "$[a,b]$ is connected and $f$ is continuous." },
+            { "id": "d2", "label": "Therefore $f([a,b])$ is connected." },
+            { "id": "d3", "label": "Connected subsets of $\\mathbb{R}$ are intervals, so $f([a,b])$ is an interval." },
+            { "id": "d4", "label": "This interval contains $f(a)$ and $f(b)$, hence every $y$ between them." },
+            { "id": "d5", "label": "So for such a $y$ there is $c\\in[a,b]$ with $f(c)=y$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["d1,d2,d3,d4,d5"] },
+      "feedback": {
+        "correct": "Exactly. Continuity carries connectedness to the image; connected in $\\mathbb{R}$ means an interval; an interval holding $f(a)$ and $f(b)$ holds everything between; so each intermediate $y$ is realized as some $f(c)$.",
+        "incorrect": [
+          { "match": "*", "message": "Order by dependency: hypotheses ⇒ $f([a,b])$ connected ⇒ it is an interval ⇒ it contains all $y$ between $f(a),f(b)$ ⇒ each such $y$ equals some $f(c)$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["intermediate-value-theorem", "continuity"],
+      "scaffold": "bare",
+      "prompt": "A *flawed* argument: 'Let $g(x)=-1$ for $x<0$ and $g(x)=1$ for $x\\ge 0$, on $[-1,1]$. Since $g(-1)=-1<0<1=g(1)$, the IVT gives some $c$ with $g(c)=0$.' Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "$g(-1)=-1$ and $g(1)=1$, and $0$ lies between them." },
+            { "id": "p2", "label": "$g$ takes the value $-1$ on $[-1,0)$ and $1$ on $[0,1]$." },
+            { "id": "p3", "label": "The IVT applies to $g$ on $[-1,1]$, so some $c$ has $g(c)=0$." },
+            { "id": "p4", "label": "But $g$ never equals $0$, since its only values are $\\pm 1$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. The IVT requires $f$ to be **continuous**, but $g$ jumps at $0$. Its image $\\{-1,1\\}$ is disconnected — not an interval — so the connectedness argument breaks and no $c$ with $g(c)=0$ need exist.",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 just records the endpoint values correctly; $0$ really is between $-1$ and $1$. The illegitimate move is applying the IVT to a *discontinuous* function." },
+          { "match": "p2", "message": "Step 2 accurately describes $g$. The error is invoking the IVT despite the jump at $0$ — continuity is a required hypothesis." },
+          { "match": "p4", "message": "Step 4 is a true observation (the contradiction!). It exposes that the *earlier* IVT application in step 3 was illegal: $g$ is not continuous." },
+          { "match": "*", "message": "The IVT's hypothesis is continuity. $g$ has a jump at $0$, so the theorem cannot be applied — find the step that uses it anyway." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The Intermediate Value Theorem is connectedness wearing a calculus disguise. A continuous $f$ sends the connected interval $[a,b]$ to a connected set, which in $\\mathbb{R}$ must itself be an interval — and an interval containing $f(a)$ and $f(b)$ contains every value between them."
+        },
+        {
+          "type": "math",
+          "latex": "f\\text{ continuous on }[a,b],\\ y\\text{ between }f(a),f(b) \\implies \\exists\\,c\\in[a,b]:\\ f(c)=y"
+        },
+        {
+          "type": "text",
+          "content": "The headline application: a continuous function with a sign change on $[a,b]$ has a root inside — that is how we trapped a root of $x^3-x-1$ in $(1,2)$ without solving anything. And continuity is non-negotiable: a jump function like the sign step skips right over $0$. Compactness gave us extremes; connectedness gives us intermediate values."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Intermediate Value Theorem states:",
+          "tags": ["intermediate-value-theorem"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "If $f$ is continuous on $[a,b]$ and $y$ is between $f(a)$ and $f(b)$, then $f(c)=y$ for some $c\\in[a,b]$." },
+                { "id": "b", "label": "Every continuous function on $[a,b]$ attains a maximum." },
+                { "id": "c", "label": "Every function on $[a,b]$ takes all values between $f(a)$ and $f(b)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — continuity on $[a,b]$ plus a target between the endpoint values yields a point that hits it.",
+            "incorrect": [
+              { "match": "b", "message": "That is the *Extreme* Value Theorem (compactness), about attaining max/min. The IVT is about hitting in-between *values*." },
+              { "match": "c", "message": "Not *every* function — continuity is essential. A jump function skips values, as the sign-step example showed." },
+              { "match": "*", "message": "IVT: $f$ continuous on $[a,b]$, $y$ between $f(a),f(b)$ ⇒ some $c$ has $f(c)=y$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "Which fact about $\\mathbb{R}$ makes the connectedness proof of the IVT work?",
+          "tags": ["connectedness"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The connected subsets of $\\mathbb{R}$ are exactly the intervals." },
+                { "id": "b", "label": "Every subset of $\\mathbb{R}$ is connected." },
+                { "id": "c", "label": "Every bounded subset of $\\mathbb{R}$ is an interval." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Continuity makes $f([a,b])$ connected, and 'connected in $\\mathbb{R}$' = 'interval', which has no gaps — so all intermediate values appear.",
+            "incorrect": [
+              { "match": "b", "message": "Far from it — $\\{-1,1\\}$ and $\\mathbb{Q}$ are disconnected. The useful fact is that the *connected* ones are precisely the intervals." },
+              { "match": "c", "message": "Bounded does not imply interval: $\\{0\\}\\cup\\{1\\}$ is bounded but not an interval. The right notion is *connected* ⇔ interval." },
+              { "match": "*", "message": "The crucial identification: connected subsets of $\\mathbb{R}$ are exactly the intervals." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why does the IVT require $f$ to be continuous?",
+          "tags": ["continuity", "intermediate-value-theorem"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Without continuity the image of $[a,b]$ can be disconnected (have gaps), so a jump like the sign function skips over intermediate values." },
+                { "id": "b", "label": "Because discontinuous functions are never bounded." },
+                { "id": "c", "label": "Because only continuous functions are defined on intervals." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Continuity is what preserves connectedness; a jump function's image $\\{-1,1\\}$ is disconnected, so it can leap past $0$ without ever equalling it.",
+            "incorrect": [
+              { "match": "b", "message": "Boundedness is not the issue — the sign function is bounded yet violates the IVT. The point is that discontinuity lets the image be disconnected." },
+              { "match": "c", "message": "Discontinuous functions are perfectly well-defined on intervals (e.g. the sign step). Continuity matters because it preserves *connectedness* of the image." },
+              { "match": "*", "message": "Continuity preserves connectedness; drop it and the image can split into gaps, skipping intermediate values." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "To prove $x^5 + x - 3$ has a real root, the cleanest IVT-based argument is:",
+      "tags": ["intermediate-value-theorem"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "It is continuous, and $f(0)=-3<0$ while $f(2)=31>0$, so by the IVT it has a root in $(0,2)$." },
+            { "id": "b", "label": "Its derivative is positive, so it must have a root." },
+            { "id": "c", "label": "Odd-degree polynomials cannot have roots." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. A polynomial is continuous, and a sign change between $f(0)$ and $f(2)$ forces a root in between by the IVT.",
+        "incorrect": [
+          { "match": "b", "message": "A positive derivative shows monotonicity, not existence of a root. The IVT needs a *sign change* of $f$ itself between two points." },
+          { "match": "c", "message": "The opposite is true — odd-degree polynomials always have a real root, precisely by an IVT sign-change argument." },
+          { "match": "*", "message": "Find two inputs where $f$ has opposite signs; continuity + sign change ⇒ root via the IVT." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "For $f(x)=x^2-2$, between which consecutive integers does the IVT guarantee a positive root (sign change)?",
+      "tags": ["intermediate-value-theorem"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Between $1$ and $2$, since $f(1)=-1<0$ and $f(2)=2>0$." },
+            { "id": "b", "label": "Between $2$ and $3$, since $f(2)=2$ and $f(3)=7$." },
+            { "id": "c", "label": "Between $0$ and $1$, since $f(0)=-2$ and $f(1)=-1$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $f(1)=-1<0$ and $f(2)=2>0$, a sign change, so a root (namely $\\sqrt2$) lies in $(1,2)$.",
+        "incorrect": [
+          { "match": "b", "message": "On $[2,3]$ both values are positive ($2$ and $7$) — no sign change, so the IVT promises nothing there." },
+          { "match": "c", "message": "On $[0,1]$ both values are negative ($-2$ and $-1$) — no sign change. Look for where $f$ flips from negative to positive." },
+          { "match": "*", "message": "Find consecutive integers where $f$ changes sign. $f(1)=-1$, $f(2)=2$ flips sign, so the root is in $(1,2)$." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "The IVT can fail for a function that is bounded and defined on $[a,b]$ but discontinuous. This shows:",
+      "tags": ["continuity"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Continuity is an essential hypothesis — it is what keeps the image connected." },
+            { "id": "b", "label": "The IVT is generally false." },
+            { "id": "c", "label": "Boundedness is the key hypothesis of the IVT." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Drop continuity and the image can become disconnected (e.g. $\\{-1,1\\}$), so intermediate values get skipped. Continuity is exactly what cannot be removed.",
+        "incorrect": [
+          { "match": "b", "message": "The IVT is true *with* its hypotheses. The counterexample only shows the *continuity* hypothesis is indispensable." },
+          { "match": "c", "message": "Boundedness is not the relevant hypothesis — the sign function is bounded yet fails the IVT. Continuity is the key." },
+          { "match": "*", "message": "The failure under discontinuity shows continuity is essential: it preserves connectedness of the image." }
+        ]
+      }
+    }
+  ]
+}

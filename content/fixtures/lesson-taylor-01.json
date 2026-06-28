@@ -1,0 +1,355 @@
+{
+  "lessonId": "lesson-taylor-01",
+  "title": "Taylor's Theorem",
+  "tags": ["taylor-polynomial", "taylor-theorem", "lagrange-remainder", "approximation"],
+  "prerequisites": ["lesson-mvt-01"],
+  "glossary": {
+    "taylor-polynomial": {
+      "term": "Taylor polynomial",
+      "definition": "$P_n(x)=\\sum_{k=0}^{n}\\frac{f^{(k)}(a)}{k!}(x-a)^k$; it matches $f$ and its first $n$ derivatives at $a$."
+    },
+    "taylor-theorem": {
+      "term": "Taylor's theorem (Lagrange form)",
+      "definition": "$f(x)=P_n(x)+R_n(x)$ with $R_n(x)=\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi$ strictly between $a$ and $x$."
+    },
+    "lagrange-remainder": {
+      "term": "Lagrange remainder",
+      "definition": "The error term $R_n(x)=\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$; bounding $|f^{(n+1)}|$ bounds the approximation error."
+    },
+    "radius-of-convergence": {
+      "term": "radius of convergence",
+      "definition": "The distance from $a$ within which the Taylor series converges to $f$; outside it, adding terms need not help."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall the prerequisite: the **Mean Value Theorem** says $f(x)=f(a)+f'(\\xi)(x-a)$ for some $\\xi$ between $a$ and $x$ — a function's value equals its starting value plus one tangent-slope correction. Taylor's theorem is this idea pushed to higher order."
+        },
+        {
+          "type": "text",
+          "content": "A line $f(a)+f'(a)(x-a)$ is the best *linear* copy of $f$ at $a$: it matches the value and the slope. Why stop there? Match the curvature $f''(a)$ too, then the next derivative, and the next."
+        },
+        {
+          "type": "text",
+          "content": "Doing this builds a polynomial that hugs $f$ near $a$, plus a remainder we can control. That single package — polynomial plus controlled error — is Taylor's theorem, and the MVT will reappear as its simplest case."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Definition.** The $n$-th Taylor polynomial of $f$ at $a$ is" },
+        { "type": "math", "latex": "P_n(x)=\\sum_{k=0}^{n}\\frac{f^{(k)}(a)}{k!}(x-a)^k=f(a)+f'(a)(x-a)+\\frac{f''(a)}{2!}(x-a)^2+\\cdots+\\frac{f^{(n)}(a)}{n!}(x-a)^n." },
+        { "type": "text", "content": "The coefficients are chosen so that $P_n$ and $f$ agree at $a$ through the $n$-th derivative:" },
+        { "type": "math", "latex": "P_n(a)=f(a),\\quad P_n'(a)=f'(a),\\quad \\dots,\\quad P_n^{(n)}(a)=f^{(n)}(a)." },
+        { "type": "text", "content": "Each factor $\\frac{1}{k!}$ is exactly what cancels when you differentiate $(x-a)^k$ down to a constant $k$ times, so the $k$-th derivative of $P_n$ at $a$ reads off $f^{(k)}(a)$ cleanly." }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Consolidate 'matches near $a$'. For $f(x)=e^x$ at $a=0$, the order-2 polynomial is $P_2(x)=1+x+\\tfrac{x^2}{2}$. Slide $x$ toward $0$ and compare $P_2(x)$ with $e^x$: near $0$ they are almost identical, and they drift apart as $|x|$ grows. Matching derivatives buys accuracy *near* $a$.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": -2,
+          "max": 2,
+          "step": 0.05,
+          "initialValue": 0.5,
+          "label": "x",
+          "readouts": [
+            { "label": "P_2(x) = 1 + x + x^2/2", "expression": "1 + x + x^2/2" },
+            { "label": "e^x", "expression": "exp(x)" }
+          ],
+          "markers": [
+            { "value": 0, "label": "a = 0" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["taylor-polynomial"],
+      "prompt": "Worked example: second-order Taylor polynomial of $e^x$ at $0$, then estimate $e^{0.1}$.",
+      "blocks": [
+        { "type": "text", "content": "**Step 1 — derivatives at $a=0$.** For $f(x)=e^x$, every derivative is $e^x$, and $e^0=1$, so $f(0)=f'(0)=f''(0)=1$." },
+        { "type": "text", "content": "**Step 2 — assemble $P_2$.** Plug into $P_2(x)=f(0)+f'(0)x+\\frac{f''(0)}{2!}x^2$:" },
+        { "type": "math", "latex": "P_2(x)=1+x+\\frac{x^2}{2}." },
+        { "type": "text", "content": "**Step 3 — estimate $e^{0.1}$.** Substitute $x=0.1$:" },
+        { "type": "math", "latex": "P_2(0.1)=1+0.1+\\frac{0.01}{2}=1.105." },
+        { "type": "text", "content": "**Answer.** $e^{0.1}\\approx 1.105$. The true value is $1.10517\\ldots$; the Lagrange remainder $R_2=\\frac{e^{\\xi}}{3!}(0.1)^3$ with $0<\\xi<0.1$ is below $\\frac{3}{6}(0.001)<0.0005$, consistent with the tiny error." }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["taylor-polynomial"],
+      "scaffold": "worked",
+      "prompt": "In the Taylor polynomial of $f(x)=e^x$ at $0$, what is the coefficient of $x^2$?",
+      "workedExample": [
+        { "type": "text", "content": "The coefficient of $x^2$ is $\\frac{f''(0)}{2!}$." },
+        { "type": "math", "latex": "f''(x)=e^x \\Rightarrow f''(0)=1,\\qquad \\frac{f''(0)}{2!}=\\frac{1}{2}." }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "coefficient of x^2 = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1/2"] },
+      "feedback": {
+        "correct": "Exactly. The coefficient is $\\frac{f''(0)}{2!}=\\frac{1}{2}$, matching the $\\frac{x^2}{2}$ term in $1+x+\\frac{x^2}{2}+\\cdots$.",
+        "incorrect": [
+          { "match": "1", "message": "$f''(0)=1$ is the *derivative*, but the coefficient divides by $2!$: it is $\\frac{f''(0)}{2!}=\\frac12$." },
+          { "match": "2", "message": "Do not multiply by $2!$ — divide. The coefficient is $\\frac{f''(0)}{2!}=\\frac{1}{2}$." },
+          { "match": "*", "message": "Use $\\frac{f^{(k)}(a)}{k!}$ with $k=2$: $\\frac{f''(0)}{2!}=\\frac{1}{2}$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Taylor's theorem (Lagrange remainder).** If $f$ is $n+1$ times differentiable on an interval containing $a$ and $x$, then" },
+        { "type": "math", "latex": "f(x)=P_n(x)+R_n(x),\\qquad R_n(x)=\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}" },
+        { "type": "text", "content": "for some $\\xi$ strictly between $a$ and $x$. The error of the polynomial is captured *exactly* by one higher derivative, evaluated at an unknown intermediate point — just like the MVT's unknown $\\xi$." },
+        { "type": "text", "content": "**The MVT is the case $n=0$.** Then $P_0(x)=f(a)$ and the formula reads $f(x)=f(a)+f'(\\xi)(x-a)$, i.e. $f'(\\xi)=\\frac{f(x)-f(a)}{x-a}$ — exactly the Mean Value Theorem. Taylor's theorem is the MVT generalized to higher order, and it is proved by the same Rolle-style trick applied to a cleverly built auxiliary function." },
+        { "type": "text", "content": "**Using it.** If $|f^{(n+1)}|\\le M$ on the interval, then $|R_n(x)|\\le \\frac{M}{(n+1)!}|x-a|^{n+1}$, a concrete error bound. For $e^x$, $\\sin$, $\\cos$ this bound $\\to 0$ as $n\\to\\infty$, so the Taylor series converges to the function." }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["taylor-polynomial"],
+      "scaffold": "completion",
+      "prompt": "Match each Taylor coefficient to the derivative information it encodes.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "The constant term (coefficient of $(x-a)^0$)." },
+            { "id": "st2", "label": "The coefficient of $(x-a)^1$." },
+            { "id": "st3", "label": "The coefficient of $(x-a)^2$." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "$f(a)$, so that $P_n(a)=f(a)$ (matches the value)." },
+            { "id": "j_b", "label": "$f'(a)$, so that $P_n'(a)=f'(a)$ (matches the slope)." },
+            { "id": "j_c", "label": "$\\frac{f''(a)}{2!}$, so that $P_n''(a)=f''(a)$ (matches the curvature)." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c"] },
+      "feedback": {
+        "correct": "Exactly. The general pattern is coefficient $=\\frac{f^{(k)}(a)}{k!}$; the $\\frac{1}{k!}$ is precisely what makes the $k$-th derivative of $P_n$ at $a$ equal $f^{(k)}(a)$.",
+        "incorrect": [
+          { "match": "*", "message": "Read off $\\frac{f^{(k)}(a)}{k!}$: $k=0$ gives $f(a)$ (value), $k=1$ gives $f'(a)$ (slope), $k=2$ gives $\\frac{f''(a)}{2!}$ (curvature)." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["taylor-polynomial"],
+      "scaffold": "bare",
+      "prompt": "Find the order-2 Taylor polynomial of $f(x)=\\cos x$ at $0$, $P_2(x)=1+bx+cx^2$, and report the coefficient $c$ of $x^2$.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "c = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["-1/2"] },
+      "feedback": {
+        "correct": "Exactly. $\\cos 0=1$, $-\\sin 0=0$, $-\\cos 0=-1$, so $c=\\frac{f''(0)}{2!}=\\frac{-1}{2}$, giving $P_2(x)=1-\\frac{x^2}{2}$.",
+        "incorrect": [
+          { "match": "1/2", "message": "Check the sign: $f''(x)=-\\cos x$, so $f''(0)=-1$ and $c=\\frac{-1}{2}$, not $+\\frac12$." },
+          { "match": "0", "message": "$0$ is the coefficient $b$ of $x$ (since $f'(0)=-\\sin 0=0$). The $x^2$ coefficient uses $f''(0)=-1$: $c=-\\frac12$." },
+          { "match": "*", "message": "Compute $f''(0)$ for $\\cos$: $f''(x)=-\\cos x$, so $f''(0)=-1$ and $c=\\frac{f''(0)}{2!}=-\\frac12$." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["lagrange-remainder"],
+      "scaffold": "bare",
+      "prompt": "Here is a *flawed* argument that 'adding more Taylor terms always improves the approximation everywhere.' Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "The error of $P_n$ is the Lagrange remainder $R_n(x)=\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$." },
+            { "id": "p2", "label": "The factor $\\frac{1}{(n+1)!}$ shrinks rapidly as $n$ grows." },
+            { "id": "p3", "label": "Therefore $R_n(x)\\to 0$ as $n\\to\\infty$ for every function $f$ and every $x$, because the factorial always wins." },
+            { "id": "p4", "label": "Hence $P_n(x)\\to f(x)$ for all $x$, no matter what." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. The factorial does not act alone: $R_n$ also carries $f^{(n+1)}(\\xi)$ and $|x-a|^{n+1}$, both of which can grow with $n$. For $f(x)=\\frac{1}{1+x^2}$ at $a=0$, the series diverges once $|x|>1$ — outside the radius of convergence, more terms do *not* help.",
+        "incorrect": [
+          { "match": "p4", "message": "Step 4 is the conclusion; the error is in the step that claims $R_n\\to 0$ universally. Which line ignores the growth of $f^{(n+1)}(\\xi)$ and $|x-a|^{n+1}$?" },
+          { "match": "p1", "message": "Step 1 just states the correct remainder formula. The flaw is the later claim that the factorial alone forces $R_n\\to 0$ for every $x$." },
+          { "match": "*", "message": "Remember the radius of convergence: $R_n$ contains $f^{(n+1)}(\\xi)$ and $|x-a|^{n+1}$ too, so it need not vanish for large $|x-a|$. Find the step that assumes the factorial always wins." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        { "type": "text", "content": "The Taylor polynomial $P_n(x)=\\sum_{k=0}^{n}\\frac{f^{(k)}(a)}{k!}(x-a)^k$ matches $f$ and its first $n$ derivatives at $a$; the $\\frac{1}{k!}$ factors are exactly what make the derivatives line up." },
+        { "type": "text", "content": "**Taylor's theorem:** $f(x)=P_n(x)+\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi$ between $a$ and $x$. The $n=0$ case is precisely the Mean Value Theorem, so Taylor generalizes the MVT to higher order." },
+        { "type": "text", "content": "The remainder gives concrete error bounds: $|R_n|\\le\\frac{M}{(n+1)!}|x-a|^{n+1}$ when $|f^{(n+1)}|\\le M$. For $e^x,\\sin,\\cos$ it vanishes as $n\\to\\infty$ — but not for every function at every point, since the remainder also depends on $f^{(n+1)}$ and the distance $|x-a|$." }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["taylor-polynomial"],
+          "prompt": "The coefficient of $(x-a)^k$ in the Taylor polynomial of $f$ at $a$ is:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\dfrac{f^{(k)}(a)}{k!}$" },
+                { "id": "b", "label": "$f^{(k)}(a)$" },
+                { "id": "c", "label": "$\\dfrac{f^{(k)}(a)}{k}$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — the $\\frac{1}{k!}$ is what makes $P_n^{(k)}(a)=f^{(k)}(a)$.",
+            "incorrect": [
+              { "match": "b", "message": "That omits the factorial. Differentiating $(x-a)^k$ down to a constant produces $k!$, which the $\\frac{1}{k!}$ cancels: the coefficient is $\\frac{f^{(k)}(a)}{k!}$." },
+              { "match": "c", "message": "It is $k!$ (factorial), not $k$, in the denominator: $\\frac{f^{(k)}(a)}{k!}$." },
+              { "match": "*", "message": "Coefficient formula: $\\frac{f^{(k)}(a)}{k!}$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["lagrange-remainder"],
+          "prompt": "The Lagrange form of the remainder $R_n(x)$ is:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\dfrac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ for some $\\xi$ between $a$ and $x$." },
+                { "id": "b", "label": "$\\dfrac{f^{(n)}(a)}{n!}(x-a)^{n}$." },
+                { "id": "c", "label": "$f(x)-f(a)$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — one derivative *beyond* $n$, divided by $(n+1)!$, times $(x-a)^{n+1}$, at an intermediate $\\xi$.",
+            "incorrect": [
+              { "match": "b", "message": "That is the last *term of $P_n$ itself*, not the leftover error. The remainder uses the $(n+1)$-th derivative at an unknown $\\xi$." },
+              { "match": "c", "message": "$f(x)-f(a)$ is just the total change. The Lagrange remainder is $\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$." },
+              { "match": "*", "message": "Lagrange remainder: $\\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$, with $\\xi$ between $a$ and $x$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["taylor-theorem"],
+          "prompt": "In what sense is the Mean Value Theorem a special case of Taylor's theorem? (Self-explanation.)",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "It is the case $n=0$: $P_0(x)=f(a)$ and $R_0=f'(\\xi)(x-a)$, so $f(x)=f(a)+f'(\\xi)(x-a)$, i.e. $f'(\\xi)=\\frac{f(b)-f(a)}{b-a}$." },
+                { "id": "b", "label": "It is the case $n\\to\\infty$, where the series converges." },
+                { "id": "c", "label": "They are unrelated; the MVT has no remainder." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly — with $n=0$ the polynomial is the constant $f(a)$ and the single remainder term is the MVT's tangent-slope correction at an intermediate $\\xi$.",
+            "incorrect": [
+              { "match": "b", "message": "The MVT is the *lowest*-order case, $n=0$, not the infinite-series limit. One remainder term with $f'(\\xi)$ is exactly the MVT." },
+              { "match": "c", "message": "They are intimately related: setting $n=0$ in Taylor's theorem reproduces the MVT, whose $R_0=f'(\\xi)(x-a)$ is precisely the remainder." },
+              { "match": "*", "message": "Set $n=0$: $f(x)=f(a)+f'(\\xi)(x-a)$ is the MVT. Taylor generalizes it to higher order." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["taylor-polynomial"],
+      "prompt": "Use $P_2(x)=1+x+\\frac{x^2}{2}$ for $e^x$ at $0$ to estimate $e^{0.2}$. (Give the value of $P_2(0.2)$.)",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "P_2(0.2) = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1.22"], "tolerance": 0.001 },
+      "feedback": {
+        "correct": "Yes — $1+0.2+\\frac{0.04}{2}=1.22$, close to the true $e^{0.2}=1.2214\\ldots$.",
+        "incorrect": [
+          { "match": "*", "message": "Substitute $x=0.2$: $1+0.2+\\frac{(0.2)^2}{2}=1+0.2+0.02$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["taylor-polynomial"],
+      "prompt": "What does the Taylor polynomial $P_n$ match about $f$ at the center $a$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Its value and first $n$ derivatives at $a$." },
+            { "id": "b", "label": "Its value at every point of the interval." },
+            { "id": "c", "label": "Only its value $f(a)$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $P_n^{(k)}(a)=f^{(k)}(a)$ for $k=0,1,\\dots,n$.",
+        "incorrect": [
+          { "match": "b", "message": "It need not match $f$ away from $a$ — that is what the remainder $R_n$ measures. It matches $f$ and its first $n$ derivatives *at $a$*." },
+          { "match": "c", "message": "Matching only $f(a)$ is the order-0 polynomial. $P_n$ matches the value *and* the first $n$ derivatives at $a$." },
+          { "match": "*", "message": "By construction $P_n^{(k)}(a)=f^{(k)}(a)$ for $k=0,\\dots,n$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["taylor-theorem"],
+      "prompt": "Taylor's theorem with $n=0$ reduces to which earlier theorem?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "The Mean Value Theorem." },
+            { "id": "b", "label": "The Extreme Value Theorem." },
+            { "id": "c", "label": "Rolle's theorem only." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $n=0$ gives $f(x)=f(a)+f'(\\xi)(x-a)$, the MVT.",
+        "incorrect": [
+          { "match": "b", "message": "The EVT is about attaining max/min values, not a remainder formula. The $n=0$ Taylor statement is the MVT." },
+          { "match": "c", "message": "Rolle is the special case of the MVT with equal endpoints; the general $n=0$ Taylor formula is the full MVT." },
+          { "match": "*", "message": "Set $n=0$: $f(x)=f(a)+f'(\\xi)(x-a)$ is exactly the Mean Value Theorem." }
+        ]
+      }
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { MasteryStateValue } from '../../lib/database.types'
 import { useCourseProgress } from '../../hooks/useCourseProgress'
 import { CoursePath } from './CoursePath'
 
@@ -10,10 +11,16 @@ vi.mock('../../hooks/useCourseProgress')
 
 const mockedUseCourseProgress = vi.mocked(useCourseProgress)
 
-function setProgress(completed: string[] = [], inProgress: string[] = []) {
+function setProgress(
+  completed: string[] = [],
+  inProgress: string[] = [],
+  masteryByTag: Map<string, MasteryStateValue> = new Map(),
+) {
   mockedUseCourseProgress.mockReturnValue({
     completedIds: new Set(completed),
     inProgressIds: new Set(inProgress),
+    masteryByTag,
+    mastery: [],
     loading: false,
     refresh: vi.fn(),
   })
@@ -58,6 +65,34 @@ describe('CoursePath', () => {
         name: /The Least Upper Bound Property — Ready/,
       }),
     ).toBeInTheDocument()
+  })
+
+  it('unlocks via retained mastery (no completion) and shows concept counts', () => {
+    // All of lesson-bounds-01's concepts are retained, with no completion row.
+    setProgress(
+      [],
+      [],
+      new Map<string, MasteryStateValue>([
+        ['bounds', 'retained'],
+        ['supremum', 'fluent'],
+        ['infimum', 'retained'],
+      ]),
+    )
+    renderPath()
+
+    // Mastered prerequisite reads as satisfied...
+    expect(
+      screen.getByRole('button', {
+        name: /Bounds and Suprema — Completed/,
+      }),
+    ).toBeInTheDocument()
+    // ...so the dependent lesson unlocks.
+    expect(
+      screen.getByRole('button', {
+        name: /The Least Upper Bound Property — Ready/,
+      }),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/3\/3 concepts retained/)).toBeInTheDocument()
   })
 
   it('marks a started-but-locked lesson distinctly', () => {

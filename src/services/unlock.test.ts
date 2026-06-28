@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   computeCourseStatuses,
   computeLessonStatus,
+  effectiveSatisfiedIds,
   flattenLessonIds,
   isCourseComplete,
   isLessonUnlocked,
@@ -10,6 +11,7 @@ import {
   lessonsUnlockedBy,
   missingPrerequisites,
   pickNextLesson,
+  retainedLessonIds,
   type CourseProgress,
 } from './unlock'
 
@@ -114,6 +116,35 @@ describe('pickNextLesson', () => {
 
   it('returns null when everything is completed', () => {
     expect(pickNextLesson(ordered, byId, new Set(['a', 'b', 'c']))).toBe(null)
+  })
+})
+
+describe('mastery-based unlock (F1.4)', () => {
+  const lessonsWithTags = [
+    { lessonId: 'a', tags: ['t1', 't2'], prerequisites: [] },
+    { lessonId: 'b', tags: ['t3'], prerequisites: ['a'] },
+    { lessonId: 'no-tags', tags: [] as string[], prerequisites: [] },
+  ]
+
+  it('retainedLessonIds returns lessons whose every tag is retained', () => {
+    const retained = retainedLessonIds(
+      lessonsWithTags,
+      new Set(['t1', 't2', 't3']),
+    )
+    expect(retained.has('a')).toBe(true)
+    expect(retained.has('b')).toBe(true)
+    // A lesson with no tags is never auto-satisfied by mastery.
+    expect(retained.has('no-tags')).toBe(false)
+  })
+
+  it('retainedLessonIds excludes a lesson with a single un-retained tag', () => {
+    const retained = retainedLessonIds(lessonsWithTags, new Set(['t1']))
+    expect(retained.has('a')).toBe(false)
+  })
+
+  it('effectiveSatisfiedIds unions completion and retained mastery', () => {
+    const satisfied = effectiveSatisfiedIds(new Set(['x']), new Set(['a']))
+    expect([...satisfied].sort()).toEqual(['a', 'x'])
   })
 })
 

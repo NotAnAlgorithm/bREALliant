@@ -170,6 +170,96 @@ describe('StepRenderer hint controls (F6)', () => {
   })
 })
 
+type WorkedExampleStep = Extract<Step, { type: 'worked_example' }>
+
+const workedExampleStep: WorkedExampleStep = {
+  id: 'we1',
+  type: 'worked_example',
+  prompt: 'Worked example: solve the inequality.',
+  blocks: [{ type: 'text', content: 'First isolate n on one side.' }],
+}
+
+const scaffoldedProblem: ProblemStep = {
+  ...problemStep,
+  id: 'p2',
+  workedExample: [{ type: 'text', content: 'Mirror the example: n > 100.' }],
+  scaffold: 'worked',
+}
+
+const scaffoldedProblemMulti: ProblemStep = {
+  ...problemStep,
+  id: 'p3',
+  workedExample: [
+    { type: 'text', content: 'Step 1: rewrite the inequality as n > 100.' },
+    { type: 'text', content: 'Step 2: the smallest such natural number is 101.' },
+  ],
+  scaffold: 'completion',
+}
+
+describe('StepRenderer worked examples (F4)', () => {
+  it('renders a worked_example step', () => {
+    render(
+      <StepRenderer
+        step={workedExampleStep}
+        widgetState={{}}
+        onWidgetStateChange={() => {}}
+      />,
+    )
+    expect(screen.getByText('First isolate n on one side.')).toBeInTheDocument()
+  })
+
+  it('opens a problem worked example when the scaffold level is "worked"', () => {
+    render(
+      <StepRenderer
+        step={scaffoldedProblem}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        scaffoldLevel="worked"
+      />,
+    )
+    expect(screen.getByText('Mirror the example: n > 100.')).toBeInTheDocument()
+  })
+
+  it('shows all but the final step at the "completion" level', () => {
+    render(
+      <StepRenderer
+        step={scaffoldedProblemMulti}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        scaffoldLevel="completion"
+      />,
+    )
+    expect(
+      screen.getByText('Step 1: rewrite the inequality as n > 100.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('Step 2: the smallest such natural number is 101.'),
+    ).not.toBeInTheDocument()
+    expect(screen.getByText(/final step is left for you/i)).toBeInTheDocument()
+  })
+
+  it('collapses the worked example when faded to "bare"', async () => {
+    const user = userEvent.setup()
+    render(
+      <StepRenderer
+        step={scaffoldedProblem}
+        widgetState={{ answer: '1' }}
+        onWidgetStateChange={() => {}}
+        onCheckAnswer={() => {}}
+        scaffoldLevel="bare"
+      />,
+    )
+    expect(
+      screen.queryByText('Mirror the example: n > 100.'),
+    ).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /worked example/i }))
+    expect(screen.getByText('Mirror the example: n > 100.')).toBeInTheDocument()
+  })
+})
+
 describe('StepRenderer quiz grading', () => {
   it('grades a correct multiple choice answer with instant feedback', async () => {
     const user = userEvent.setup()

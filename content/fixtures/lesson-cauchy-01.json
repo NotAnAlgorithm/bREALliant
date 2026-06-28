@@ -1,0 +1,334 @@
+{
+  "lessonId": "lesson-cauchy-01",
+  "title": "Cauchy Sequences & Completeness",
+  "tags": ["cauchy", "completeness", "sequence"],
+  "prerequisites": ["lesson-seq-limits-01", "lesson-lub-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The definition of convergence mentions the limit $L$ explicitly: $|a_n-L|<\\varepsilon$. But often we *suspect* a sequence settles without knowing what it settles to. Can we certify convergence using only the terms themselves, never naming a limit?"
+        },
+        {
+          "type": "text",
+          "content": "Cauchy's idea: instead of asking whether the terms get close to a fixed $L$, ask whether the terms get close **to each other**. A sequence whose late terms huddle together ought to be converging — and in $\\mathbb{R}$, that intuition is exactly right."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Definition.** A sequence $(a_n)$ is **Cauchy** if for every $\\varepsilon>0$ there is an $N$ such that *all* terms past $N$ are within $\\varepsilon$ of one another:"
+        },
+        {
+          "type": "math",
+          "latex": "\\forall \\varepsilon>0\\ \\exists N\\ \\text{such that}\\ \\ m,n\\ge N \\ \\Longrightarrow\\ |a_m-a_n|<\\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "The subtlety: it's not enough that *consecutive* terms get close ($|a_{n+1}-a_n|\\to 0$). The condition must hold for **every** pair $m,n\\ge N$ at once — far-apart indices included. We'll see exactly why that distinction bites."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Look at $a_n = 1/n$: $1, \\tfrac12, \\tfrac13, \\tfrac14, \\dots$. Past a cutoff $N$, all the terms crowd into a tiny window near $0$ — so any two of them, $a_m$ and $a_n$, are within $\\varepsilon$ of each other. That mutual closeness is the Cauchy condition in action, and here it matches genuine convergence to $0$.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 1,
+          "intervals": [{ "start": 0, "end": 0.2, "label": "all terms with n>5 live in here" }],
+          "markers": [
+            { "value": 0.2, "label": "a_5 = 1/5" },
+            { "value": 0, "label": "terms huddle near 0" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["cauchy", "sequence"],
+      "prompt": "Worked example: prove the easy direction — every convergent sequence is Cauchy.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Claim.** If $a_n \\to L$, then $(a_n)$ is Cauchy."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1 (use convergence with a halved tolerance).** Fix $\\varepsilon>0$. Convergence gives an $N$ such that for all $n\\ge N$, $|a_n - L| < \\varepsilon/2$. We deliberately aim for $\\varepsilon/2$ so two such errors will add to $\\varepsilon$."
+        },
+        {
+          "type": "text",
+          "content": "**Step 2 (triangle inequality).** For any $m,n\\ge N$, insert $L$ as a waypoint:"
+        },
+        {
+          "type": "math",
+          "latex": "|a_m - a_n| = |(a_m - L) + (L - a_n)| \\le |a_m - L| + |a_n - L| < \\tfrac{\\varepsilon}{2} + \\tfrac{\\varepsilon}{2} = \\varepsilon."
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** For every $\\varepsilon>0$ we produced an $N$ with $|a_m-a_n|<\\varepsilon$ whenever $m,n\\ge N$. That is precisely the Cauchy condition, so $(a_n)$ is Cauchy. The converse — Cauchy $\\Rightarrow$ convergent — is the deep direction and holds in $\\mathbb{R}$ thanks to completeness."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["cauchy", "sequence"],
+      "scaffold": "worked",
+      "prompt": "Here is a *flawed* argument that the partial sums $a_n = 1 + \\tfrac12 + \\tfrac13 + \\cdots + \\tfrac1n$ (the harmonic series) form a Cauchy sequence. Exactly one step is invalid — select it.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Recall the trap from the definition: the Cauchy condition must control $|a_m-a_n|$ for *all* $m,n\\ge N$, not merely consecutive pairs."
+        },
+        {
+          "type": "text",
+          "content": "Watch for the step that silently upgrades 'consecutive terms get close' into 'all pairs get close.' The gap $a_{2n}-a_n$ stays $\\ge \\tfrac12$, exposing the error."
+        }
+      ],
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "For each $n$, $|a_{n+1}-a_n| = \\tfrac{1}{n+1} \\to 0$ as $n\\to\\infty$." },
+            { "id": "p2", "label": "So for any $\\varepsilon>0$ there is an $N$ with $|a_{n+1}-a_n|<\\varepsilon$ for all $n\\ge N$." },
+            { "id": "p3", "label": "Therefore for all $m,n\\ge N$ we have $|a_m-a_n|<\\varepsilon$, so $(a_n)$ is Cauchy." },
+            { "id": "p4", "label": "Being Cauchy, $(a_n)$ converges in $\\mathbb{R}$ by completeness." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. Small consecutive gaps do **not** imply small gaps between far-apart indices. In fact $a_{2n}-a_n = \\tfrac{1}{n+1}+\\cdots+\\tfrac{1}{2n} \\ge n\\cdot\\tfrac{1}{2n} = \\tfrac12$, so no $N$ can make all pairs within $\\varepsilon=\\tfrac12$. The harmonic partial sums are *not* Cauchy (and indeed diverge).",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is correct: $|a_{n+1}-a_n|=1/(n+1)$, which really does tend to $0$." },
+          { "match": "p2", "message": "Step 2 is a valid restatement of $|a_{n+1}-a_n|\\to 0$. The error is elsewhere — where consecutive closeness is turned into all-pairs closeness." },
+          { "match": "p4", "message": "Step 4 correctly states the completeness fact (Cauchy $\\Rightarrow$ convergent in $\\mathbb{R}$); it only fails here because its premise — that the sequence is Cauchy — was wrongly obtained. The actual flaw is the step claiming Cauchy." },
+          { "match": "*", "message": "Find where 'consecutive terms close' is illegitimately upgraded to 'all pairs close.' Test it with $a_{2n}-a_n$, which stays $\\ge \\tfrac12$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["cauchy", "sequence"],
+      "prompt": "Which of these sequences is a Cauchy sequence?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$a_n = 1/n$" },
+            { "id": "b", "label": "$a_n = (-1)^n$" },
+            { "id": "c", "label": "$a_n = 1 + \\tfrac12 + \\cdots + \\tfrac1n$ (harmonic partial sums)" },
+            { "id": "d", "label": "$a_n = n$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $1/n \\to 0$, so it converges, and every convergent sequence is Cauchy: past a cutoff all terms cluster near $0$, hence within $\\varepsilon$ of each other.",
+        "incorrect": [
+          { "match": "b", "message": "$(-1)^n$ is not Cauchy: consecutive terms differ by $|1-(-1)|=2$, so for $\\varepsilon=1$ no cutoff $N$ makes all later pairs close." },
+          { "match": "c", "message": "The harmonic partial sums are not Cauchy — $a_{2n}-a_n\\ge \\tfrac12$ for every $n$, so the terms never huddle together (the series diverges)." },
+          { "match": "d", "message": "$a_n=n$ runs off to infinity; $|a_{n+1}-a_n|=1$ always, so it is neither convergent nor Cauchy." },
+          { "match": "*", "message": "A sequence is Cauchy exactly when it converges (in $\\mathbb{R}$). Which of these converges?" }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Now the deep direction: **in $\\mathbb{R}$, every Cauchy sequence converges.** This is the *completeness* of $\\mathbb{R}$, phrased in sequence language. The proof rides on two earlier theorems."
+        },
+        {
+          "type": "text",
+          "content": "**(1) A Cauchy sequence is bounded.** Take $\\varepsilon=1$; past some $N$ all terms sit within $1$ of $a_N$, and only finitely many terms precede $N$. So the whole sequence is bounded. **(2) Apply Bolzano–Weierstrass:** the bounded sequence has a subsequence $a_{n_k}\\to L$. **(3) Cauchy + a convergent subsequence forces the whole sequence to $L$:** the terms are eventually close to each other, and infinitely many of them are close to $L$, so all late terms are close to $L$."
+        },
+        {
+          "type": "text",
+          "content": "This fails in $\\mathbb{Q}$. The decimal truncations $1, 1.4, 1.41, 1.414, \\dots$ are rationals that get arbitrarily close to one another — a Cauchy sequence of rationals — yet their limit $\\sqrt2$ is *not* rational. $\\mathbb{Q}$ is full of such holes; $\\mathbb{R}$ has none. 'Complete' means *Cauchy always pays off.*"
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "A sequence is **Cauchy** when its terms eventually get within $\\varepsilon$ of *each other*: $\\forall\\varepsilon>0\\ \\exists N$ with $|a_m-a_n|<\\varepsilon$ for all $m,n\\ge N$. The condition names no limit, so it certifies convergence intrinsically."
+        },
+        {
+          "type": "math",
+          "latex": "\\text{convergent} \\ \\Longleftrightarrow\\ \\text{Cauchy} \\quad \\text{(in } \\mathbb{R}\\text{)}."
+        },
+        {
+          "type": "text",
+          "content": "Convergent $\\Rightarrow$ Cauchy is a quick triangle-inequality argument. Cauchy $\\Rightarrow$ convergent is the **completeness** of $\\mathbb{R}$: a Cauchy sequence is bounded, Bolzano–Weierstrass gives a convergent subsequence, and the Cauchy condition drags the whole sequence to that limit. Beware the trap — small *consecutive* gaps are not enough (the harmonic sums). And $\\mathbb{Q}$ is **not** complete: a Cauchy sequence of rationals can converge to $\\sqrt2 \\notin \\mathbb{Q}$."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The Cauchy condition for $(a_n)$ is:",
+          "tags": ["cauchy"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\forall\\varepsilon>0\\ \\exists N$ such that $m,n\\ge N \\Rightarrow |a_m-a_n|<\\varepsilon$" },
+                { "id": "b", "label": "$|a_{n+1}-a_n| \\to 0$" },
+                { "id": "c", "label": "$\\forall\\varepsilon>0\\ \\exists N$ such that $n\\ge N \\Rightarrow |a_n|<\\varepsilon$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Yes — all pairs of late-enough indices must be within $\\varepsilon$, not just consecutive ones.",
+            "incorrect": [
+              { "match": "b", "message": "Consecutive gaps tending to $0$ is *weaker* — the harmonic sums satisfy it yet aren't Cauchy. You need control over *all* pairs $m,n\\ge N$." },
+              { "match": "c", "message": "That says the terms go to $0$, a special kind of convergence, not the Cauchy condition. Cauchy compares terms to *each other*, not to $0$." },
+              { "match": "*", "message": "Cauchy = all pairs past some $N$ are mutually within $\\varepsilon$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In $\\mathbb{R}$, the statement 'every Cauchy sequence converges' is a form of:",
+          "tags": ["cauchy", "completeness"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "completeness" },
+                { "id": "b", "label": "the Archimedean property" },
+                { "id": "c", "label": "density of $\\mathbb{Q}$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Correct — this is completeness expressed in sequence form, equivalent to the least upper bound property.",
+            "incorrect": [
+              { "match": "b", "message": "The Archimedean property is about $1/n$ beating any positive bound; it doesn't by itself make Cauchy sequences converge. The relevant property is completeness." },
+              { "match": "c", "message": "Density holds in $\\mathbb{Q}$ too, yet $\\mathbb{Q}$ has non-convergent Cauchy sequences. Convergence of all Cauchy sequences is *completeness*." },
+              { "match": "*", "message": "Which property does $\\mathbb{R}$ have but $\\mathbb{Q}$ lacks, that fills the holes? Completeness." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why is $\\mathbb{Q}$ NOT complete?",
+          "tags": ["cauchy", "completeness"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Some Cauchy sequence of rationals (e.g. $1,1.4,1.41,\\dots$) has limit $\\sqrt2\\notin\\mathbb{Q}$." },
+                { "id": "b", "label": "$\\mathbb{Q}$ has no Cauchy sequences at all." },
+                { "id": "c", "label": "Rational numbers cannot get close to each other." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The truncations of $\\sqrt2$ are rational and Cauchy, but their limit escapes $\\mathbb{Q}$ — a hole. So Cauchy doesn't always pay off inside $\\mathbb{Q}$.",
+            "incorrect": [
+              { "match": "b", "message": "$\\mathbb{Q}$ has plenty of Cauchy sequences — that's the point. The issue is that some of them converge to *irrational* numbers." },
+              { "match": "c", "message": "Rationals certainly get close to each other; $1.41$ and $1.414$ differ by $0.004$. Incompleteness is about the *limit* leaving $\\mathbb{Q}$." },
+              { "match": "*", "message": "Find a Cauchy sequence of rationals whose limit isn't rational — the decimal approximations of $\\sqrt2$ work." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "Which direction of 'convergent $\\Leftrightarrow$ Cauchy' is the *easy* one, true even before invoking completeness?",
+      "tags": ["cauchy"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "convergent $\\Rightarrow$ Cauchy" },
+            { "id": "b", "label": "Cauchy $\\Rightarrow$ convergent" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — a one-line triangle-inequality argument with $\\varepsilon/2$ gives convergent $\\Rightarrow$ Cauchy in any setting.",
+        "incorrect": [
+          { "match": "b", "message": "That's the *hard* direction and needs completeness — it even fails in $\\mathbb{Q}$. The easy one is convergent $\\Rightarrow$ Cauchy." },
+          { "match": "*", "message": "One direction needs only the triangle inequality; the other needs completeness." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "Is the harmonic partial-sum sequence $1+\\tfrac12+\\cdots+\\tfrac1n$ Cauchy?",
+      "tags": ["cauchy", "sequence"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "No — $a_{2n}-a_n\\ge \\tfrac12$, so far-apart terms stay far apart." },
+            { "id": "b", "label": "Yes — consecutive terms differ by $1/(n+1)\\to 0$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — the $\\ge \\tfrac12$ gap between $a_n$ and $a_{2n}$ blocks the Cauchy condition, and the series diverges.",
+        "incorrect": [
+          { "match": "b", "message": "Small consecutive gaps aren't enough; the Cauchy condition needs *all* pairs close, and $a_{2n}-a_n\\ge\\tfrac12$ violates it." },
+          { "match": "*", "message": "Test far-apart indices: compare $a_n$ and $a_{2n}$." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "prompt": "The proof that a Cauchy sequence in $\\mathbb{R}$ converges uses which theorem to extract a convergent subsequence?",
+      "tags": ["cauchy", "completeness"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Bolzano–Weierstrass (a Cauchy sequence is bounded)" },
+            { "id": "b", "label": "the Archimedean property" },
+            { "id": "c", "label": "the binomial theorem" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — Cauchy $\\Rightarrow$ bounded, then Bolzano–Weierstrass gives a convergent subsequence, and Cauchyness pulls the whole sequence to that limit.",
+        "incorrect": [
+          { "match": "b", "message": "The Archimedean property handles $1/n$ bounds, not subsequence extraction. The key tool is Bolzano–Weierstrass." },
+          { "match": "c", "message": "The binomial theorem is unrelated here. The convergent subsequence comes from Bolzano–Weierstrass." },
+          { "match": "*", "message": "First show Cauchy implies bounded, then apply the theorem that bounded sequences have convergent subsequences." }
+        ]
+      }
+    }
+  ]
+}

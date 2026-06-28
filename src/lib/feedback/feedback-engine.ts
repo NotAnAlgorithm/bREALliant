@@ -18,6 +18,8 @@ export function getAnswerFromWidgetState(
   switch (kind) {
     case 'fill_blank':
       return String(state.answer ?? '')
+    case 'slider':
+      return String(state.value ?? '')
     case 'number_line': {
       const fraction = state.markerFraction
       if (typeof fraction === 'string' && fraction.length > 0) return fraction
@@ -44,6 +46,20 @@ export function getAnswerFromWidgetState(
       return String(state.selectedId ?? '')
     case 'drag_order':
       return (Array.isArray(state.order) ? state.order : []).join(',')
+    case 'spot_the_flaw':
+      return String(state.selectedId ?? '')
+    case 'justify_step': {
+      // Deterministic encoding: "stepId:justId" pairs sorted alphabetically by
+      // stepId and joined with commas, e.g. "st1:j_a,st2:j_b".
+      const matches =
+        state.matches && typeof state.matches === 'object'
+          ? (state.matches as Record<string, unknown>)
+          : {}
+      return Object.keys(matches)
+        .sort()
+        .map((stepId) => `${stepId}:${String(matches[stepId] ?? '')}`)
+        .join(',')
+    }
     default:
       return ''
   }

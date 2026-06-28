@@ -1,0 +1,347 @@
+{
+  "lessonId": "lesson-seq-limits-01",
+  "title": "The Limit of a Sequence (ε–N)",
+  "tags": ["sequence", "limit", "epsilon-N"],
+  "prerequisites": ["lesson-metric-spaces-01", "lesson-lub-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "We say things like '$a_n$ gets closer and closer to $L$' all the time. But 'closer and closer' is a feeling, not a definition. Consider $a_n = 1 + 1/n$: the terms $2, \\tfrac32, \\tfrac43, \\tfrac54, \\dots$ visibly crowd toward $1$. How do we pin that down so a skeptic cannot argue?"
+        },
+        {
+          "type": "text",
+          "content": "The trap is that infinitely many terms can *look* like they approach $L$ while never settling there. We need a definition that survives every challenge: no matter how tiny a target window someone draws around $L$, the sequence must eventually live inside it forever after."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Here is the definition that ends the argument. We say $a_n \\to L$ if for **every** tolerance $\\varepsilon>0$, there is a cutoff index $N$ past which every term is within $\\varepsilon$ of $L$."
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{n\\to\\infty} a_n = L \\quad\\Longleftrightarrow\\quad \\forall \\varepsilon>0\\ \\exists N\\in\\mathbb{N}\\ \\text{ s.t. } n\\ge N \\implies |a_n - L| < \\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "Read it as a game. Your opponent picks the challenge $\\varepsilon$ — the width of an allowed error band around $L$. You must answer with an $N$ so that from term $N$ onward, the sequence never leaves the band. If you can always answer, no matter how small $\\varepsilon$ is, then $L$ is the limit. The inequality $|a_n-L|<\\varepsilon$ just says $a_n$ lands in the interval $(L-\\varepsilon,\\ L+\\varepsilon)$."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Take $a_n = 1 + 1/n$, which heads toward $L=1$. The shaded band is the $\\varepsilon$-window $(1-\\varepsilon, 1+\\varepsilon)$ around the limit. Imagine shrinking that band: for any width you choose, only finitely many early terms stick out on the right, and the whole tail of the sequence eventually slides inside. That 'tail enters the band' picture *is* the definition.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 0,
+          "max": 2,
+          "intervals": [{ "start": 0.85, "end": 1.15, "label": "ε-band around L" }],
+          "markers": [
+            { "value": 1, "label": "L = 1" },
+            { "value": 1.5, "label": "a_2" },
+            { "value": 1.25, "label": "a_4" },
+            { "value": 1.1, "label": "a_10" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["limit", "epsilon-N"],
+      "prompt": "Worked example: prove from the definition that $\\dfrac{1}{n} \\to 0$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Claim.** $\\lim_{n\\to\\infty} \\tfrac1n = 0$. Here $a_n = 1/n$ and $L = 0$, so $|a_n - L| = |1/n - 0| = 1/n$ since $n>0$."
+        },
+        {
+          "type": "text",
+          "content": "**Setup.** Let $\\varepsilon>0$ be given (the opponent's challenge). We must produce an $N$ so that $n\\ge N \\implies 1/n < \\varepsilon$."
+        },
+        {
+          "type": "text",
+          "content": "**Choosing $N$.** By the Archimedean property, since $\\varepsilon>0$ there exists a natural number $N$ with $N > 1/\\varepsilon$, equivalently $1/N < \\varepsilon$."
+        },
+        {
+          "type": "text",
+          "content": "**Verification.** Suppose $n\\ge N$. Then $1/n \\le 1/N$, and we chose $N$ so that $1/N < \\varepsilon$. Chaining these:"
+        },
+        {
+          "type": "math",
+          "latex": "n \\ge N \\implies |a_n - 0| = \\frac1n \\le \\frac1N < \\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "**Conclusion.** For every $\\varepsilon>0$ we found a working $N$, so by definition $1/n \\to 0$. Notice the engine room: the Archimedean property is exactly what guarantees the cutoff $N$ exists."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["limit", "epsilon-N"],
+      "scaffold": "worked",
+      "prompt": "For the proof that $1/n \\to 0$, find the smallest $N$ that makes the band $\\varepsilon = 0.01$ work — i.e. the smallest natural number $N$ such that $1/n < 0.01$ for all $n \\ge N$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Mirror the worked example with $\\varepsilon = 0.01 = 1/100$. We need $1/n < 1/100$ for every $n\\ge N$, and $1/n$ is largest at $n=N$, so it suffices to make $1/N < 1/100$."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac1N < \\frac1{100} \\iff N > 100"
+        },
+        {
+          "type": "text",
+          "content": "Now take the smallest natural number strictly greater than $100$; from there on every later term stays inside the band."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "N = {{answer}}", "placeholder": "a whole number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["101"] },
+      "feedback": {
+        "correct": "Exactly. $1/n < 0.01$ means $n > 100$, so the smallest cutoff that works for all later terms is $N = 101$. At $n=101$, $1/101 \\approx 0.0099 < 0.01$.",
+        "incorrect": [
+          { "match": "100", "message": "At $n=100$, $1/100 = 0.01$, which is not *strictly* less than $0.01$. You need $n>100$, so the first index that works is one more." },
+          { "match": "*", "message": "Solve $1/n < 0.01$. That is $n > 100$, and you want the smallest natural number meeting it." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["limit", "epsilon-N"],
+      "prompt": "Reconstruct the ε–N proof that $1/n \\to 0$. Match each step of the argument to the reason that makes it valid.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "s1", "label": "Let $\\varepsilon>0$ be arbitrary." },
+            { "id": "s2", "label": "Choose a natural number $N$ with $N > 1/\\varepsilon$." },
+            { "id": "s3", "label": "For any $n\\ge N$, conclude $1/n \\le 1/N < \\varepsilon$." }
+          ],
+          "justifications": [
+            { "id": "j1", "label": "The Archimedean property guarantees such an $N$ exists, and it is equivalent to $1/N < \\varepsilon$." },
+            { "id": "j2", "label": "We must verify the definition for an unspecified tolerance, so nothing about its size may be assumed." },
+            { "id": "j3", "label": "Larger $n$ gives a smaller reciprocal, so $1/n \\le 1/N$, and $1/N<\\varepsilon$ by the choice of $N$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["s1:j2,s2:j1,s3:j3"] },
+      "feedback": {
+        "correct": "Right. We open with an arbitrary $\\varepsilon$ (so the conclusion holds for all of them), invoke the Archimedean property to manufacture the cutoff $N$, and then ride the monotonicity of $1/n$ together with the choice of $N$ to close the inequality.",
+        "incorrect": [
+          { "match": "*", "message": "Pair each step with its engine: 'let $\\varepsilon>0$' is about handling an arbitrary tolerance; choosing $N>1/\\varepsilon$ relies on the Archimedean property; and the final inequality uses that $1/n$ decreases plus the chosen $N$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["limit", "epsilon-N"],
+      "prompt": "Why can a sequence have at most one limit? Suppose $a_n \\to L$ and $a_n \\to M$ with $L \\ne M$. Which idea delivers the contradiction?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Take $\\varepsilon = |L-M|/2$. Eventually the tail lies within $\\varepsilon$ of both $L$ and $M$, but those two $\\varepsilon$-bands are disjoint — impossible." },
+            { "id": "b", "label": "A sequence is just a list, and lists cannot repeat values, so two limits are forbidden." },
+            { "id": "c", "label": "Limits must be integers, and $L$ and $M$ cannot both be the same integer." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. If $L\\ne M$, set $\\varepsilon=|L-M|/2>0$. From some point on every $a_n$ is within $\\varepsilon$ of $L$ and within $\\varepsilon$ of $M$; but the bands $(L-\\varepsilon,L+\\varepsilon)$ and $(M-\\varepsilon,M+\\varepsilon)$ do not overlap, so no single term can sit in both. The only escape is $L=M$.",
+        "incorrect": [
+          { "match": "b", "message": "Sequences may absolutely repeat values (consider $a_n=(-1)^n$). Uniqueness comes from a clever choice of $\\varepsilon$, not from a no-repeats rule." },
+          { "match": "c", "message": "Limits need not be integers — e.g. $1/n \\to 0$ is fine but $\\sin(1)/n \\to 0$ involves irrational terms. The argument is about disjoint $\\varepsilon$-bands." },
+          { "match": "*", "message": "If $L\\ne M$ there is a positive gap between them. Pick $\\varepsilon$ to be half that gap and ask whether a term can be $\\varepsilon$-close to both at once." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Convergence is a game against an adversary. They name a tolerance $\\varepsilon>0$; you must name a cutoff $N$ so that every term from $N$ on lands in the band $(L-\\varepsilon, L+\\varepsilon)$. Win for *all* $\\varepsilon$ and you have proved $a_n \\to L$."
+        },
+        {
+          "type": "math",
+          "latex": "\\lim_{n\\to\\infty}\\frac1n = 0,\\qquad \\text{because } \\forall\\varepsilon>0,\\ \\exists N>\\tfrac1\\varepsilon \\text{ with } n\\ge N\\implies \\tfrac1n<\\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "Two payoffs followed: limits are **unique** (disjoint $\\varepsilon$-bands cannot both swallow the tail), and a sequence **diverges** precisely when no single $L$ wins the game. Next we will stop fighting $\\varepsilon$ by hand and build algebra that combines known limits automatically."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The statement '$a_n \\to L$' means:",
+          "tags": ["limit", "epsilon-N"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "For every $\\varepsilon>0$ there is an $N$ such that $n\\ge N \\implies |a_n - L| < \\varepsilon$." },
+                { "id": "b", "label": "There is an $\\varepsilon>0$ such that for all $N$, $|a_n - L|<\\varepsilon$ when $n\\ge N$." },
+                { "id": "c", "label": "$a_n = L$ for all sufficiently large $n$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — the order of quantifiers is the whole point: *for every* $\\varepsilon$ (no matter how small) there *exists* a cutoff $N$.",
+            "incorrect": [
+              { "match": "b", "message": "This swaps the quantifiers. A single fixed $\\varepsilon$ that works is far too weak — the definition must hold for *every* $\\varepsilon>0$." },
+              { "match": "c", "message": "That is far too strong: $1/n\\to 0$ but $1/n$ is never equal to $0$. Terms only need to get within $\\varepsilon$, not hit $L$ exactly." },
+              { "match": "*", "message": "Recall the game: opponent picks any $\\varepsilon>0$, you answer with an $N$. 'For all $\\varepsilon$, there exists $N$.'" }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In proving $1/n \\to 0$, which property guarantees we can always choose a natural number $N$ with $N > 1/\\varepsilon$?",
+          "tags": ["limit", "epsilon-N"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "The Archimedean property of $\\mathbb{R}$." },
+                { "id": "b", "label": "The density of $\\mathbb{Q}$ in $\\mathbb{R}$." },
+                { "id": "c", "label": "The fact that $1/n$ is decreasing." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. The Archimedean property says $\\mathbb{N}$ is unbounded, so some natural number exceeds the positive real $1/\\varepsilon$.",
+            "incorrect": [
+              { "match": "b", "message": "Density finds rationals between reals; here we need a *natural number* bigger than $1/\\varepsilon$, which is the Archimedean property." },
+              { "match": "c", "message": "Monotonicity of $1/n$ is used afterward, to go from $n\\ge N$ to $1/n\\le 1/N$. It does not by itself produce the cutoff $N$." },
+              { "match": "*", "message": "We need a natural number larger than the positive real $1/\\varepsilon$. Which property promises $\\mathbb{N}$ is unbounded above?" }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "Why can a convergent sequence not have two different limits $L \\ne M$?",
+          "tags": ["limit"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Choosing $\\varepsilon = |L-M|/2$ forces the tail into two disjoint bands at once, a contradiction." },
+                { "id": "b", "label": "Because limits are always positive." },
+                { "id": "c", "label": "Because a sequence can only be increasing or decreasing, not both." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Half the gap is a legitimate $\\varepsilon$; the resulting bands around $L$ and $M$ are disjoint, yet the tail would have to sit in both. Impossible unless $L=M$.",
+            "incorrect": [
+              { "match": "b", "message": "Limits can be negative or zero (e.g. $-1/n \\to 0$). Uniqueness rests on the disjoint-band argument." },
+              { "match": "c", "message": "Many sequences are neither monotone (e.g. $(-1)^n/n$) yet still converge with a unique limit. Use the $\\varepsilon=|L-M|/2$ trick." },
+              { "match": "*", "message": "If the two limits differed, half their distance would be a positive $\\varepsilon$ whose bands cannot overlap — but the tail must enter both." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "The negation of '$a_n \\to L$' (i.e. $a_n$ does NOT converge to $L$) is:",
+      "tags": ["limit", "epsilon-N"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "There exists $\\varepsilon>0$ such that for every $N$ there is some $n\\ge N$ with $|a_n-L|\\ge \\varepsilon$." },
+            { "id": "b", "label": "For every $\\varepsilon>0$ and every $N$, $|a_n-L|\\ge\\varepsilon$." },
+            { "id": "c", "label": "There exists $N$ such that $|a_n-L|\\ge\\varepsilon$ for all $n\\ge N$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Negating '$\\forall\\varepsilon\\,\\exists N\\,\\forall n\\ge N$' flips it to '$\\exists\\varepsilon\\,\\forall N\\,\\exists n\\ge N$' with the inequality reversed: some tolerance is violated infinitely often.",
+        "incorrect": [
+          { "match": "b", "message": "Too strong — the negation does not require *every* term to be far. It only needs one bad $\\varepsilon$ that the tail keeps violating." },
+          { "match": "c", "message": "That describes the terms staying *far forever*, which is not the proper negation. The negation flips each quantifier in turn." },
+          { "match": "*", "message": "Flip the quantifiers of '$\\forall\\varepsilon\\,\\exists N\\,\\forall n\\ge N\\,|a_n-L|<\\varepsilon$' and reverse the inequality." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "Which sequence diverges (has no limit $L$)?",
+      "tags": ["limit"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$a_n = (-1)^n$" },
+            { "id": "b", "label": "$a_n = 1/n$" },
+            { "id": "c", "label": "$a_n = 2 + 1/n$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $(-1)^n$ bounces between $-1$ and $1$ forever. With $\\varepsilon=1$ no cutoff $N$ can trap the tail in one $\\varepsilon$-band, so no $L$ works.",
+        "incorrect": [
+          { "match": "b", "message": "$1/n \\to 0$ — we proved it from the definition. It converges." },
+          { "match": "c", "message": "$2+1/n \\to 2$ by the same argument as $1/n\\to 0$ shifted up by $2$. It converges." },
+          { "match": "*", "message": "Look for the sequence that never settles near a single value, but keeps jumping by a fixed amount." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "For $a_n = 5/n$ to satisfy $|a_n - 0| < \\varepsilon$, it suffices to take $N$ such that:",
+      "tags": ["limit", "epsilon-N"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$N > 5/\\varepsilon$" },
+            { "id": "b", "label": "$N > \\varepsilon/5$" },
+            { "id": "c", "label": "$N > 1/\\varepsilon$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $|5/n| < \\varepsilon \\iff 5/n < \\varepsilon \\iff n > 5/\\varepsilon$, so any $N>5/\\varepsilon$ works (Archimedean property supplies it).",
+        "incorrect": [
+          { "match": "b", "message": "Solve $5/n<\\varepsilon$: multiply out to get $n>5/\\varepsilon$, not $\\varepsilon/5$. The constant $5$ goes in the numerator." },
+          { "match": "c", "message": "That ignores the factor of $5$. Here $|a_n| = 5/n$, so the inequality becomes $n>5/\\varepsilon$." },
+          { "match": "*", "message": "Set $5/n < \\varepsilon$ and solve for $n$ directly." }
+        ]
+      }
+    }
+  ]
+}

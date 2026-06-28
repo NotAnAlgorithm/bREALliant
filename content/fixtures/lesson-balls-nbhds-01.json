@@ -1,0 +1,272 @@
+{
+  "lessonId": "lesson-balls-nbhds-01",
+  "title": "Open Balls & Neighborhoods",
+  "tags": ["open-ball", "neighborhood", "metric-space"],
+  "prerequisites": ["lesson-metric-spaces-01"],
+  "glossary": {
+    "open-ball": {
+      "term": "Open Ball",
+      "definition": "$B_r(x) = \\{\\, y \\in X : d(x,y) < r \\,\\}$, the points strictly within distance $r$ of $x$. The strict $<$ is what makes it 'open'."
+    },
+    "neighborhood": {
+      "term": "Neighborhood",
+      "definition": "Any set that contains an open ball $B_r(x)$ around $x$ — a way to say 'everything close enough to $x$' without fixing a radius."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "With a distance $d$ in hand, we can finally ask the question analysis is built on: which points count as *near* $x$? The answer is the **open ball** of radius $r>0$ centered at $x$."
+        },
+        {
+          "type": "math",
+          "latex": "B_r(x) = \\{\\, y \\in X : d(x,y) < r \\,\\}"
+        },
+        {
+          "type": "text",
+          "content": "The inequality is **strict**: points at distance exactly $r$ are excluded. That single $<$ is what 'open' means. A **neighborhood** of $x$ is then any set that contains some ball $B_r(x)$ — 'close enough to $x$' without naming an exact radius."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "discover",
+      "prompt": "On the real line, $B_r(0)=(-r,r)$. Drag the radius $r$ and watch the two endpoints move: the ball is exactly the open interval between them, and those endpoints themselves are never included.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": 0.5,
+          "max": 3,
+          "step": 0.5,
+          "initialValue": 2,
+          "label": "r",
+          "readouts": [
+            { "label": "left end", "expression": "-r" },
+            { "label": "right end", "expression": "r" }
+          ],
+          "markers": [{ "value": 2, "label": "r = 2" }]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["open-ball", "metric-space"],
+      "prompt": "The shape of $B_1(0)$ depends entirely on the metric, even on the same set $\\mathbb{R}^2$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Euclidean.** $\\sqrt{y_1^2+y_2^2}<1$ carves out a round open disc."
+        },
+        {
+          "type": "text",
+          "content": "**Taxicab ($\\ell^1$).** $|y_1|+|y_2|<1$ gives a diamond with corners on the axes."
+        },
+        {
+          "type": "text",
+          "content": "**Discrete.** Every $y\\neq x$ sits at distance $1$, so $d(0,y)<1$ forces $y=0$: the ball is the lone point $\\{0\\}$."
+        },
+        {
+          "type": "text",
+          "content": "Same center, same radius — a disc, a diamond, or a single point. The metric, not the radius, decides the shape."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "tags": ["open-ball", "metric-space"],
+      "scaffold": "worked",
+      "prompt": "On the real line with $d(x,y)=|x-y|$, which point is **not** in $B_2(0)=(-2,2)$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "A point $y$ lies in $B_2(0)$ exactly when $|y|<2$, strictly — so the value with $|y|=2$ is excluded."
+        }
+      ],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$1.9$" },
+            { "id": "b", "label": "$0$" },
+            { "id": "c", "label": "$2$" },
+            { "id": "d", "label": "$-1$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+      "feedback": {
+        "correct": "Right. $|2|=2$ is not strictly less than $2$, so $2$ is a boundary point, excluded from the open ball.",
+        "incorrect": [
+          { "match": "a", "message": "$|1.9|<2$, so $1.9$ is inside." },
+          { "match": "b", "message": "$0$ is the center — certainly inside." },
+          { "match": "d", "message": "$|-1|=1<2$, so $-1$ is inside." },
+          { "match": "*", "message": "Membership needs $|y|<2$ strictly. Which value sits exactly on the boundary $|y|=2$?" }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["open-ball", "metric-space"],
+      "prompt": "In the discrete metric ($d(x,y)=0$ if $x=y$, else $1$), how many points does $B_1(x)$ contain?",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "B_1(x) \\text{ contains } {{answer}} \\text{ point(s)}", "placeholder": "a whole number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+      "feedback": {
+        "correct": "Exactly. $d(x,y)<1$ forces $d(x,y)=0$, so $y=x$: the ball is just $\\{x\\}$.",
+        "incorrect": [
+          { "match": "0", "message": "The center satisfies $d(x,x)=0<1$, so the ball is never empty." },
+          { "match": "*", "message": "Every other point is at distance $1$, which is not $<1$. Only the center qualifies." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "$B_r(x)=\\{y:d(x,y)<r\\}$ is the set of points strictly within $r$ of $x$; the strict $<$ excludes the boundary, which is the meaning of 'open'. A neighborhood of $x$ is any set containing some $B_r(x)$."
+        },
+        {
+          "type": "text",
+          "content": "The metric sets the shape — disc, diamond, or single point. Open balls are the building blocks of everything next: open and closed sets, limit points, continuity, and convergence are all phrased by asking which points land inside suitable balls."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "The open ball $B_r(x)$ is defined as:",
+          "tags": ["open-ball"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\{y : d(x,y) \\le r\\}$" },
+                { "id": "b", "label": "$\\{y : d(x,y) < r\\}$" },
+                { "id": "c", "label": "$\\{y : d(x,y) = r\\}$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+          "feedback": {
+            "correct": "Right — strict inequality, so the boundary is excluded.",
+            "incorrect": [
+              { "match": "a", "message": "$\\le$ is the *closed* ball; it keeps the boundary. The open ball uses strict $<$." },
+              { "match": "c", "message": "That is the sphere — only the boundary at distance exactly $r$." },
+              { "match": "*", "message": "Open balls keep points strictly closer than $r$: $d(x,y)<r$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In the discrete metric, the ball $B_r(x)$ with $r>1$ equals:",
+          "tags": ["open-ball", "metric-space"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\{x\\}$, just the center" },
+                { "id": "b", "label": "the empty set" },
+                { "id": "c", "label": "the whole space $X$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["c"] },
+          "feedback": {
+            "correct": "Right. Every distance is $0$ or $1$, both $<r$ when $r>1$, so the ball is all of $X$.",
+            "incorrect": [
+              { "match": "a", "message": "That is the case $r\\le 1$. With $r>1$, the distance $1$ to other points is still $<r$." },
+              { "match": "b", "message": "A ball always contains its center, so it is never empty." },
+              { "match": "*", "message": "With $r>1$, both possible distances ($0$ and $1$) are $<r$, so every point qualifies." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "A **neighborhood** of $x$ is:",
+          "tags": ["neighborhood"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "any set that contains an open ball $B_r(x)$ around $x$" },
+                { "id": "b", "label": "the single point $\\{x\\}$" },
+                { "id": "c", "label": "the set of points at distance exactly $r$ from $x$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. A neighborhood need not be a ball itself — it just has to contain one around $x$.",
+            "incorrect": [
+              { "match": "b", "message": "A single point usually contains no ball of positive radius, so it is not a neighborhood (except in the discrete metric)." },
+              { "match": "c", "message": "That is a sphere — the boundary, not a neighborhood." },
+              { "match": "*", "message": "A neighborhood of $x$ is any set containing some open ball $B_r(x)$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "prompt": "In $\\mathbb{R}^2$ with the taxicab metric, the unit ball $B_1(0)$ has the shape of:",
+      "tags": ["open-ball", "metric-space"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "a round disc" },
+            { "id": "b", "label": "a diamond (square rotated 45°)" },
+            { "id": "c", "label": "a single point" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["b"] },
+      "feedback": {
+        "correct": "Right. $|y_1|+|y_2|<1$ is a diamond with corners on the axes.",
+        "incorrect": [
+          { "match": "a", "message": "The disc is the Euclidean ball; taxicab distance gives straight edges." },
+          { "match": "c", "message": "A single point is the discrete-metric ball; the taxicab ball is a full 2D region." },
+          { "match": "*", "message": "Sketch $|y_1|+|y_2|<1$: four line segments forming a diamond." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "prompt": "Order these open balls in $\\mathbb{R}$ (all centered at $0$) from smallest to largest by inclusion.",
+      "tags": ["open-ball"],
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "r2", "label": "$B_2(0)$" },
+            { "id": "r3", "label": "$B_3(0)$" },
+            { "id": "r1", "label": "$B_1(0)$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["r1,r2,r3"] },
+      "feedback": {
+        "correct": "Right. Larger radius, larger ball: $B_1(0)\\subset B_2(0)\\subset B_3(0)$.",
+        "incorrect": [
+          { "match": "*", "message": "Inclusion grows with the radius, so order by increasing $r$." }
+        ]
+      }
+    }
+  ]
+}

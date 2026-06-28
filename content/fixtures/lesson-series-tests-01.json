@@ -1,0 +1,406 @@
+{
+  "lessonId": "lesson-series-tests-01",
+  "title": "Convergence Tests",
+  "tags": ["comparison-test", "p-series", "ratio-test", "root-test"],
+  "prerequisites": ["lesson-series-basics-01"],
+  "glossary": {
+    "comparison-test": {
+      "term": "comparison test",
+      "definition": "For $0 \\le a_n \\le b_n$: if $\\sum b_n$ converges then $\\sum a_n$ converges; if $\\sum a_n$ diverges then $\\sum b_n$ diverges."
+    },
+    "p-series": {
+      "term": "p-series",
+      "definition": "The series $\\sum 1/n^p$ converges if and only if $p > 1$. The boundary case $p=1$ is the divergent harmonic series."
+    },
+    "ratio-test": {
+      "term": "ratio test",
+      "definition": "If $\\lim |a_{n+1}/a_n| = L$, then $L<1$ gives (absolute) convergence, $L>1$ divergence, and $L=1$ is inconclusive."
+    },
+    "root-test": {
+      "term": "root test",
+      "definition": "With $\\alpha = \\limsup |a_n|^{1/n}$: $\\alpha<1$ gives convergence, $\\alpha>1$ divergence, and $\\alpha=1$ is inconclusive."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall that $\\sum a_n$ converges exactly when its partial sums $s_n = a_1 + \\cdots + a_n$ converge. Usually we cannot compute $s_n$ in closed form — so we need tests that decide convergence *without* the exact sum."
+        },
+        {
+          "type": "text",
+          "content": "The simplest case is **nonnegative terms** $a_n \\ge 0$. Then each new term only adds, so the partial sums are **monotone increasing**. From the monotone-convergence idea: an increasing sequence converges iff it is bounded above."
+        },
+        {
+          "type": "math",
+          "latex": "a_n \\ge 0 \\ \\Longrightarrow\\ \\Big(\\ \\sum a_n \\text{ converges} \\iff (s_n) \\text{ is bounded above}\\ \\Big)"
+        },
+        {
+          "type": "text",
+          "content": "Every test below is, at heart, a clever way to check whether those partial sums stay bounded."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The **comparison test** turns a hard series into an easy one. Suppose $0 \\le a_n \\le b_n$ for all $n$."
+        },
+        {
+          "type": "math",
+          "latex": "0 \\le a_n \\le b_n:\\quad \\sum b_n \\text{ converges} \\Rightarrow \\sum a_n \\text{ converges}, \\qquad \\sum a_n \\text{ diverges} \\Rightarrow \\sum b_n \\text{ diverges}"
+        },
+        {
+          "type": "text",
+          "content": "Intuition: if the bigger pile of terms has bounded partial sums, the smaller pile does too. The benchmark we compare against is the **p-series** $\\sum 1/n^p$, which converges iff $p>1$ (with $p=1$ the divergent harmonic series). Larger $p$ means faster-shrinking terms and easier convergence."
+        }
+      ]
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["comparison-test", "p-series"],
+      "prompt": "Worked example: show $\\sum_{n=1}^{\\infty} \\dfrac{1}{n^2+1}$ converges.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Find a bound.** Since $n^2 + 1 > n^2 > 0$, taking reciprocals flips the inequality:"
+        },
+        {
+          "type": "math",
+          "latex": "0 \\le \\frac{1}{n^2+1} \\le \\frac{1}{n^2}"
+        },
+        {
+          "type": "text",
+          "content": "**Name the benchmark.** The dominating series $\\sum \\tfrac{1}{n^2}$ is a $p$-series with $p = 2 > 1$, so it **converges**."
+        },
+        {
+          "type": "text",
+          "content": "**Conclude.** A nonnegative series dominated by a convergent series converges. Hence $\\sum \\tfrac{1}{n^2+1}$ converges."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "problem",
+      "tags": ["comparison-test"],
+      "scaffold": "worked",
+      "prompt": "Suppose $0 \\le a_n \\le b_n$ for all $n$. Which conclusion is **always valid**?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Reread the worked example: we dominated a small series by a *convergent* larger one and concluded convergence."
+        },
+        {
+          "type": "text",
+          "content": "So the safe direction is: the convergent **upper** bound $\\sum b_n$ drags the smaller $\\sum a_n$ down to convergence."
+        }
+      ],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "If $\\sum b_n$ converges, then $\\sum a_n$ converges." },
+            { "id": "b", "label": "If $\\sum a_n$ converges, then $\\sum b_n$ converges." },
+            { "id": "c", "label": "If $\\sum a_n$ diverges, then $\\sum b_n$ converges." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. The comparison test pushes convergence *downward*: a convergent upper bound forces the smaller nonnegative series to converge.",
+        "incorrect": [
+          { "match": "b", "message": "Wrong direction. The smaller series converging says nothing about the bigger one — $\\sum b_n$ could still be huge. Convergence flows from the larger series down to the smaller." },
+          { "match": "c", "message": "If the smaller $\\sum a_n$ diverges, the larger $\\sum b_n$ must *also* diverge (not converge). Divergence flows upward." },
+          { "match": "*", "message": "Use the comparison test directions: a convergent dominating series $\\sum b_n$ forces $\\sum a_n$ to converge; a divergent $\\sum a_n$ forces $\\sum b_n$ to diverge." }
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Comparison needs a benchmark you can guess. The **ratio test** is automatic: it measures how fast consecutive terms shrink."
+        },
+        {
+          "type": "math",
+          "latex": "L = \\lim_{n\\to\\infty} \\left| \\frac{a_{n+1}}{a_n} \\right|: \\quad L<1 \\Rightarrow \\text{converges},\\ \\ L>1 \\Rightarrow \\text{diverges},\\ \\ L=1 \\Rightarrow \\text{inconclusive}"
+        },
+        {
+          "type": "text",
+          "content": "When $L<1$ the tail behaves like a geometric series with ratio $L$, so it converges (absolutely). The closely related **root test** uses $\\alpha = \\limsup |a_n|^{1/n}$ with the same verdicts; it is strictly stronger but harder to compute. Both go silent at the boundary value $1$."
+        }
+      ]
+    },
+    {
+      "id": "we2",
+      "type": "worked_example",
+      "tags": ["ratio-test"],
+      "prompt": "Worked example: apply the ratio test to $\\sum_{n=1}^{\\infty} \\dfrac{n}{2^n}$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Form the ratio.** With $a_n = \\dfrac{n}{2^n}$,"
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{a_{n+1}}{a_n} = \\frac{(n+1)/2^{n+1}}{n/2^n} = \\frac{n+1}{2n}"
+        },
+        {
+          "type": "text",
+          "content": "**Take the limit.** $\\dfrac{n+1}{2n} = \\dfrac{1}{2}\\cdot\\dfrac{n+1}{n} \\to \\dfrac12$, so $L = \\tfrac12$."
+        },
+        {
+          "type": "text",
+          "content": "**Conclude.** Since $L = \\tfrac12 < 1$, the ratio test says $\\sum \\dfrac{n}{2^n}$ converges."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["ratio-test"],
+      "scaffold": "completion",
+      "prompt": "Apply the ratio test to $\\sum_{n=0}^{\\infty} \\dfrac{2^n}{n!}$. What is $L = \\lim |a_{n+1}/a_n|$?",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Form the ratio with $a_n = \\dfrac{2^n}{n!}$. The factorial dominates:"
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{a_{n+1}}{a_n} = \\frac{2^{n+1}/(n+1)!}{2^n/n!} = \\frac{2}{n+1}"
+        },
+        {
+          "type": "text",
+          "content": "Now take $\\lim_{n\\to\\infty} \\dfrac{2}{n+1}$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "L = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["0"] },
+      "feedback": {
+        "correct": "Exactly — $\\dfrac{2}{n+1} \\to 0$, so $L=0<1$ and the series converges. Factorials crush exponentials.",
+        "incorrect": [
+          { "match": "2", "message": "The numerator contributes a factor of $2$, but the $(n+1)!$ in the denominator divides it out: the ratio is $\\dfrac{2}{n+1}$, whose limit you still must take." },
+          { "match": "*", "message": "Apply the ratio test: $\\dfrac{a_{n+1}}{a_n} = \\dfrac{2}{n+1}$, then take $n \\to \\infty$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["ratio-test", "p-series"],
+      "scaffold": "bare",
+      "prompt": "A student writes the following. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "For $\\sum \\tfrac{1}{n^2}$ the ratio is $\\big(\\tfrac{n}{n+1}\\big)^2 \\to 1$, so $L=1$." },
+            { "id": "p2", "label": "For $\\sum \\tfrac{1}{n}$ the ratio is $\\tfrac{n}{n+1} \\to 1$, so $L=1$." },
+            { "id": "p3", "label": "Since both give $L=1$, the ratio test assigns them the same verdict." },
+            { "id": "p4", "label": "Hence $\\sum \\tfrac{1}{n^2}$ and $\\sum \\tfrac{1}{n}$ either both converge or both diverge." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. $L=1$ is **inconclusive**: the ratio test gives *no* verdict, so it cannot assign the same (or any) verdict. By the $p$-series rule, $\\sum \\tfrac{1}{n^2}$ converges ($p=2$) while $\\sum \\tfrac1n$ diverges ($p=1$).",
+        "incorrect": [
+          { "match": "p1", "message": "Step 1 is a correct computation: the ratio for $\\sum \\tfrac1{n^2}$ really does tend to $1$. The error is what gets concluded from $L=1$." },
+          { "match": "p2", "message": "Step 2 is a correct computation. The mistake is treating $L=1$ as if it delivered a verdict." },
+          { "match": "*", "message": "Recall that $L=1$ is inconclusive. Find the step that pretends $L=1$ produces a conclusion." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "problem",
+      "tags": ["ratio-test"],
+      "scaffold": "bare",
+      "prompt": "Which series is the **ratio test** best suited to settle?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{2^n}{n!}$ — factorials and exponentials." },
+            { "id": "b", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{n^2}$ — a pure power of $n$." },
+            { "id": "c", "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{n}$ — the harmonic series." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Factorials and exponentials simplify beautifully in a ratio, giving $L=0$. For pure powers like $1/n^p$ the ratio always tends to $1$ (inconclusive), so there you reach for the $p$-series rule instead.",
+        "incorrect": [
+          { "match": "b", "message": "For $\\sum \\tfrac1{n^2}$ the ratio tends to $1$ — inconclusive. Use the $p$-series test ($p=2>1$, converges) rather than the ratio test." },
+          { "match": "c", "message": "For $\\sum \\tfrac1n$ the ratio tends to $1$ — inconclusive. This is the $p$-series with $p=1$, which diverges." },
+          { "match": "*", "message": "The ratio test shines when terms have factorials or exponentials. Pure powers $1/n^p$ give $L=1$ and need the $p$-series rule." }
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "For nonnegative terms, convergence means bounded partial sums. The **comparison test** trades a hard series for an easier benchmark; the favorite benchmark is the **p-series** $\\sum 1/n^p$, convergent iff $p>1$."
+        },
+        {
+          "type": "text",
+          "content": "The **ratio test** ($L = \\lim|a_{n+1}/a_n|$) and **root test** ($\\alpha = \\limsup |a_n|^{1/n}$) give convergence for value $<1$, divergence for $>1$, and **nothing** at exactly $1$. Ratios love factorials and exponentials; powers $1/n^p$ slip through with $L=1$, so use the $p$-series rule there."
+        },
+        {
+          "type": "text",
+          "content": "All of these tests concern sizes of terms, so they really test $\\sum |a_n|$. Next we ask what happens when terms can be negative — and why absolute convergence is the gold standard."
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["ratio-test"],
+          "prompt": "The ratio test gives $L = \\lim|a_{n+1}/a_n| = 1$. What do you conclude?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Nothing — $L=1$ is inconclusive; try another test." },
+                { "id": "b", "label": "The series converges." },
+                { "id": "c", "label": "The series diverges." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. At $L=1$ the ratio test is silent — both $\\sum \\tfrac1n$ (diverges) and $\\sum \\tfrac1{n^2}$ (converges) hit $L=1$.",
+            "incorrect": [
+              { "match": "b", "message": "$L=1$ is the inconclusive boundary; it cannot prove convergence. $\\sum \\tfrac1n$ has $L=1$ yet diverges." },
+              { "match": "c", "message": "$L=1$ is inconclusive; it cannot prove divergence. $\\sum \\tfrac1{n^2}$ has $L=1$ yet converges." },
+              { "match": "*", "message": "The verdicts apply only for $L<1$ or $L>1$. At exactly $L=1$ the test gives no information." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["p-series"],
+          "prompt": "The p-series $\\sum_{n=1}^{\\infty} 1/n^p$ converges if and only if $p > $ ___.",
+          "widget": {
+            "kind": "fill_blank",
+            "props": { "template": "p > {{answer}}", "placeholder": "a number" }
+          },
+          "validator": { "type": "expression", "engine": "mathjs", "accept": ["1"] },
+          "feedback": {
+            "correct": "Right — convergence holds exactly for $p>1$. At $p=1$ it is the divergent harmonic series.",
+            "incorrect": [
+              { "match": "0", "message": "At $p=0$ the terms are constant $1$ (don't even tend to $0$). The threshold is the harmonic boundary $p=1$." },
+              { "match": "2", "message": "Many $p$ between $1$ and $2$ also converge, e.g. $p=1.5$. The sharp threshold is $p>1$." },
+              { "match": "*", "message": "The $p$-series converges iff $p>1$; the boundary $p=1$ is the divergent harmonic series." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["comparison-test"],
+          "prompt": "Why does $0 \\le a_n \\le b_n$ with $\\sum b_n$ convergent force $\\sum a_n$ to converge? (Self-explanation.)",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "Because $a_n \\ge 0$ makes the partial sums increasing, and they are bounded above by $\\sum b_n$, so they converge." },
+                { "id": "b", "label": "Because every series with positive terms converges." },
+                { "id": "c", "label": "Because $a_n \\le b_n$ forces $a_n \\to 0$, which guarantees convergence." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. Nonnegative terms give increasing partial sums; the convergent $\\sum b_n$ caps them, and a bounded increasing sequence converges.",
+            "incorrect": [
+              { "match": "b", "message": "False — $\\sum \\tfrac1n$ has positive terms but diverges. The real reason is boundedness of the increasing partial sums." },
+              { "match": "c", "message": "$a_n \\to 0$ alone never guarantees convergence (harmonic series). The mechanism is that the partial sums stay bounded by $\\sum b_n$." },
+              { "match": "*", "message": "Combine two facts: $a_n \\ge 0$ makes the partial sums increasing, and $\\sum b_n$ convergent bounds them above. A bounded increasing sequence converges." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["ratio-test"],
+      "prompt": "Apply the ratio test to $\\sum_{n=1}^{\\infty} \\dfrac{n}{3^n}$. What is $L$?",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "L = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["1/3"] },
+      "feedback": {
+        "correct": "Yes — $\\dfrac{a_{n+1}}{a_n} = \\dfrac{n+1}{3n} \\to \\tfrac13 < 1$, so it converges.",
+        "incorrect": [
+          { "match": "*", "message": "Compute $\\dfrac{(n+1)/3^{n+1}}{n/3^n} = \\dfrac{n+1}{3n}$ and take the limit." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["p-series", "comparison-test"],
+      "prompt": "Does $\\sum_{n=1}^{\\infty} \\dfrac{1}{n^{3}}$ converge or diverge?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "Converges — it is a $p$-series with $p=3>1$." },
+            { "id": "b", "label": "Diverges — like the harmonic series." },
+            { "id": "c", "label": "Inconclusive without more work." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — $p=3>1$, so the $p$-series converges.",
+        "incorrect": [
+          { "match": "*", "message": "This is a $p$-series with $p=3$. Since $p>1$, it converges." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["comparison-test"],
+      "prompt": "We know $0 \\le a_n \\le b_n$ and $\\sum a_n$ diverges. What follows for $\\sum b_n$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$\\sum b_n$ diverges." },
+            { "id": "b", "label": "$\\sum b_n$ converges." },
+            { "id": "c", "label": "Nothing can be said." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — divergence flows upward: if the smaller series diverges, the larger one must diverge too.",
+        "incorrect": [
+          { "match": "*", "message": "Comparison test, divergence direction: $\\sum a_n$ diverges and $b_n \\ge a_n \\ge 0$ forces $\\sum b_n$ to diverge." }
+        ]
+      }
+    }
+  ]
+}

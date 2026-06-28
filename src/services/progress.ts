@@ -4,6 +4,7 @@ import type {
   Database,
   Json,
   LessonProgressSnapshot,
+  MasteryStateValue,
 } from '../lib/database.types'
 import { computeNextStreak, toUtcDateString } from './streak-logic'
 
@@ -92,7 +93,6 @@ export async function saveLessonProgress(
   )
 
   if (error) throw error
-  await recordActivity(client, userId)
 }
 
 export async function completeLesson(
@@ -121,36 +121,52 @@ export async function completeLesson(
     .eq('lesson_id', lessonId)
 
   if (progressError) throw progressError
-  await recordActivity(client, userId)
+}
+
+export type ConceptMasterySummary = {
+  tag: string
+  state: MasteryStateValue
+  strength: number
 }
 
 export type CourseProgressSummary = {
   completedIds: string[]
   inProgressIds: string[]
+  mastery: ConceptMasterySummary[]
 }
 
 export async function loadCourseProgress(
   client: Client,
   userId: string,
 ): Promise<CourseProgressSummary> {
-  const [completions, progress] = await Promise.all([
+  const [completions, progress, mastery] = await Promise.all([
     client.from('lesson_completions').select('lesson_id').eq('user_id', userId),
     client
       .from('lesson_progress')
       .select('lesson_id, completed')
       .eq('user_id', userId),
+    client
+      .from('concept_mastery')
+      .select('tag, state, strength')
+      .eq('user_id', userId),
   ])
 
   if (completions.error) throw completions.error
   if (progress.error) throw progress.error
+  if (mastery.error) throw mastery.error
 
   const completedIds = (completions.data ?? []).map((row) => row.lesson_id)
   const completedSet = new Set(completedIds)
   const inProgressIds = (progress.data ?? [])
     .filter((row) => !row.completed && !completedSet.has(row.lesson_id))
     .map((row) => row.lesson_id)
+  const masterySummary = (mastery.data ?? []).map((row) => ({
+    tag: row.tag,
+    state: row.state,
+    strength: row.strength,
+  }))
 
-  return { completedIds, inProgressIds }
+  return { completedIds, inProgressIds, mastery: masterySummary }
 }
 
 export async function loadStreak(
@@ -167,8 +183,20 @@ export async function loadStreak(
   return data?.current_streak ?? 0
 }
 
-async function recordActivity(client: Client, userId: string): Promise<void> {
-  const today = toUtcDateString()
+/**
+ * Advances the learning streak for a single day of retrieval practice. This is
+ * bound to spaced reviews: it is called when a learner clears a due review (see
+ * `recordReview`), NOT on ordinary lesson saves/completions. A review attempt
+ * counts whether it was correct or not — showing up to practice is the habit
+ * we reward. `computeNextStreak` makes repeat calls within the same UTC day a
+ * no-op, so at most one bump happens per day.
+ */
+export async function recordReviewActivity(
+  client: Client,
+  userId: string,
+  now: Date = new Date(),
+): Promise<void> {
+  const today = toUtcDateString(now)
 
   const { data: existing, error: fetchError } = await client
     .from('streaks')

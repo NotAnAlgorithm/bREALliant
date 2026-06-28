@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 
+import { LearningMetrics } from '../components/metrics/LearningMetrics'
 import { useAuth } from '../hooks/useAuth'
 import { displayUsername } from '../lib/auth/profile'
-import { supabase } from '../lib/supabase'
-import { loadStreak } from '../services/progress'
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -16,16 +15,7 @@ function formatDate(iso: string): string {
 
 export function Account() {
   const { user, profile, loading, signOut } = useAuth()
-  const [streak, setStreak] = useState<number | null>(null)
   const [signingOut, setSigningOut] = useState(false)
-
-  useEffect(() => {
-    if (!user || !supabase) return
-
-    loadStreak(supabase, user.id)
-      .then(setStreak)
-      .catch(() => setStreak(0))
-  }, [user])
 
   if (loading) {
     return <p className="text-sm text-ink-muted">Loading account…</p>
@@ -50,9 +40,11 @@ export function Account() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold text-ink">Account</h1>
         <p className="text-sm text-ink-muted">
-          Your progress and streak are tied to this account.
+          Your progress and reviews are tied to this account.
         </p>
       </div>
+
+      <LearningMetrics />
 
       <dl className="divide-y divide-border rounded-xl border border-border bg-surface-elevated shadow-sm">
         <div className="grid gap-1 px-5 py-4 sm:grid-cols-3">
@@ -62,12 +54,6 @@ export function Account() {
         <div className="grid gap-1 px-5 py-4 sm:grid-cols-3">
           <dt className="text-sm font-medium text-ink-muted">Email</dt>
           <dd className="text-sm text-ink sm:col-span-2">{email}</dd>
-        </div>
-        <div className="grid gap-1 px-5 py-4 sm:grid-cols-3">
-          <dt className="text-sm font-medium text-ink-muted">Streak</dt>
-          <dd className="text-sm text-ink sm:col-span-2">
-            {streak === null ? '—' : `${streak} day${streak === 1 ? '' : 's'}`}
-          </dd>
         </div>
         <div className="grid gap-1 px-5 py-4 sm:grid-cols-3">
           <dt className="text-sm font-medium text-ink-muted">Member since</dt>

@@ -151,6 +151,206 @@ const TEMPLATES: ProblemTemplate[] = [
       }
     },
   },
+  // --- U2: Metric & Euclidean spaces ---
+  {
+    id: 'euclidean-norm',
+    tags: ['norm', 'euclidean'],
+    generate: (rng, index) => {
+      // Pythagorean triples keep the norm a clean integer.
+      const triples = [
+        [3, 4, 5],
+        [6, 8, 10],
+        [5, 12, 13],
+        [8, 15, 17],
+        [9, 12, 15],
+        [7, 24, 25],
+        [20, 21, 29],
+      ]
+      const [a, b, c] = triples[randInt(rng, 0, triples.length - 1)]
+      return {
+        tag: 'norm',
+        selfTestAnswer: String(c),
+        item: fillBlankItem(
+          `gen-norm-${index}`,
+          `Let $v = (${a}, ${b}) \\in \\mathbb{R}^2$. Compute the Euclidean norm $\\lVert v \\rVert$.`,
+          { type: 'expression', engine: 'mathjs', accept: [String(c)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'dot-product',
+    tags: ['euclidean', 'cauchy-schwarz'],
+    generate: (rng, index) => {
+      const [a, b, c, d] = [
+        randInt(rng, -5, 5),
+        randInt(rng, -5, 5),
+        randInt(rng, -5, 5),
+        randInt(rng, -5, 5),
+      ]
+      const answer = a * c + b * d
+      return {
+        tag: 'euclidean',
+        selfTestAnswer: String(answer),
+        item: fillBlankItem(
+          `gen-dot-${index}`,
+          `Let $x = (${a}, ${b})$ and $y = (${c}, ${d})$ in $\\mathbb{R}^2$. Compute the dot product $x \\cdot y$.`,
+          { type: 'expression', engine: 'mathjs', accept: [String(answer)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'taxicab-distance',
+    tags: ['distance', 'metric-space'],
+    generate: (rng, index) => {
+      const [x1, y1, x2, y2] = [
+        randInt(rng, -6, 6),
+        randInt(rng, -6, 6),
+        randInt(rng, -6, 6),
+        randInt(rng, -6, 6),
+      ]
+      const answer = Math.abs(x1 - x2) + Math.abs(y1 - y2)
+      return {
+        tag: 'distance',
+        selfTestAnswer: String(answer),
+        item: fillBlankItem(
+          `gen-taxi-${index}`,
+          `In the taxicab metric $d_1$ on $\\mathbb{R}^2$, compute $d_1\\big((${x1}, ${y1}),\\,(${x2}, ${y2})\\big)$.`,
+          { type: 'expression', engine: 'mathjs', accept: [String(answer)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'open-ball-radius',
+    tags: ['open-ball', 'neighborhood'],
+    generate: (rng, index) => {
+      const a = randInt(rng, -3, 3)
+      const left = randInt(rng, 1, 4)
+      const right = randInt(rng, 1, 4)
+      const x = a + left
+      const b = x + right
+      const answer = Math.min(left, right)
+      return {
+        tag: 'open-ball',
+        selfTestAnswer: String(answer),
+        item: fillBlankItem(
+          `gen-ball-${index}`,
+          `On $\\mathbb{R}$ with $d(x,y)=|x-y|$, what is the largest radius $r$ for which the open ball $B(${x}, r)$ is contained in the interval $(${a}, ${b})$?`,
+          { type: 'expression', engine: 'mathjs', accept: [String(answer)] },
+        ),
+      }
+    },
+  },
+  // --- U4: Sequences & convergence ---
+  {
+    id: 'epsilon-N',
+    tags: ['epsilon-N', 'limit', 'sequence'],
+    generate: (rng, index) => {
+      const k = randInt(rng, 2, 50)
+      const answer = k + 1
+      return {
+        tag: 'epsilon-N',
+        selfTestAnswer: String(answer),
+        item: fillBlankItem(
+          `gen-epsN-${index}`,
+          `What is the smallest natural number $N$ such that $\\tfrac1n < \\tfrac1{${k}}$ for every $n \\ge N$?`,
+          { type: 'expression', engine: 'mathjs', accept: [String(answer)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'limit-rational',
+    tags: ['limit-laws', 'algebra-of-limits', 'limit'],
+    generate: (rng, index) => {
+      const c = randInt(rng, 1, 3)
+      const m = randInt(rng, 1, 6)
+      const a = c * m // ensures an integer limit a/c = m
+      const b = randInt(rng, -5, 5)
+      const d = randInt(rng, -5, 5)
+      return {
+        tag: 'limit-laws',
+        selfTestAnswer: String(m),
+        item: fillBlankItem(
+          `gen-limrat-${index}`,
+          `Evaluate $\\displaystyle\\lim_{n\\to\\infty} \\frac{${a}n + ${b}}{${c}n + ${d}}$.`,
+          { type: 'expression', engine: 'mathjs', accept: [String(m)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'monotone-limit',
+    tags: ['monotone', 'convergence', 'supremum'],
+    generate: (rng, index) => {
+      const c = randInt(rng, 2, 9)
+      return {
+        tag: 'monotone',
+        selfTestAnswer: String(c),
+        item: fillBlankItem(
+          `gen-mono-${index}`,
+          `The increasing sequence $a_n = \\dfrac{${c}\\,n}{n+1}$ is bounded above. What is its limit (equivalently, its supremum)?`,
+          { type: 'expression', engine: 'mathjs', accept: [String(c)] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'cauchy-limit',
+    tags: ['cauchy', 'completeness', 'convergence'],
+    generate: (rng, index) => {
+      const c = randInt(rng, -6, 6)
+      return {
+        tag: 'cauchy',
+        selfTestAnswer: String(c),
+        item: fillBlankItem(
+          `gen-cauchy-${index}`,
+          `The sequence $a_n = ${c} + \\tfrac1n$ is Cauchy, so in $\\mathbb{R}$ it converges. To what limit?`,
+          { type: 'expression', engine: 'mathjs', accept: [String(c)] },
+        ),
+      }
+    },
+  },
+  // --- U3: Topology ---
+  {
+    id: 'finite-set-limit-points',
+    tags: ['limit-point', 'closure'],
+    generate: (rng, index) => {
+      const values = distinctInts(rng, randInt(rng, 3, 5), -9, 9)
+      const set = `\\{ ${values.join(', ')} \\}`
+      return {
+        tag: 'limit-point',
+        // A finite subset of R has no limit points.
+        selfTestAnswer: '0',
+        item: fillBlankItem(
+          `gen-limpt-${index}`,
+          `How many limit points does the finite set $A = ${set}$ have in $\\mathbb{R}$?`,
+          { type: 'expression', engine: 'mathjs', accept: ['0'] },
+        ),
+      }
+    },
+  },
+  {
+    id: 'connected-components',
+    tags: ['connected', 'topology'],
+    generate: (rng, index) => {
+      const a = randInt(rng, -8, -4)
+      const b = a + randInt(rng, 1, 3)
+      const c = b + randInt(rng, 2, 4) // gap ensures b < c
+      const d = c + randInt(rng, 1, 3)
+      return {
+        tag: 'connected',
+        selfTestAnswer: '2',
+        item: fillBlankItem(
+          `gen-conn-${index}`,
+          `How many connected components does $[${a}, ${b}] \\cup [${c}, ${d}]$ have in $\\mathbb{R}$?`,
+          { type: 'expression', engine: 'mathjs', accept: ['2'] },
+        ),
+      }
+    },
+  },
 ]
 
 function templatesForTag(tag: string): ProblemTemplate[] {

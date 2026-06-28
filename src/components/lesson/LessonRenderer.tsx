@@ -7,6 +7,8 @@ import './lesson-transitions.css'
 
 import { GlossaryProvider } from '../../contexts/GlossaryProvider'
 import { useAuth } from '../../hooks/useAuth'
+import { useCourseProgress } from '../../hooks/useCourseProgress'
+import { selectScaffold, weakestState } from '../../lib/lesson/scaffold'
 import { aiHintsEnabled, requestHint } from '../../lib/ai/hint-client'
 import { buildHintContext, MAX_HINT_LEVEL } from '../../lib/ai/prompt-builder'
 import { loadAllLessons, loadCourse } from '../../lib/content/schema-loader'
@@ -15,6 +17,7 @@ import {
   getAnswerFromWidgetState,
   type EvaluationResult,
 } from '../../lib/feedback/feedback-engine'
+import { recordLessonMastery } from '../../services/mastery'
 import { supabase } from '../../lib/supabase'
 import {
   completeLesson,
@@ -67,6 +70,7 @@ function canAdvanceFromStep(
 
 export function LessonRenderer({ lesson }: LessonRendererProps) {
   const { user } = useAuth()
+  const { masteryByTag } = useCourseProgress()
   const navigate = useNavigate()
 
   const [stepIndex, setStepIndex] = useState(0)
@@ -97,6 +101,17 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
 
   const problemResult =
     step?.type === 'problem' ? (stepAttempts[step.id] ?? null) : null
+
+  // F4: pick the worked-example fading level from the learner's mastery of the
+  // problem's concepts. Novices see it; it fades as concepts become retained.
+  const scaffoldLevel = useMemo(() => {
+    if (step?.type !== 'problem' || !step.workedExample?.length) return 'bare'
+    const tags = step.tags && step.tags.length > 0 ? step.tags : lesson.tags
+    return selectScaffold({
+      state: weakestState(tags, masteryByTag),
+      authored: step.scaffold,
+    })
+  }, [step, lesson.tags, masteryByTag])
 
   const canContinue = step ? canAdvanceFromStep(step, stepAttempts) : true
 
@@ -301,6 +316,10 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
       const allLessons = loadAllLessons()
       const lessonsById = new Map(allLessons.map((l) => [l.lessonId, l]))
 
+      // Update the per-concept mastery profile (direct credit to this lesson's
+      // tags + FIRe implicit credit to prerequisite concepts). Fail-soft.
+      await recordLessonMastery(supabase, user.id, lesson, allLessons)
+
       const summary = await loadCourseProgress(supabase, user.id)
       const completedSet = new Set(summary.completedIds)
       completedSet.add(lesson.lessonId)
@@ -356,9 +375,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
     stepStates,
     widgetState,
     user,
-    lesson.lessonId,
-    lesson.tags,
-    lesson.title,
+    lesson,
     navigate,
   ])
 
@@ -422,6 +439,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
           onWidgetStateChange={onWidgetStateChange}
           problemResult={problemResult}
           onCheckAnswer={step.type === 'problem' ? onCheckAnswer : undefined}
+          scaffoldLevel={scaffoldLevel}
           quizItemState={quizItemState}
           quizItemResult={quizItemResult}
           onQuizItemStateChange={onQuizItemStateChange}

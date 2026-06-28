@@ -1,0 +1,361 @@
+{
+  "lessonId": "lesson-derivative-01",
+  "title": "The Derivative",
+  "tags": ["derivative", "differentiability", "continuity", "chain-rule"],
+  "prerequisites": ["lesson-continuity-01"],
+  "glossary": {
+    "derivative": {
+      "term": "derivative",
+      "definition": "For $f$ defined near $p$, $f'(p)=\\lim_{x\\to p}\\frac{f(x)-f(p)}{x-p}$ when this limit exists; it is the instantaneous rate of change of $f$ at $p$."
+    },
+    "differentiable": {
+      "term": "differentiable at a point",
+      "definition": "$f$ is differentiable at $p$ when the limit defining $f'(p)$ exists (and is finite)."
+    },
+    "tangent-line": {
+      "term": "tangent line",
+      "definition": "The line through $(p,f(p))$ with slope $f'(p)$; it is the limiting position of secant lines through $(p,f(p))$ and a nearby point."
+    },
+    "product-rule": {
+      "term": "product rule",
+      "definition": "$(fg)'(x)=f'(x)g(x)+f(x)g'(x)$."
+    },
+    "chain-rule": {
+      "term": "chain rule",
+      "definition": "If $g$ is differentiable at $x$ and $f$ at $g(x)$, then $(f\\circ g)'(x)=f'(g(x))\\,g'(x)$."
+    }
+  },
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Recall the prerequisite: $f$ is **continuous** at $p$ when $\\lim_{x\\to p} f(x)=f(p)$, so small changes in input cause small changes in output. Now we ask a sharper question — not just *where* $f$ goes, but *how fast*."
+        },
+        {
+          "type": "text",
+          "content": "Pick a point $p$ and a nearby point $x$. The line through $(p,f(p))$ and $(x,f(x))$ is a **secant**, and its slope is the average rate of change $\\frac{f(x)-f(p)}{x-p}$. As $x$ slides toward $p$, those secants pivot toward a single limiting line: the **tangent**."
+        },
+        {
+          "type": "text",
+          "content": "The derivative is exactly the limit of those secant slopes. So the entire idea rests on the function-limit machinery you already have — we are just taking the limit of a particular quotient."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Definition.** Let $f$ be defined on an interval containing $p$. The derivative of $f$ at $p$ is"
+        },
+        {
+          "type": "math",
+          "latex": "f'(p)=\\lim_{x\\to p}\\frac{f(x)-f(p)}{x-p}=\\lim_{h\\to 0}\\frac{f(p+h)-f(p)}{h},"
+        },
+        {
+          "type": "text",
+          "content": "whenever this limit exists. The two forms are the same limit written with $x=p+h$. When the limit exists we say $f$ is **differentiable** at $p$, and $f'(p)$ is the slope of the tangent line at $p$."
+        },
+        {
+          "type": "text",
+          "content": "Read it as a verdict on secant slopes: differentiability means the secant slopes settle on one number as $x\\to p$, no matter how $x$ approaches."
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Consolidate the picture. For $f(x)=x^2$ at $p=1$, the secant slope from $1$ to $1+h$ equals $2+h$. Sweep $h$ toward $0$ and watch the readout approach $2$ — the tangent slope $f'(1)=2$. The secant slope never needs $h=0$; it only needs a limit.",
+      "widget": {
+        "kind": "slider",
+        "props": {
+          "min": -1,
+          "max": 1,
+          "step": 0.05,
+          "initialValue": 1,
+          "label": "h",
+          "readouts": [
+            { "label": "secant slope", "expression": "2 + h" }
+          ],
+          "markers": [
+            { "value": 0, "label": "h to 0" },
+            { "value": 1, "label": "start" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["derivative"],
+      "prompt": "Worked example: differentiate $f(x)=x^2$ directly from the definition.",
+      "blocks": [
+        { "type": "text", "content": "**Goal.** Compute $f'(x)$ for $f(x)=x^2$ using the limit definition." },
+        { "type": "text", "content": "**Step 1.** Form the difference quotient with increment $h$." },
+        { "type": "math", "latex": "\\frac{f(x+h)-f(x)}{h}=\\frac{(x+h)^2-x^2}{h}=\\frac{2xh+h^2}{h}." },
+        { "type": "text", "content": "**Step 2.** For $h\\neq 0$, cancel $h$: the quotient equals $2x+h$." },
+        { "type": "math", "latex": "f'(x)=\\lim_{h\\to 0}(2x+h)=2x." },
+        { "type": "text", "content": "**Answer.** $f'(x)=2x$. In particular $f'(3)=6$. Notice we never divided by zero — we simplified first, then took the limit." }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["derivative"],
+      "scaffold": "worked",
+      "prompt": "Using $f(x)=x^2$ and the result $f'(x)=2x$, what is the slope of the tangent line at $p=5$, i.e. $f'(5)$?",
+      "workedExample": [
+        { "type": "text", "content": "Mirror the worked example: you already have $f'(x)=2x$." },
+        { "type": "math", "latex": "f'(p)=2p \\quad\\Rightarrow\\quad f'(5)=2\\cdot 5." }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "f'(5) = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["10"] },
+      "feedback": {
+        "correct": "Exactly. $f'(x)=2x$, so $f'(5)=10$ — that is the slope of the tangent to $y=x^2$ at $x=5$.",
+        "incorrect": [
+          { "match": "25", "message": "$25$ is $f(5)=5^2$, the height of the graph. The derivative gives the *slope*: $f'(5)=2\\cdot 5$." },
+          { "match": "*", "message": "Substitute into the derivative, not the function: $f'(x)=2x$, so $f'(5)=2\\cdot 5$." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "motivation",
+      "blocks": [
+        { "type": "text", "content": "**Theorem.** If $f$ is differentiable at $p$, then $f$ is continuous at $p$." },
+        { "type": "text", "content": "**Proof.** For $x\\neq p$ write the identity" },
+        { "type": "math", "latex": "f(x)-f(p)=\\frac{f(x)-f(p)}{x-p}\\cdot(x-p)." },
+        { "type": "text", "content": "As $x\\to p$ the first factor tends to $f'(p)$ and the second to $0$, so $f(x)-f(p)\\to f'(p)\\cdot 0=0$. Hence $f(x)\\to f(p)$, which is exactly continuity at $p$." },
+        { "type": "text", "content": "**The converse is false.** $f(x)=|x|$ is continuous everywhere, but at $0$ the secant slope is $+1$ from the right and $-1$ from the left, so the limit does not exist. Continuity does *not* force differentiability." }
+      ]
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["differentiability", "continuity"],
+      "scaffold": "completion",
+      "prompt": "Here is a *flawed* argument that 'every continuous function is differentiable.' Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            { "id": "p1", "label": "$f(x)=|x|$ is continuous at $0$, since $\\lim_{x\\to 0}|x|=0=|0|$." },
+            { "id": "p2", "label": "The right-hand secant slopes $\\frac{|h|-0}{h}$ for $h>0$ equal $+1$, and the left-hand slopes for $h<0$ equal $-1$." },
+            { "id": "p3", "label": "Because $f$ is continuous at $0$, the two one-sided slopes must agree, so $f'(0)$ exists." },
+            { "id": "p4", "label": "Therefore continuity at a point implies differentiability there." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. Continuity says $f(x)\\to f(0)$; it says nothing about secant slopes matching. Here the one-sided slopes are $+1$ and $-1$, so the limit defining $f'(0)$ fails to exist even though $f$ is continuous.",
+        "incorrect": [
+          { "match": "p4", "message": "Step 4 is only the (false) conclusion the argument is driving toward; the actual error is the step that *justifies* it. Which earlier line wrongly uses continuity to force the slopes to agree?" },
+          { "match": "*", "message": "Steps 1 and 2 are correct computations. Find the line that claims continuity guarantees the one-sided secant slopes are equal — that inference is invalid, as $|x|$ shows." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "worked_example",
+      "tags": ["product-rule"],
+      "prompt": "Differentiation rules, and a derivation of the product rule.",
+      "blocks": [
+        { "type": "text", "content": "Computing every derivative from the definition is slow. These rules (valid wherever $f,g$ are differentiable) do the bookkeeping:" },
+        { "type": "math", "latex": "(f+g)'=f'+g',\\quad (fg)'=f'g+fg',\\quad \\left(\\tfrac{f}{g}\\right)'=\\frac{f'g-fg'}{g^2}\\ (g\\neq 0),\\quad (f\\circ g)'(x)=f'(g(x))\\,g'(x)." },
+        { "type": "text", "content": "**Deriving the product rule.** Start from the difference quotient of $fg$ at $p$ and add-and-subtract $f(x)g(p)$:" },
+        { "type": "math", "latex": "\\frac{f(x)g(x)-f(p)g(p)}{x-p}=f(x)\\,\\frac{g(x)-g(p)}{x-p}+g(p)\\,\\frac{f(x)-f(p)}{x-p}." },
+        { "type": "text", "content": "Let $x\\to p$. Since $f$ is differentiable it is continuous, so $f(x)\\to f(p)$; the two quotients tend to $g'(p)$ and $f'(p)$. The limit is $f(p)g'(p)+g(p)f'(p)$, i.e. $(fg)'=f'g+fg'$." }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "problem",
+      "tags": ["product-rule"],
+      "scaffold": "bare",
+      "prompt": "The product-rule derivation above has four moves. Match each move to the fact that makes it legal.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            { "id": "st1", "label": "Write the difference quotient of $fg$ at $p$." },
+            { "id": "st2", "label": "Add and subtract $f(x)g(p)$ in the numerator." },
+            { "id": "st3", "label": "Regroup into $f(x)\\frac{g(x)-g(p)}{x-p}+g(p)\\frac{f(x)-f(p)}{x-p}$." },
+            { "id": "st4", "label": "Let $x\\to p$ to obtain $f(p)g'(p)+g(p)f'(p)$." }
+          ],
+          "justifications": [
+            { "id": "j_a", "label": "Definition of the derivative applied to the product $fg$." },
+            { "id": "j_b", "label": "Adding zero ($+f(x)g(p)-f(x)g(p)$) changes nothing but creates two telescoping pieces." },
+            { "id": "j_c", "label": "Factor over the common denominator $x-p$ and distribute." },
+            { "id": "j_d", "label": "$f$ is continuous (being differentiable), so $f(x)\\to f(p)$, and each quotient tends to a derivative." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["st1:j_a,st2:j_b,st3:j_c,st4:j_d"] },
+      "feedback": {
+        "correct": "Exactly. The add-and-subtract trick is the engine: it splits the change in $fg$ into a change in $g$ (scaled by $f$) plus a change in $f$ (scaled by $g$). Continuity of $f$ is what lets $f(x)\\to f(p)$ in the limit.",
+        "incorrect": [
+          { "match": "*", "message": "Track the canonical moves: start from the definition, add zero to create two pieces, factor over $x-p$, then pass to the limit using continuity of $f$ and the definition of $g'(p),f'(p)$." }
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "type": "summary",
+      "blocks": [
+        { "type": "text", "content": "The derivative $f'(p)=\\lim_{x\\to p}\\frac{f(x)-f(p)}{x-p}$ is the limit of secant slopes — the slope of the tangent line. Existence of this limit *is* differentiability." },
+        { "type": "text", "content": "Differentiable $\\Rightarrow$ continuous (factor $f(x)-f(p)$ as a quotient times $(x-p)\\to 0$), but the converse fails: $|x|$ is continuous yet not differentiable at $0$." },
+        { "type": "text", "content": "The sum, product $(fg)'=f'g+fg'$, quotient, and chain $(f\\circ g)'=f'(g)\\,g'$ rules let us differentiate without returning to the limit each time. Next we use the derivative to pin down where functions have horizontal tangents." }
+      ]
+    },
+    {
+      "id": "s10",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "tags": ["derivative"],
+          "prompt": "The derivative $f'(p)$ is defined as:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$\\lim_{x\\to p}\\frac{f(x)-f(p)}{x-p}$, when this limit exists." },
+                { "id": "b", "label": "$\\frac{f(x)-f(p)}{x-p}$ evaluated at $x=p$." },
+                { "id": "c", "label": "$f(p)$ itself." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — it is the limit of secant slopes, not any single quotient or value.",
+            "incorrect": [
+              { "match": "b", "message": "At $x=p$ the quotient is $0/0$, undefined. The derivative is the *limit* of the quotient as $x\\to p$, not its value at $p$." },
+              { "match": "c", "message": "$f(p)$ is the height of the graph; the derivative is the *slope* — a limit of $\\frac{f(x)-f(p)}{x-p}$." },
+              { "match": "*", "message": "The derivative is a limit: secant slopes $\\frac{f(x)-f(p)}{x-p}$ as $x\\to p$." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "tags": ["differentiability", "continuity"],
+          "prompt": "Why is $f(x)=|x|$ a key example for the relationship between continuity and differentiability?",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "It is continuous at $0$ but not differentiable there (one-sided secant slopes $+1$ and $-1$ disagree), showing the converse of 'differentiable ⇒ continuous' is false." },
+                { "id": "b", "label": "It is differentiable at $0$ but not continuous there." },
+                { "id": "c", "label": "It is neither continuous nor differentiable anywhere." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Differentiable always implies continuous, but $|x|$ shows continuity alone is not enough — the corner kills the derivative at $0$.",
+            "incorrect": [
+              { "match": "b", "message": "It is the other way: $|x|$ is continuous at $0$. Differentiability would *force* continuity, so 'differentiable but not continuous' is impossible." },
+              { "match": "c", "message": "$|x|$ is continuous everywhere; it just fails to be differentiable at the corner $x=0$." },
+              { "match": "*", "message": "Schema check: differentiable $\\Rightarrow$ continuous, but not conversely. $|x|$ is the standard continuous-but-not-differentiable witness at $0$." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "tags": ["chain-rule"],
+          "prompt": "The chain rule states that $(f\\circ g)'(x)$ equals:",
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$f'(g(x))\\,g'(x)$" },
+                { "id": "b", "label": "$f'(x)\\,g'(x)$" },
+                { "id": "c", "label": "$f'(g'(x))$" }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right — differentiate the outer function at the inner value, then multiply by the inner derivative.",
+            "incorrect": [
+              { "match": "b", "message": "That is the product rule's shape, not composition. The chain rule evaluates the outer derivative *at $g(x)$*: $f'(g(x))\\,g'(x)$." },
+              { "match": "c", "message": "The outer derivative is evaluated at $g(x)$, not at $g'(x)$, and the inner derivative multiplies on: $f'(g(x))\\,g'(x)$." },
+              { "match": "*", "message": "Outer-derivative-at-inner times inner-derivative: $(f\\circ g)'(x)=f'(g(x))\\,g'(x)$." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "rb1",
+      "tags": ["derivative"],
+      "prompt": "Differentiate $f(x)=x^2$ from the definition and report $f'(4)$.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "f'(4) = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["8"] },
+      "feedback": {
+        "correct": "Yes — $f'(x)=2x$, so $f'(4)=8$.",
+        "incorrect": [
+          { "match": "16", "message": "$16=f(4)$, the height. The derivative is the slope: $f'(x)=2x$, so $f'(4)=8$." },
+          { "match": "*", "message": "Use $f'(x)=2x$ (from the limit of $2x+h$), then set $x=4$." }
+        ]
+      }
+    },
+    {
+      "id": "rb2",
+      "tags": ["differentiability", "continuity"],
+      "prompt": "Differentiable at $p$ implies continuous at $p$. Is the converse true?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "No — $|x|$ is continuous at $0$ but not differentiable there." },
+            { "id": "b", "label": "Yes — continuity always implies differentiability." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — the implication only runs one way; $|x|$ is the standard counterexample.",
+        "incorrect": [
+          { "match": "*", "message": "Recall $|x|$: continuous everywhere, but its corner at $0$ gives clashing one-sided slopes, so it is not differentiable there." }
+        ]
+      }
+    },
+    {
+      "id": "rb3",
+      "tags": ["product-rule"],
+      "prompt": "By the product rule, $(fg)'$ equals:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$f'g+fg'$" },
+            { "id": "b", "label": "$f'g'$" },
+            { "id": "c", "label": "$f'g-fg'$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Correct — derivative of the first times the second, plus the first times the derivative of the second.",
+        "incorrect": [
+          { "match": "b", "message": "The derivative of a product is not the product of derivatives. It is $f'g+fg'$." },
+          { "match": "c", "message": "That minus sign belongs to the quotient rule's numerator. The product rule is a sum: $f'g+fg'$." },
+          { "match": "*", "message": "Add-and-subtract derivation gives $(fg)'=f'g+fg'$." }
+        ]
+      }
+    }
+  ]
+}

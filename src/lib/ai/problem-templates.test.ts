@@ -20,11 +20,60 @@ describe('generateLocalCandidates', () => {
 
   // The core F8 invariant: nothing the generator emits can be unverifiable.
   it('every candidate across all tags passes the verifier', () => {
-    const tags = ['supremum', 'infimum', 'density', 'archimedean', 'bounds', 'lub']
+    const tags = [
+      // U1
+      'supremum',
+      'infimum',
+      'density',
+      'archimedean',
+      'bounds',
+      'lub',
+      // U2
+      'norm',
+      'euclidean',
+      'cauchy-schwarz',
+      'distance',
+      'metric-space',
+      'open-ball',
+      'neighborhood',
+      // U3
+      'limit-point',
+      'closure',
+      'connected',
+      'topology',
+      // U4
+      'epsilon-N',
+      'limit',
+      'sequence',
+      'limit-laws',
+      'algebra-of-limits',
+      'monotone',
+      'convergence',
+      'supremum',
+      'cauchy',
+      'completeness',
+    ]
     for (const tag of tags) {
       const candidates = generateLocalCandidates(tag, 6, 7)
+      // Every tag in this list must resolve to at least one template, and every
+      // emitted candidate must be provably gradeable.
+      expect(candidates.length, `no template for tag ${tag}`).toBeGreaterThan(0)
       for (const candidate of candidates) {
-        expect(verifyCandidate(candidate)).not.toBeNull()
+        expect(
+          verifyCandidate(candidate),
+          `unverifiable candidate for tag ${tag}`,
+        ).not.toBeNull()
+      }
+    }
+  })
+
+  it('seeds many items per tag and keeps them all verifiable', () => {
+    // Stress different seeds to catch parameter combinations that break.
+    for (const seed of [1, 2, 3, 13, 99, 12345]) {
+      for (const tag of ['norm', 'distance', 'open-ball', 'limit-laws', 'connected']) {
+        for (const candidate of generateLocalCandidates(tag, 8, seed)) {
+          expect(verifyCandidate(candidate)).not.toBeNull()
+        }
       }
     }
   })

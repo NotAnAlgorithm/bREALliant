@@ -1,0 +1,358 @@
+{
+  "lessonId": "lesson-limit-laws-01",
+  "title": "The Algebra of Limits",
+  "tags": ["limit-laws", "algebra-of-limits"],
+  "prerequisites": ["lesson-seq-limits-01"],
+  "steps": [
+    {
+      "id": "s1",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Fighting $\\varepsilon$ by hand for every sequence would be exhausting. Once we know $a_n\\to A$ and $b_n\\to B$, we would love to read off the limit of $a_n+b_n$, $a_n b_n$, or $a_n/b_n$ without starting from scratch."
+        },
+        {
+          "type": "text",
+          "content": "Good news: limits respect arithmetic. These **limit laws** turn the $\\varepsilon$–$N$ definition into a reusable toolkit, so computing $\\lim \\tfrac{2n+1}{n}$ becomes algebra rather than a fresh proof. But each law still *earns* its keep with a short $\\varepsilon$ argument — we will see exactly where the triangle inequality does the work."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "motivation",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "Suppose $a_n\\to A$ and $b_n\\to B$. Then the limit of a combination is the combination of the limits:"
+        },
+        {
+          "type": "math",
+          "latex": "a_n+b_n\\to A+B,\\qquad a_n b_n\\to AB,\\qquad \\frac{a_n}{b_n}\\to \\frac{A}{B}\\ (B\\ne 0)"
+        },
+        {
+          "type": "text",
+          "content": "There is also the **squeeze theorem**: if $a_n \\le c_n \\le b_n$ for all large $n$ and both $a_n\\to L$ and $b_n\\to L$, then $c_n\\to L$ too. A sequence trapped between two things heading to the same place has nowhere to go but $L$."
+        },
+        {
+          "type": "math",
+          "latex": "a_n \\le c_n \\le b_n \\ \\text{ and }\\ a_n\\to L,\\ b_n\\to L \\ \\implies\\ c_n\\to L"
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "discover",
+      "prompt": "Watch the sum law in miniature. Take $a_n = 2 + 1/n \\to 2$ and the constant $b_n = 0$, so $a_n+b_n=(2n+1)/n \\to 2$. The band is the $\\varepsilon$-window around the limit $L=2$. As the tail enters the band, the rewritten form $\\tfrac{2n+1}{n}=2+\\tfrac1n$ shows the $1/n$ part dying off while the $2$ stays put.",
+      "widget": {
+        "kind": "number_line",
+        "props": {
+          "min": 1,
+          "max": 3,
+          "intervals": [{ "start": 1.85, "end": 2.15, "label": "ε-band around L = 2" }],
+          "markers": [
+            { "value": 2, "label": "L = 2" },
+            { "value": 2.5, "label": "a_2" },
+            { "value": 2.25, "label": "a_4" },
+            { "value": 2.1, "label": "a_10" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "we1",
+      "type": "worked_example",
+      "tags": ["limit-laws", "algebra-of-limits"],
+      "prompt": "Worked example: prove the sum law — if $a_n\\to A$ and $b_n\\to B$ then $a_n+b_n\\to A+B$.",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "**Goal.** Given $\\varepsilon>0$, find $N$ so that $n\\ge N \\implies |(a_n+b_n)-(A+B)| < \\varepsilon$."
+        },
+        {
+          "type": "text",
+          "content": "**The key trick: split $\\varepsilon$ in half.** Because $a_n\\to A$, applied to the tolerance $\\varepsilon/2$ there is $N_1$ with $n\\ge N_1 \\implies |a_n-A|<\\varepsilon/2$. Because $b_n\\to B$, there is $N_2$ with $n\\ge N_2 \\implies |b_n-B|<\\varepsilon/2$."
+        },
+        {
+          "type": "text",
+          "content": "**Combine the cutoffs.** Let $N=\\max\\{N_1,N_2\\}$ so that *both* estimates hold simultaneously once $n\\ge N$."
+        },
+        {
+          "type": "text",
+          "content": "**Triangle inequality.** Regroup the error and bound it term by term:"
+        },
+        {
+          "type": "math",
+          "latex": "|(a_n+b_n)-(A+B)| = |(a_n-A)+(b_n-B)| \\le |a_n-A| + |b_n-B|"
+        },
+        {
+          "type": "text",
+          "content": "**Finish.** For $n\\ge N$ each piece is below $\\varepsilon/2$, so the total is below $\\varepsilon$:"
+        },
+        {
+          "type": "math",
+          "latex": "|(a_n+b_n)-(A+B)| < \\frac{\\varepsilon}{2}+\\frac{\\varepsilon}{2} = \\varepsilon"
+        },
+        {
+          "type": "text",
+          "content": "That holds for every $\\varepsilon>0$, so $a_n+b_n\\to A+B$. The $\\varepsilon/2$ split is what makes the two halves add back to exactly $\\varepsilon$."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "type": "problem",
+      "tags": ["limit-laws", "algebra-of-limits"],
+      "prompt": "Put the sum-law proof in the correct logical order. (Assume $a_n\\to A$ and $b_n\\to B$; the goal is $a_n+b_n\\to A+B$.)",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            { "id": "e", "label": "For $n\\ge N$, by the triangle inequality $|(a_n+b_n)-(A+B)| \\le |a_n-A|+|b_n-B|$." },
+            { "id": "b", "label": "Since $a_n\\to A$, pick $N_1$ with $n\\ge N_1 \\implies |a_n-A|<\\varepsilon/2$." },
+            { "id": "f", "label": "Hence for $n\\ge N$, $|(a_n+b_n)-(A+B)| < \\varepsilon/2+\\varepsilon/2 = \\varepsilon$, proving the claim." },
+            { "id": "a", "label": "Let $\\varepsilon>0$ be given." },
+            { "id": "d", "label": "Set $N=\\max\\{N_1,N_2\\}$ so both estimates hold at once." },
+            { "id": "c", "label": "Since $b_n\\to B$, pick $N_2$ with $n\\ge N_2 \\implies |b_n-B|<\\varepsilon/2$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a,b,c,d,e,f"] },
+      "feedback": {
+        "correct": "Exactly. Open with an arbitrary $\\varepsilon$, extract a cutoff from each sequence at tolerance $\\varepsilon/2$, take the max so both hold, apply the triangle inequality, then add the halves to land at $\\varepsilon$.",
+        "incorrect": [
+          { "match": "*", "message": "The logic must flow: introduce $\\varepsilon$ first, then get $N_1$ and $N_2$ (one per sequence at $\\varepsilon/2$), combine them with $N=\\max$, apply the triangle inequality, and only then sum the two halves to $\\varepsilon$. You cannot use $N_1, N_2$ before choosing them." }
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "type": "problem",
+      "tags": ["limit-laws", "algebra-of-limits"],
+      "scaffold": "worked",
+      "prompt": "Use the limit laws to evaluate $\\displaystyle \\lim_{n\\to\\infty} \\frac{2n+1}{n}$.",
+      "workedExample": [
+        {
+          "type": "text",
+          "content": "Rewrite the expression by dividing through, so the limit laws can act on each piece."
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{2n+1}{n} = \\frac{2n}{n} + \\frac{1}{n} = 2 + \\frac1n"
+        },
+        {
+          "type": "text",
+          "content": "The constant sequence $2$ has limit $2$, and we proved $1/n\\to 0$. By the sum law, $\\lim(2 + 1/n) = 2 + 0$."
+        }
+      ],
+      "widget": {
+        "kind": "fill_blank",
+        "props": { "template": "limit = {{answer}}", "placeholder": "a number" }
+      },
+      "validator": { "type": "expression", "engine": "mathjs", "accept": ["2"] },
+      "feedback": {
+        "correct": "Right. $\\tfrac{2n+1}{n} = 2 + \\tfrac1n$, and the sum law gives $2 + 0 = 2$. No fresh $\\varepsilon$–$N$ argument needed — the laws did it.",
+        "incorrect": [
+          { "match": "3", "message": "Check the split: $\\tfrac{2n+1}{n} = \\tfrac{2n}{n}+\\tfrac1n = 2 + \\tfrac1n$, not $3$. The $+1$ becomes $1/n\\to 0$, it does not add a whole unit." },
+          { "match": "0", "message": "Only the $1/n$ part vanishes. The dominant term $2n/n = 2$ remains, so the limit is $2$." },
+          { "match": "*", "message": "Divide top and bottom: $\\tfrac{2n+1}{n} = 2 + \\tfrac1n$. Now apply the sum law with $1/n\\to 0$." }
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "type": "problem",
+      "tags": ["limit-laws", "algebra-of-limits"],
+      "prompt": "Apply the squeeze theorem to $c_n = \\dfrac{\\sin n}{n}$. Using $-\\tfrac1n \\le \\tfrac{\\sin n}{n} \\le \\tfrac1n$, what is $\\lim_{n\\to\\infty} \\dfrac{\\sin n}{n}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$0$, because both bounds $-1/n$ and $1/n$ converge to $0$." },
+            { "id": "b", "label": "It does not exist, because $\\sin n$ oscillates forever." },
+            { "id": "c", "label": "$1$, because $\\sin n \\le 1$." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Exactly. Since $|\\sin n|\\le 1$ we have $-1/n \\le (\\sin n)/n \\le 1/n$, and both outer sequences tend to $0$. The squeeze theorem traps $c_n$ at $0$.",
+        "incorrect": [
+          { "match": "b", "message": "The numerator oscillates, but it is bounded, and dividing by $n$ crushes it. Trapped between $-1/n$ and $1/n$ (both $\\to 0$), the sequence must converge to $0$." },
+          { "match": "c", "message": "$\\sin n \\le 1$ bounds the numerator, but you still divide by $n\\to\\infty$. The squeeze gives limit $0$, not $1$." },
+          { "match": "*", "message": "Both bounding sequences $\\pm 1/n$ converge to the same value. The squeeze theorem forces the trapped sequence to that shared limit." }
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "type": "summary",
+      "blocks": [
+        {
+          "type": "text",
+          "content": "The limit laws let arithmetic pass through limits: sums, products, and quotients (with nonzero denominator limit) of convergent sequences converge to the corresponding sum, product, and quotient of the limits."
+        },
+        {
+          "type": "math",
+          "latex": "a_n\\to A,\\ b_n\\to B \\implies a_n+b_n\\to A+B,\\ \\ a_nb_n\\to AB,\\ \\ \\frac{a_n}{b_n}\\to\\frac{A}{B}\\ (B\\ne0)"
+        },
+        {
+          "type": "text",
+          "content": "Each law is powered by the same idea you saw in the sum-law proof: split the tolerance, take a max of cutoffs, and bound with the triangle inequality. The squeeze theorem handles the awkward cases — like $(\\sin n)/n$ — by trapping a sequence between two friends that already converge to the same limit."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "type": "quiz",
+      "items": [
+        {
+          "id": "q1",
+          "prompt": "If $a_n\\to 3$ and $b_n\\to -1$, then $a_n b_n \\to$ ?",
+          "tags": ["limit-laws", "algebra-of-limits"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$-3$" },
+                { "id": "b", "label": "$2$" },
+                { "id": "c", "label": "Cannot be determined from the limits alone." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The product law gives $a_n b_n \\to (3)(-1) = -3$.",
+            "incorrect": [
+              { "match": "b", "message": "That looks like a sum, $3 + (-1) = 2$. The product law multiplies the limits: $3 \\cdot (-1) = -3$." },
+              { "match": "c", "message": "It is fully determined: the product law says $\\lim(a_nb_n) = (\\lim a_n)(\\lim b_n) = -3$." },
+              { "match": "*", "message": "Use the product law: the limit of a product is the product of the limits." }
+            ]
+          }
+        },
+        {
+          "id": "q2",
+          "prompt": "In the sum-law proof, why do we apply the definition with tolerance $\\varepsilon/2$ for each sequence?",
+          "tags": ["limit-laws"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "So that after the triangle inequality the two errors add back to at most $\\varepsilon$." },
+                { "id": "b", "label": "Because $\\varepsilon/2$ is always a whole number." },
+                { "id": "c", "label": "Because the product law requires halving." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Exactly. Two halves of $\\varepsilon$ recombine to $\\varepsilon$: $|a_n-A|+|b_n-B| < \\varepsilon/2 + \\varepsilon/2 = \\varepsilon$.",
+            "incorrect": [
+              { "match": "b", "message": "$\\varepsilon/2$ is just a positive real (often not an integer). We split so the pieces sum to exactly $\\varepsilon$ after the triangle inequality." },
+              { "match": "c", "message": "This is the *sum* law, and the halving is a bookkeeping choice, not a requirement of the product law." },
+              { "match": "*", "message": "Think about what the two error terms add up to after the triangle inequality, and what total we are aiming for." }
+            ]
+          }
+        },
+        {
+          "id": "q3",
+          "prompt": "The squeeze theorem concludes $c_n\\to L$ when:",
+          "tags": ["algebra-of-limits"],
+          "widget": {
+            "kind": "multiple_choice",
+            "props": {
+              "choices": [
+                { "id": "a", "label": "$a_n\\le c_n\\le b_n$ for large $n$, and both $a_n\\to L$ and $b_n\\to L$." },
+                { "id": "b", "label": "$c_n$ is bounded." },
+                { "id": "c", "label": "$a_n\\to L$ and $b_n\\to M$ with $L\\ne M$." }
+              ]
+            }
+          },
+          "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+          "feedback": {
+            "correct": "Right. The trap $a_n\\le c_n\\le b_n$ together with both bounds tending to the *same* $L$ pins $c_n$ at $L$.",
+            "incorrect": [
+              { "match": "b", "message": "Boundedness alone is not enough — $(-1)^n$ is bounded but diverges. You need the two-sided trap with both bounds heading to one shared limit." },
+              { "match": "c", "message": "If the two bounds head to *different* values $L\\ne M$, the squeeze gives no conclusion. The bounds must converge to the same limit." },
+              { "match": "*", "message": "You need $c_n$ sandwiched between two sequences that converge to the *same* value." }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "retrievalBank": [
+    {
+      "id": "r1",
+      "prompt": "$\\displaystyle\\lim_{n\\to\\infty}\\frac{3n-5}{n} = $ ?",
+      "tags": ["limit-laws", "algebra-of-limits"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$3$" },
+            { "id": "b", "label": "$-5$" },
+            { "id": "c", "label": "$-2$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. $\\tfrac{3n-5}{n} = 3 - \\tfrac5n$, and $5/n\\to 0$, so the limit is $3-0=3$.",
+        "incorrect": [
+          { "match": "b", "message": "The $-5$ becomes $-5/n\\to 0$; it does not survive. Divide through: $3 - 5/n \\to 3$." },
+          { "match": "c", "message": "That looks like $3 + (-5)$. But the $-5$ is divided by $n$, so it vanishes, leaving $3$." },
+          { "match": "*", "message": "Split as $\\tfrac{3n}{n} - \\tfrac{5}{n} = 3 - \\tfrac5n$ and take limits." }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "prompt": "If $a_n\\to A$ and $b_n\\to B$ with $B\\ne 0$, the quotient law states $a_n/b_n\\to$ ?",
+      "tags": ["limit-laws"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$A/B$" },
+            { "id": "b", "label": "$B/A$" },
+            { "id": "c", "label": "$A-B$" }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right — provided $B\\ne 0$, the limit of the quotient is the quotient of the limits, $A/B$.",
+        "incorrect": [
+          { "match": "b", "message": "The order matters: $a_n/b_n$ tends to $A/B$, not $B/A$. Numerator's limit over denominator's limit." },
+          { "match": "c", "message": "That is the difference law's shape. For a quotient you divide the limits: $A/B$." },
+          { "match": "*", "message": "Quotient law: $\\lim(a_n/b_n) = (\\lim a_n)/(\\lim b_n)$ when the denominator's limit is nonzero." }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "prompt": "Which conclusion follows from the squeeze theorem if $0 \\le c_n \\le 1/n$ for all $n$?",
+      "tags": ["algebra-of-limits"],
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            { "id": "a", "label": "$c_n\\to 0$" },
+            { "id": "b", "label": "$c_n\\to 1$" },
+            { "id": "c", "label": "Nothing — the bounds disagree." }
+          ]
+        }
+      },
+      "validator": { "type": "set_match", "engine": "mathjs", "accept": ["a"] },
+      "feedback": {
+        "correct": "Right. Both bounds, the constant $0$ and $1/n$, converge to $0$, so the trapped $c_n$ converges to $0$.",
+        "incorrect": [
+          { "match": "b", "message": "The upper bound is $1/n\\to 0$, not $1$. Both bounds head to $0$, so does $c_n$." },
+          { "match": "c", "message": "The bounds do agree in the limit: $0\\to 0$ and $1/n\\to 0$. The squeeze applies and gives $0$." },
+          { "match": "*", "message": "Both bounding sequences converge to $0$, so the squeeze forces $c_n\\to 0$." }
+        ]
+      }
+    }
+  ]
+}
