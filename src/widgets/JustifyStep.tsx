@@ -1,7 +1,8 @@
-import { useId } from 'react'
+import { useMemo } from 'react'
 
 import type { WidgetComponentProps } from './types'
 import { RichText } from '../components/blocks/RichText'
+import { orderOptionsForDisplay } from './shuffle'
 
 type ProofStep = {
   id: string
@@ -44,8 +45,15 @@ export function JustifyStep({
   onStateChange,
   disabled = false,
 }: WidgetComponentProps) {
-  const baseId = useId()
   const { steps, justifications } = parseProps(widget.props)
+  // The proof steps are an ordered argument (kept as authored), but the shared
+  // justification options have no inherent order, so scramble their display.
+  const justKey = justifications.map((j) => j.id).join('|')
+  const shuffledJustifications = useMemo(
+    () => orderOptionsForDisplay(justifications, widget.props),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [justKey],
+  )
   const matches =
     state.matches && typeof state.matches === 'object'
       ? (state.matches as Record<string, unknown>)
@@ -63,7 +71,6 @@ export function JustifyStep({
   return (
     <ol className="flex flex-col gap-3" data-widget="justify_step">
       {steps.map((step, index) => {
-        const selectId = `${baseId}-${step.id}`
         const current =
           typeof matches[step.id] === 'string'
             ? (matches[step.id] as string)
@@ -71,7 +78,7 @@ export function JustifyStep({
         return (
           <li
             key={step.id}
-            className="flex flex-col gap-2 rounded-xl border border-border bg-surface-elevated px-4 py-3"
+            className="flex flex-col gap-3 rounded-xl border border-border bg-surface-elevated px-4 py-3"
           >
             <div className="flex items-start gap-3">
               <span className="font-mono text-sm text-ink-muted">
@@ -79,23 +86,42 @@ export function JustifyStep({
               </span>
               <RichText content={step.label} className="text-sm text-ink" />
             </div>
-            <label htmlFor={selectId} className="sr-only">
-              Justification for step {index + 1}
-            </label>
-            <select
-              id={selectId}
-              value={current}
-              disabled={disabled}
-              onChange={(event) => handleChange(step.id, event.target.value)}
-              className="min-h-11 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-ink transition-colors hover:border-brand/40 focus:border-brand focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            <div
+              role="radiogroup"
+              aria-label={`Justification for step ${index + 1}`}
+              className="flex flex-col gap-2"
             >
-              <option value="">Choose a justification…</option>
-              {justifications.map((justification) => (
-                <option key={justification.id} value={justification.id}>
-                  {justification.label}
-                </option>
-              ))}
-            </select>
+              {shuffledJustifications.map((justification) => {
+                const selected = current === justification.id
+                return (
+                  <button
+                    key={justification.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    disabled={disabled}
+                    onClick={() => handleChange(step.id, justification.id)}
+                    className={`flex min-h-11 w-full items-center gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                      selected
+                        ? 'border-brand bg-brand/10 text-ink'
+                        : 'border-border bg-surface text-ink hover:border-brand/40'
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
+                        selected ? 'border-brand' : 'border-ink-muted/50'
+                      }`}
+                    >
+                      {selected ? (
+                        <span className="h-2 w-2 rounded-full bg-brand" />
+                      ) : null}
+                    </span>
+                    <RichText content={justification.label} className="text-sm" />
+                  </button>
+                )
+              })}
+            </div>
           </li>
         )
       })}

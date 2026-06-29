@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -42,7 +42,7 @@ const feedback: Feedback = {
 }
 
 describe('JustifyStep', () => {
-  it('renders one select per step', () => {
+  it('renders one labelled justification radiogroup per step', () => {
     render(
       <JustifyStep
         widget={widget}
@@ -52,10 +52,16 @@ describe('JustifyStep', () => {
     )
 
     expect(screen.getByText('Case x^2 < 2 is impossible.')).toBeInTheDocument()
-    expect(screen.getAllByRole('combobox')).toHaveLength(3)
+
+    const groups = screen.getAllByRole('radiogroup')
+    expect(groups).toHaveLength(3)
+    expect(groups[0]).toHaveAccessibleName('Justification for step 1')
+
+    // Every justification is offered as a selectable option in each step.
+    expect(within(groups[0]).getAllByRole('radio')).toHaveLength(3)
   })
 
-  it('updates matches when a justification is selected', async () => {
+  it('updates matches when a justification is selected for a step', async () => {
     const user = userEvent.setup()
     const onStateChange = vi.fn()
 
@@ -67,12 +73,45 @@ describe('JustifyStep', () => {
       />,
     )
 
-    const selects = screen.getAllByRole('combobox')
-    await user.selectOptions(selects[0], 'j_a')
+    const firstGroup = screen.getAllByRole('radiogroup')[0]
+    await user.click(
+      within(firstGroup).getByRole('radio', { name: 'Not an upper bound.' }),
+    )
 
     expect(onStateChange).toHaveBeenCalledWith({
       matches: { st1: 'j_a', st2: '', st3: '' },
     })
+  })
+
+  it('reflects the current selection via aria-checked and disables choices', () => {
+    const { rerender } = render(
+      <JustifyStep
+        widget={widget}
+        state={{ matches: { st1: 'j_a', st2: '', st3: '' } }}
+        onStateChange={vi.fn()}
+      />,
+    )
+
+    const firstGroup = screen.getAllByRole('radiogroup')[0]
+    expect(
+      within(firstGroup).getByRole('radio', { name: 'Not an upper bound.' }),
+    ).toBeChecked()
+    expect(
+      within(firstGroup).getByRole('radio', { name: 'Trichotomy.' }),
+    ).not.toBeChecked()
+
+    rerender(
+      <JustifyStep
+        widget={widget}
+        state={{ matches: { st1: 'j_a', st2: '', st3: '' } }}
+        onStateChange={vi.fn()}
+        disabled
+      />,
+    )
+
+    for (const radio of screen.getAllByRole('radio')) {
+      expect(radio).toBeDisabled()
+    }
   })
 
   it('encodes the answer as sorted stepId:justId pairs', () => {

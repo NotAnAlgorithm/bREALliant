@@ -39,3 +39,4 @@ dist-ssr
 # Agents
 .agents
 .cursor
+tmp-bank-inbox/

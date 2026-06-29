@@ -8,6 +8,7 @@ export const widgetKindSchema = z.enum([
   'rational_input',
   'drag_order',
   'multiple_choice',
+  'multiple_select',
   'spot_the_flaw',
   'justify_step',
 ])

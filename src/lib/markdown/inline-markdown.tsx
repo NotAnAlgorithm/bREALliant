@@ -1,16 +1,21 @@
 import type { ReactNode } from 'react'
 
 import { DefinitionTerm } from '../../components/blocks/DefinitionTerm'
+import { renderMath } from '../latex/render-math'
+import { parseRichText, type RichNode } from './parse-rich-text'
 
 /**
- * Parses a PLAIN-TEXT string (no LaTeX math) for a minimal subset of inline
- * markdown and returns an array of React nodes.
+ * Parses a string for inline math, a minimal subset of inline markdown and
+ * definition terms, returning an array of React nodes.
  *
- * Supported syntax (single level, no nesting):
- *  - `**bold**`   -> <strong>
- *  - `*italic*`   -> <em>
- *  - `` `code` `` -> <code>
+ * Supported syntax:
+ *  - `$...$` / `$$...$$` -> KaTeX (opaque: never markdown-parsed inside)
+ *  - `` `code` ``         -> <code> (opaque: literal contents)
+ *  - `[[key]]` / `[[display|key]]` -> <DefinitionTerm>
+ *  - `**bold**`           -> <strong> (may span math/code/text)
+ *  - `*italic*`           -> <em>     (may span math/code/text)
  *
+ * Emphasis wrappers can span across math/code atoms, but never split one.
  * Unmatched delimiters are rendered literally and never throw.
  */
 export function renderInlineMarkdown(
@@ -21,99 +26,54 @@ export function renderInlineMarkdown(
     return []
   }
 
-  const nodes: ReactNode[] = []
-  let buffer = ''
-  let keyIndex = 0
+  return renderNodes(parseRichText(text), keyPrefix)
+}
 
-  const flushBuffer = () => {
-    if (buffer.length > 0) {
-      nodes.push(buffer)
-      buffer = ''
+function renderNodes(nodes: RichNode[], keyPrefix: string): ReactNode[] {
+  return nodes.map((node, index) => renderNode(node, `${keyPrefix}-${index}`))
+}
+
+function renderNode(node: RichNode, key: string): ReactNode {
+  switch (node.type) {
+    case 'text':
+      return (
+        <span key={key} className="whitespace-pre-wrap">
+          {node.value}
+        </span>
+      )
+
+    case 'math': {
+      const html = renderMath(node.value, { displayMode: node.display })
+      return (
+        <span
+          key={key}
+          className={
+            node.display
+              ? 'math-block my-2 block overflow-x-auto'
+              : 'math-inline mx-0.5 inline-block align-baseline'
+          }
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      )
     }
+
+    case 'code':
+      return (
+        <code
+          key={key}
+          className="rounded bg-surface px-1 py-0.5 font-mono text-[0.9em]"
+        >
+          {node.value}
+        </code>
+      )
+
+    case 'defterm':
+      return <DefinitionTerm key={key} termKey={node.key} label={node.label} />
+
+    case 'strong':
+      return <strong key={key}>{renderNodes(node.children, key)}</strong>
+
+    case 'em':
+      return <em key={key}>{renderNodes(node.children, key)}</em>
   }
-
-  const pushElement = (element: (key: string) => ReactNode) => {
-    nodes.push(element(`${keyPrefix}-${keyIndex}`))
-    keyIndex += 1
-  }
-
-  let i = 0
-  while (i < text.length) {
-    const char = text[i]
-
-    // Bold: **...** (checked before single * so it isn't seen as empty italic)
-    if (char === '*' && text[i + 1] === '*') {
-      const close = text.indexOf('**', i + 2)
-      if (close !== -1) {
-        const inner = text.slice(i + 2, close)
-        flushBuffer()
-        pushElement((key) => <strong key={key}>{inner}</strong>)
-        i = close + 2
-        continue
-      }
-    }
-
-    // Italic: *...*
-    if (char === '*') {
-      const close = text.indexOf('*', i + 1)
-      if (close !== -1 && close > i + 1) {
-        const inner = text.slice(i + 1, close)
-        flushBuffer()
-        pushElement((key) => <em key={key}>{inner}</em>)
-        i = close + 1
-        continue
-      }
-    }
-
-    // Definition term: [[key]] or [[display|key]]
-    if (char === '[' && text[i + 1] === '[') {
-      const close = text.indexOf(']]', i + 2)
-      if (close !== -1) {
-        const inner = text.slice(i + 2, close)
-        const pipe = inner.indexOf('|')
-        let display: string
-        let key: string
-        if (pipe !== -1) {
-          display = inner.slice(0, pipe).trim()
-          key = inner.slice(pipe + 1).trim()
-        } else {
-          display = inner.trim()
-          key = display
-        }
-        flushBuffer()
-        pushElement((elementKey) => (
-          <DefinitionTerm key={elementKey} termKey={key} label={display} />
-        ))
-        i = close + 2
-        continue
-      }
-    }
-
-    // Inline code: `...`
-    if (char === '`') {
-      const close = text.indexOf('`', i + 1)
-      if (close !== -1) {
-        const inner = text.slice(i + 1, close)
-        flushBuffer()
-        pushElement((key) => (
-          <code
-            key={key}
-            className="rounded bg-surface px-1 py-0.5 font-mono text-[0.9em]"
-          >
-            {inner}
-          </code>
-        ))
-        i = close + 1
-        continue
-      }
-    }
-
-    // Default: literal character (covers unmatched delimiters too).
-    buffer += char
-    i += 1
-  }
-
-  flushBuffer()
-
-  return nodes
 }

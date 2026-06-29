@@ -5,7 +5,7 @@ import {
   generateLocalCandidates,
   parseLlmCandidates,
 } from './problem-templates'
-import { verifyCandidate } from './verify-generated'
+import { verifyAll, verifyCandidate } from './verify-generated'
 
 describe('generateLocalCandidates', () => {
   it('is deterministic for a fixed seed', () => {
@@ -64,6 +64,32 @@ describe('generateLocalCandidates', () => {
           `unverifiable candidate for tag ${tag}`,
         ).not.toBeNull()
       }
+    }
+  })
+
+  it('uses the project B_r(x) open-ball notation, not B(x, r)', () => {
+    // open-ball-radius template lives on the 'open-ball' tag.
+    const candidates = generateLocalCandidates('open-ball', 6, 7)
+    const ballPrompts = candidates
+      .map((c) => c.item.prompt)
+      .filter((p) => p.includes('open ball'))
+    expect(ballPrompts.length).toBeGreaterThan(0)
+    for (const prompt of ballPrompts) {
+      expect(prompt).toContain('B_r(')
+      expect(prompt).not.toMatch(/B\([^)]*,\s*r\)/)
+    }
+  })
+
+  it('tags generated template items at the easiest difficulty', () => {
+    for (const candidate of generateLocalCandidates('supremum', 3, 7)) {
+      expect(candidate.item.difficulty).toBe(1)
+    }
+  })
+
+  it('verifyAll keeps the deterministic candidates for several tags', () => {
+    for (const tag of ['supremum', 'open-ball', 'density', 'norm']) {
+      const verified = verifyAll(generateLocalCandidates(tag, 4, 7))
+      expect(verified.length, `no verified items for ${tag}`).toBeGreaterThan(0)
     }
   })
 

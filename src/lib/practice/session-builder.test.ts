@@ -143,3 +143,39 @@ describe('buildInterleavedSession — limit & determinism', () => {
     expect(first).toEqual(second)
   })
 })
+
+describe('buildInterleavedSession — multi-tag de-duplication', () => {
+  it('keeps a shared item only once when keyOf is supplied', () => {
+    // 'shared' is indexed under both tags (a multi-tag problem).
+    const session = buildInterleavedSession(
+      [
+        pool('A', 'practiced', ['shared', 'a2']),
+        pool('B', 'practiced', ['shared', 'b2']),
+      ],
+      { keyOf: (item) => item.id },
+    )
+    const ids = session.map((entry) => entry.item.id)
+    expect(ids.filter((id) => id === 'shared')).toHaveLength(1)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('counts only distinct items against the limit', () => {
+    const session = buildInterleavedSession(
+      [
+        pool('A', 'practiced', ['shared', 'a2', 'a3']),
+        pool('B', 'practiced', ['shared', 'b2', 'b3']),
+      ],
+      { limit: 3, keyOf: (item) => item.id },
+    )
+    expect(session).toHaveLength(3)
+    expect(new Set(session.map((e) => e.item.id)).size).toBe(3)
+  })
+
+  it('still emits repeats when keyOf is omitted (back-compat)', () => {
+    const session = buildInterleavedSession([
+      pool('A', 'practiced', ['shared']),
+      pool('B', 'practiced', ['shared']),
+    ])
+    expect(session.map((e) => e.item.id)).toEqual(['shared', 'shared'])
+  })
+})

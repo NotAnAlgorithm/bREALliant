@@ -4,6 +4,7 @@ import { DragOrderWidget } from './drag-order/DragOrderWidget'
 import { FillBlankWidget } from './fill-blank/FillBlankWidget'
 import { FractionLineWidget } from './fraction-line/FractionLineWidget'
 import { MultipleChoiceWidget } from './multiple-choice/MultipleChoiceWidget'
+import { MultipleSelectWidget } from './multiple-select/MultipleSelectWidget'
 import { JustifyStep } from './JustifyStep'
 import { NumberLineWidget } from './number-line/NumberLineWidget'
 import { RationalInput } from './rational-input/RationalInput'
@@ -18,6 +19,7 @@ export const widgetRegistry: Partial<Record<WidgetKind, WidgetComponent>> = {
   fill_blank: FillBlankWidget,
   rational_input: RationalInput,
   multiple_choice: MultipleChoiceWidget,
+  multiple_select: MultipleSelectWidget,
   drag_order: DragOrderWidget,
   spot_the_flaw: SpotTheFlaw,
   justify_step: JustifyStep,

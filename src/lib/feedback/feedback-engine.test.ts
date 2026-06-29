@@ -41,6 +41,13 @@ describe('getAnswerFromWidgetState', () => {
     expect(getAnswerFromWidgetState('multiple_choice', {})).toBe('')
   })
 
+  it('encodes selected ids sorted and comma-joined for multiple_select', () => {
+    expect(
+      getAnswerFromWidgetState('multiple_select', { selectedIds: ['c', 'a'] }),
+    ).toBe('a,c')
+    expect(getAnswerFromWidgetState('multiple_select', {})).toBe('')
+  })
+
   it('joins the order ids for drag_order', () => {
     expect(
       getAnswerFromWidgetState('drag_order', { order: ['1', '2', '3'] }),
@@ -111,6 +118,35 @@ describe('evaluateProblemFromWidget (quiz kinds)', () => {
         selectedId: 'a',
       }),
     ).toEqual({ correct: false, message: 'Try again.' })
+  })
+
+  it('grades a 2-of-4 multiple_select answer regardless of click order', () => {
+    const selectValidator = {
+      type: 'set_match' as const,
+      engine: 'mathjs' as const,
+      accept: ['a,c'],
+    }
+    // Selection encodes to the canonical sorted string ("a,c") ...
+    expect(
+      getAnswerFromWidgetState('multiple_select', { selectedIds: ['c', 'a'] }),
+    ).toBe('a,c')
+    // ... and grades correctly regardless of the order ids were chosen in.
+    expect(
+      evaluateProblemFromWidget(selectValidator, mcFeedback, 'multiple_select', {
+        selectedIds: ['c', 'a'],
+      }),
+    ).toEqual({ correct: true, message: 'Right!' })
+    expect(
+      evaluateProblemFromWidget(selectValidator, mcFeedback, 'multiple_select', {
+        selectedIds: ['a', 'c'],
+      }),
+    ).toEqual({ correct: true, message: 'Right!' })
+    // A different subset is graded incorrect.
+    expect(
+      evaluateProblemFromWidget(selectValidator, mcFeedback, 'multiple_select', {
+        selectedIds: ['a', 'b'],
+      }).correct,
+    ).toBe(false)
   })
 
   it('grades a drag_order answer ignoring whitespace', () => {

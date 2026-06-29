@@ -1,8 +1,22 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { useCourseProgress } from '../../hooks/useCourseProgress'
 import { LessonComplete, type LessonCompleteData } from './LessonComplete'
+
+vi.mock('../../hooks/useCourseProgress')
+
+beforeEach(() => {
+  vi.mocked(useCourseProgress).mockReturnValue({
+    completedIds: new Set(),
+    inProgressIds: new Set(),
+    masteryByTag: new Map(),
+    mastery: [],
+    loading: false,
+    refresh: vi.fn(),
+  })
+})
 
 function renderComplete(overrides: Partial<LessonCompleteData> = {}) {
   const data: LessonCompleteData = {

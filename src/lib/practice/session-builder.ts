@@ -38,6 +38,14 @@ export type BuildSessionOptions<T> = {
    * interleaves tags).
    */
   kindOf?: (item: T) => string
+  /**
+   * Stable identity for an item, used to DEDUPLICATE across pools. A problem
+   * that carries several concept tags is indexed under each of them in the
+   * retrieval bank, so without this it would surface once per shared tag in a
+   * single session. When supplied, only the first occurrence of each key is
+   * kept (so it still counts toward exactly one concept).
+   */
+  keyOf?: (item: T) => string
 }
 
 /** Ordering of mastery states. Higher rank = more mastered. */
@@ -138,13 +146,25 @@ export function buildInterleavedSession<T>(
   pools: ConceptPool<T>[],
   options: BuildSessionOptions<T> = {},
 ): SessionEntry<T>[] {
-  const { limit, kindOf } = options
+  const { limit, kindOf, keyOf } = options
 
   const eligible = pools.filter(
     (pool) => isEligibleState(pool.state) && pool.items.length > 0,
   )
 
   let entries = roundRobin(eligible)
+
+  // Drop repeats of the same underlying item (multi-tag problems appear in more
+  // than one pool) before capping, so the limit counts distinct items.
+  if (keyOf) {
+    const seen = new Set<string>()
+    entries = entries.filter((entry) => {
+      const key = keyOf(entry.item)
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+  }
 
   if (typeof limit === 'number' && limit >= 0) {
     entries = entries.slice(0, limit)

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { loadAllLessons } from '../lib/content/schema-loader'
+import { loadAllLessons, loadPracticeBank } from '../lib/content/schema-loader'
 import {
   evaluateProblemFromWidget,
   type EvaluationResult,
@@ -26,15 +26,29 @@ export function Review() {
   const { user } = useAuth()
   const { due, loading, refresh } = useDueReviews()
 
-  const bank = useMemo(() => buildRetrievalBank(loadAllLessons()), [])
+  const bank = useMemo(
+    () => buildRetrievalBank(loadAllLessons(), loadPracticeBank().items),
+    [],
+  )
 
   const cards = useMemo<ReviewCard[]>(() => {
-    return due
-      .map((concept) => {
-        const item = pickReviewItem(bank, concept.tag, concept.reviewLevel)
-        return item ? { tag: concept.tag, item } : null
-      })
-      .filter((card): card is ReviewCard => card !== null)
+    // Track items already placed so a problem shared by several due concepts is
+    // shown only once (it still counts for the first concept that claims it).
+    const used = new Set<string>()
+    const out: ReviewCard[] = []
+    for (const concept of due) {
+      const item = pickReviewItem(
+        bank,
+        concept.tag,
+        concept.reviewLevel,
+        concept.state,
+        used,
+      )
+      if (!item) continue
+      used.add(item.id)
+      out.push({ tag: concept.tag, item })
+    }
+    return out
   }, [due, bank])
 
   return (

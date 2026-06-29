@@ -20,7 +20,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Last lesson you tamed the limit of a *sequence* with the ε–N game: for every tolerance $\\varepsilon>0$ there is a cutoff $N$ past which the terms stay within $\\varepsilon$ of $L$. Now we play the same game for a *function* as its input slides toward a point."
+          "content": "Last lesson you tamed the limit of a *sequence* with the $\\varepsilon$–$N$ game: for every tolerance $\\varepsilon>0$ there is a cutoff $N$ past which the terms stay within $\\varepsilon$ of $L$. Now we play the same game for a *function* as its input slides toward a point."
         },
         {
           "type": "text",
@@ -49,7 +49,7 @@
     {
       "id": "s3",
       "type": "discover",
-      "prompt": "Take $f(x)=3x-1$ near $p=2$, where we expect $L=5$. Because $|f(x)-5| = 3|x-2|$, any input window $|x-2|<\\delta$ guarantees the output error is at most $3\\delta$. Slide $\\delta$ down and watch the guaranteed output error $3\\delta$ shrink to match any $\\varepsilon$ the opponent could name — that controllability *is* the ε–δ definition.",
+      "prompt": "Take $f(x)=3x-1$ near $p=2$, where we expect $L=5$. Because $|f(x)-5| = 3|x-2|$, any input window $|x-2|<\\delta$ guarantees the output error is at most $3\\delta$. Slide $\\delta$ down and watch the guaranteed output error $3\\delta$ shrink to match any $\\varepsilon$ the opponent could name — that controllability *is* the $\\varepsilon$–$\\delta$ definition.",
       "widget": {
         "kind": "slider",
         "props": {
@@ -59,7 +59,7 @@
           "initialValue": 0.5,
           "label": "delta",
           "readouts": [
-            { "label": "guaranteed output error 3·delta", "expression": "3*delta" }
+            { "label": "guaranteed output error 3$\\cdot$delta", "expression": "3*delta" }
           ],
           "markers": [
             { "value": 1, "label": "loose" },
@@ -90,7 +90,7 @@
       "id": "we1",
       "type": "worked_example",
       "tags": ["epsilon-delta"],
-      "prompt": "Worked example: prove $\\lim_{x\\to 2}(3x-1)=5$ directly from the ε–δ definition.",
+      "prompt": "Worked example: prove $\\lim_{x\\to 2}(3x-1)=5$ directly from the $\\varepsilon$–$\\delta$ definition.",
       "blocks": [
         {
           "type": "text",
@@ -157,7 +157,7 @@
             { "id": "p1", "label": "Let $\\varepsilon>0$ be given; we must find $\\delta>0$ with $0<|x|<\\delta \\implies |1/x|<\\varepsilon$." },
             { "id": "p2", "label": "For a *fixed* $x$, choose $\\delta = |x|$, which is positive since $x\\ne 0$." },
             { "id": "p3", "label": "Then $0<|x|<\\delta$ pins $x$ near $0$, and we declare $|1/x|<\\varepsilon$ for that $x$." },
-            { "id": "p4", "label": "Hence the ε–δ condition holds and $\\lim_{x\\to 0} 1/x = 0$." }
+            { "id": "p4", "label": "Hence the $\\varepsilon$–$\\delta$ condition holds and $\\lim_{x\\to 0} 1/x = 0$." }
           ]
         }
       },
@@ -165,10 +165,10 @@
       "feedback": {
         "correct": "Right — step 2 is the flaw. The chosen $\\delta$ must depend only on $\\varepsilon$, not on a particular $x$; letting $\\delta=|x|$ secretly fixes the very point you are supposed to range over. In truth $1/x$ blows up near $0$, so no $\\delta$ works.",
         "incorrect": [
-          { "match": "p1", "message": "Step 1 just states the ε–δ goal correctly. Look instead for the step where $\\delta$ is allowed to depend on the point $x$." },
+          { "match": "p1", "message": "Step 1 just states the $\\varepsilon$–$\\delta$ goal correctly. Look instead for the step where $\\delta$ is allowed to depend on the point $x$." },
           { "match": "p3", "message": "Step 3 inherits the error from before; the real mistake is choosing $\\delta$ in terms of $x$. A valid $\\delta$ depends only on $\\varepsilon$." },
           { "match": "p4", "message": "The conclusion is false, but it follows from an earlier illegal move: picking $\\delta=|x|$. $\\delta$ must be chosen *before* fixing $x$, using only $\\varepsilon$." },
-          { "match": "*", "message": "In a correct ε–δ proof, $\\delta$ is a function of $\\varepsilon$ alone. Find the step that lets $\\delta$ depend on the individual point $x$." }
+          { "match": "*", "message": "In a correct $\\varepsilon$–$\\delta$ proof, $\\delta$ is a function of $\\varepsilon$ alone. Find the step that lets $\\delta$ depend on the individual point $x$." }
         ]
       }
     },
@@ -204,7 +204,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "The limit of a function is the ε–δ game: the opponent names an output band $\\varepsilon>0$, you answer with an input window $\\delta>0$ (depending only on $\\varepsilon$) so that $0<|x-p|<\\delta$ keeps $|f(x)-L|<\\varepsilon$. Solving $|f(x)-L|<\\varepsilon$ for $|x-p|$ reads off $\\delta$."
+          "content": "The limit of a function is the $\\varepsilon$–$\\delta$ game: the opponent names an output band $\\varepsilon>0$, you answer with an input window $\\delta>0$ (depending only on $\\varepsilon$) so that $0<|x-p|<\\delta$ keeps $|f(x)-L|<\\varepsilon$. Solving $|f(x)-L|<\\varepsilon$ for $|x-p|$ reads off $\\delta$."
         },
         {
           "type": "math",
@@ -298,7 +298,7 @@
   "retrievalBank": [
     {
       "id": "r1",
-      "prompt": "In an ε–δ proof of $\\lim_{x\\to p}f(x)=L$, the value $\\delta$ is allowed to depend on:",
+      "prompt": "In an $\\varepsilon$–$\\delta$ proof of $\\lim_{x\\to p}f(x)=L$, the value $\\delta$ is allowed to depend on:",
       "tags": ["epsilon-delta"],
       "widget": {
         "kind": "multiple_choice",

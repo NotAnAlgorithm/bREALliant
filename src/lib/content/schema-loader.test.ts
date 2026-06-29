@@ -4,6 +4,7 @@ import {
   loadAllLessons,
   loadCourse,
   loadLesson,
+  loadPracticeBank,
   validateLesson,
 } from './schema-loader'
 
@@ -25,6 +26,20 @@ describe('schema-loader', () => {
     expect(lessons.map((lesson) => lesson.lessonId)).toContain(
       'lesson-archimedean-01',
     )
+  })
+
+  it('loads and validates the curated practice bank', () => {
+    const bank = loadPracticeBank()
+    expect(Array.isArray(bank.items)).toBe(true)
+    // Every curated item must declare its own tags (concept-centric indexing)
+    // and a difficulty within the 1–3 scale when present.
+    for (const item of bank.items) {
+      expect(item.tags && item.tags.length > 0).toBe(true)
+      if (item.difficulty != null) {
+        expect(item.difficulty).toBeGreaterThanOrEqual(1)
+        expect(item.difficulty).toBeLessThanOrEqual(3)
+      }
+    }
   })
 
   it('rejects invalid lesson json', () => {

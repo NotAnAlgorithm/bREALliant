@@ -60,6 +60,10 @@ export const quizItemSchema = z.object({
   feedback: feedbackSchema.optional(),
   // F3.1: optional concept tags for this item (falls back to lesson tags).
   tags: z.array(z.string()).optional(),
+  // Practice difficulty on a 1–3 scale (1 = standard … 3 = challenge). When
+  // absent, difficulty-aware selection treats the item as 2 (standard). Used by
+  // the curated practice bank and spaced review to ramp difficulty with mastery.
+  difficulty: z.number().int().min(1).max(3).optional(),
 })
 
 export const quizStepSchema = stepBaseSchema.extend({
@@ -131,6 +135,16 @@ export const courseSchema = z.object({
 export type Unit = z.infer<typeof unitSchema>
 export type Course = z.infer<typeof courseSchema>
 
+// The curated, concept-centric practice bank. A single flat list of graded
+// items, each carrying its own `tags` so one (often multi-tag) problem is
+// authored ONCE yet feeds every concept pool it belongs to. Merged into the
+// retrieval bank alongside lesson-derived items (see buildRetrievalBank).
+export const practiceBankSchema = z.object({
+  items: z.array(quizItemSchema).default([]),
+})
+
+export type PracticeBank = z.infer<typeof practiceBankSchema>
+
 export function validateLesson(data: unknown) {
   return lessonSchema.safeParse(data)
 }
@@ -145,4 +159,12 @@ export function parseLesson(data: unknown): Lesson {
 
 export function parseCourse(data: unknown): Course {
   return courseSchema.parse(data)
+}
+
+export function validatePracticeBank(data: unknown) {
+  return practiceBankSchema.safeParse(data)
+}
+
+export function parsePracticeBank(data: unknown): PracticeBank {
+  return practiceBankSchema.parse(data)
 }

@@ -148,7 +148,7 @@
         },
         {
           "type": "text",
-          "content": "**(1) Compact $\\Rightarrow$ bounded.** Cover $K$ by the balls $B(p, n)$ of radius $n = 1, 2, 3, \\dots$ around a fixed point $p$. These cover everything, so compactness yields a finite subcover; the largest ball $B(p, N)$ then contains all of $K$. A set that is not bounded (like $[0,\\infty)$ or $\\mathbb{R}$) can never be compact."
+          "content": "**(1) Compact $\\Rightarrow$ bounded.** Cover $K$ by the balls $B_n(p)$ of radius $n = 1, 2, 3, \\dots$ around a fixed point $p$. These cover everything, so compactness yields a finite subcover; the largest ball $B_N(p)$ then contains all of $K$. A set that is not bounded (like $[0,\\infty)$ or $\\mathbb{R}$) can never be compact."
         },
         {
           "type": "text",
@@ -232,9 +232,9 @@
         "kind": "justify_step",
         "props": {
           "steps": [
-            { "id": "st1", "label": "The balls $B(p,n)$, $n = 1, 2, 3, \\dots$, form an open cover of $K$." },
-            { "id": "st2", "label": "There is a finite subcover $B(p,n_1), \\dots, B(p,n_k)$." },
-            { "id": "st3", "label": "Hence $K \\subseteq B(p,N)$ where $N = \\max_i n_i$, so $K$ is bounded." }
+            { "id": "st1", "label": "The balls $B_n(p)$, $n = 1, 2, 3, \\dots$, form an open cover of $K$." },
+            { "id": "st2", "label": "There is a finite subcover $B_{n_1}(p), \\dots, B_{n_k}(p)$." },
+            { "id": "st3", "label": "Hence $K \\subseteq B_N(p)$ where $N = \\max_i n_i$, so $K$ is bounded." }
           ],
           "justifications": [
             { "id": "j_a", "label": "Each ball is open and every point lies within some finite distance of $p$, so their union contains $K$." },

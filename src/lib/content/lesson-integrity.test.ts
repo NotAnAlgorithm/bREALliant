@@ -21,6 +21,7 @@ const GRADEABLE_KINDS: ReadonlySet<WidgetKind> = new Set<WidgetKind>([
   'fill_blank',
   'rational_input',
   'multiple_choice',
+  'multiple_select',
   'drag_order',
   'spot_the_flaw',
   'justify_step',
@@ -201,6 +202,22 @@ describe('lesson content integrity', () => {
                 expect(ids.size).toBeGreaterThan(1)
                 for (const accepted of validator.accept) {
                   expect(ids.has(accepted), `step "${accepted}" not present`).toBe(true)
+                }
+                break
+              }
+              case 'multiple_select': {
+                const ids = new Set(idList(widget.props.choices))
+                expect(ids.size).toBeGreaterThan(1)
+                for (const accepted of validator.accept) {
+                  const selected = accepted.split(',')
+                  // Non-empty subset of the offered choice ids.
+                  expect(selected.length).toBeGreaterThanOrEqual(1)
+                  for (const id of selected) {
+                    expect(ids.has(id), `choice "${id}" not offered`).toBe(true)
+                  }
+                  // Must already be in the canonical (sorted) encoding the
+                  // feedback engine produces.
+                  expect([...selected].sort().join(',')).toBe(accepted)
                 }
                 break
               }

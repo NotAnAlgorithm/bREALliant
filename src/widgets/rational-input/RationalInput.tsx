@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react'
 
 import type { WidgetComponentProps } from '../types'
+import { RichText } from '../../components/blocks/RichText'
 import { parseRationalInputProps, type RationalInputState } from './utils'
 
 export function RationalInput({
@@ -39,9 +40,10 @@ export function RationalInput({
       data-widget="rational_input"
     >
       {props.label ? (
-        <span className="text-xs font-medium text-ink-muted">
-          {props.label}
-        </span>
+        <RichText
+          content={props.label}
+          className="text-xs font-medium text-ink-muted"
+        />
       ) : null}
 
       <div className="flex flex-col items-center">

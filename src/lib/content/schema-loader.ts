@@ -33,13 +33,16 @@ import lessonRiemannFixture from '@content/fixtures/lesson-riemann-01.json'
 import lessonFtcFixture from '@content/fixtures/lesson-ftc-01.json'
 import lessonPointwiseUniformFixture from '@content/fixtures/lesson-pointwise-uniform-01.json'
 import lessonUniformPreserveFixture from '@content/fixtures/lesson-uniform-preserve-01.json'
+import practiceBankFixture from '@content/fixtures/practice-bank.json'
 
 import {
   parseCourse,
+  parsePracticeBank,
   validateCourse,
   validateLesson,
   type Course,
   type Lesson,
+  type PracticeBank,
 } from '@content/schemas'
 
 const LESSON_FIXTURES: Record<string, unknown> = {
@@ -104,6 +107,15 @@ export function loadAllLessons(): Lesson[] {
 
 export function getAvailableLessonIds(): string[] {
   return Object.keys(LESSON_FIXTURES)
+}
+
+/**
+ * The curated, concept-centric practice bank. Each item carries its own `tags`
+ * (and optional `difficulty`); a single problem may belong to several concepts.
+ * Merged into the retrieval bank alongside lesson items.
+ */
+export function loadPracticeBank(): PracticeBank {
+  return parsePracticeBank(practiceBankFixture)
 }
 
 export { validateCourse, validateLesson }

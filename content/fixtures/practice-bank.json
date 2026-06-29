@@ -1,0 +1,4179 @@
+{
+  "items": [
+    {
+      "id": "pb-compactness-01",
+      "tags": [
+        "compactness",
+        "open-cover"
+      ],
+      "difficulty": 1,
+      "prompt": "To prove **directly from the definition** that a set $K$ is compact, you must show that:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "every open cover of $K$ has a finite subcover"
+            },
+            {
+              "id": "b",
+              "label": "some open cover of $K$ has a finite subcover"
+            },
+            {
+              "id": "c",
+              "label": "every finite collection of open sets covers $K$"
+            },
+            {
+              "id": "d",
+              "label": "$K$ is closed and bounded"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — compactness quantifies over *every* open cover, so a direct proof must start from an arbitrary one.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Which quantifier opens the definition — 'there exists a cover' or 'for every cover'? And is 'closed and bounded' the definition, or a theorem (Heine–Borel) about $\\mathbb{R}^n$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-02",
+      "tags": [
+        "compactness",
+        "heine-borel",
+        "closed-and-bounded"
+      ],
+      "difficulty": 1,
+      "prompt": "Which of these subsets of $\\mathbb{R}$ is **compact**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$[0,1]\\cup[2,3]$"
+            },
+            {
+              "id": "b",
+              "label": "$\\mathbb{Z}$"
+            },
+            {
+              "id": "c",
+              "label": "$(0,1]$"
+            },
+            {
+              "id": "d",
+              "label": "$\\{\\,1/n : n \\in \\mathbb{N}\\,\\}$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — a finite union of closed, bounded intervals is closed and bounded, so Heine–Borel applies.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Heine–Borel needs closed **and** bounded. For each wrong option, ask which of the two fails — and notice that $\\{1/n\\}$ misses its limit point $0$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-03",
+      "tags": [
+        "compactness",
+        "heine-borel"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument claims that **every** infinite subset $A\\subseteq[0,1]$ is compact. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$[0,1]$ is compact, since it is closed and bounded."
+            },
+            {
+              "id": "p2",
+              "label": "$A\\subseteq[0,1]$, and every subset of a compact set is compact."
+            },
+            {
+              "id": "p3",
+              "label": "Therefore $A$ is compact."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p2"
+        ]
+      },
+      "feedback": {
+        "correct": "Correct — only *closed* subsets of a compact set inherit compactness. E.g. $(0,1)\\subseteq[0,1]$ is not compact.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Two of these steps are sound. Which one cites a theorem that is missing a hypothesis — what must a subset of a compact set *also* be to stay compact?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-04",
+      "tags": [
+        "compactness",
+        "continuity",
+        "extreme-value-theorem"
+      ],
+      "difficulty": 2,
+      "prompt": "Using only that *the continuous image of a compact set is compact*, what can you conclude about a continuous $f:[0,1]\\to\\mathbb{R}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f$ attains a maximum and a minimum on $[0,1]$"
+            },
+            {
+              "id": "b",
+              "label": "$f$ is monotonic on $[0,1]$"
+            },
+            {
+              "id": "c",
+              "label": "$f$ is differentiable on $[0,1]$"
+            },
+            {
+              "id": "d",
+              "label": "$f$ is injective on $[0,1]$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — $f([0,1])$ is compact, hence closed and bounded, so it contains its $\\sup$ and $\\inf$: the Extreme Value Theorem.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "The image is a compact subset of $\\mathbb{R}$ — what does such a set always contain? That (and only that) is what compactness of the image buys you."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-05",
+      "tags": [
+        "compactness",
+        "continuity",
+        "open-cover"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that the continuous image $f(K)$ of a **compact** set $K$ is compact: match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Let $\\{V_i\\}_{i\\in I}$ be an arbitrary open cover of $f(K)$."
+            },
+            {
+              "id": "st2",
+              "label": "Then $\\{f^{-1}(V_i)\\}_{i\\in I}$ is an open cover of $K$."
+            },
+            {
+              "id": "st3",
+              "label": "Extract a finite subcover $f^{-1}(V_{i_1}),\\dots,f^{-1}(V_{i_k})$ of $K$."
+            },
+            {
+              "id": "st4",
+              "label": "Then $V_{i_1},\\dots,V_{i_k}$ cover $f(K)$ — a finite subcover."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "Continuity: preimages of open sets are open, and every point of $K$ maps into some $V_i$."
+            },
+            {
+              "id": "j_b",
+              "label": "Compactness of $K$: every open cover of $K$ has a finite subcover."
+            },
+            {
+              "id": "j_c",
+              "label": "If the preimages cover $K$, then the corresponding $V_i$ cover the image $f(K)$."
+            },
+            {
+              "id": "j_d",
+              "label": "To test compactness of $f(K)$, we must start from an arbitrary open cover of it."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_d,st2:j_a,st3:j_b,st4:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly the pull-back / push-forward arc: cover the image, pull back through $f$ (continuity), shrink to finite (compactness of $K$), push forward.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Trace where each hypothesis enters: which step needs *continuity* (preimages open) and which needs *compactness of $K$* (finite subcover)?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-06",
+      "tags": [
+        "compactness",
+        "heine-borel",
+        "completeness"
+      ],
+      "difficulty": 3,
+      "prompt": "A *flawed* proof claims $\\mathbb{Q}\\cap[0,1]$ is compact. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$\\mathbb{Q}\\cap[0,1]$ is bounded, lying inside $[0,1]$."
+            },
+            {
+              "id": "p2",
+              "label": "It is closed as a subset of the metric space $\\mathbb{Q}\\cap[0,1]$ (a space is closed in itself)."
+            },
+            {
+              "id": "p3",
+              "label": "A closed and bounded subset of a metric space is compact."
+            },
+            {
+              "id": "p4",
+              "label": "Hence $\\mathbb{Q}\\cap[0,1]$ is compact."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — 'closed and bounded $\\Rightarrow$ compact' is Heine–Borel, valid in $\\mathbb{R}^n$, not in $\\mathbb{Q}$. A rational sequence approaching $\\tfrac{\\sqrt 2}{2}$ has no limit in the space, so it isn't (sequentially) compact.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Each step is individually tempting. Which one applies a theorem outside its hypotheses — where is the ambient space being treated as if it were $\\mathbb{R}^n$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-07",
+      "tags": [
+        "compactness",
+        "closed-set"
+      ],
+      "difficulty": 3,
+      "prompt": "Arrange the steps proving that a **compact** subset $K$ of a metric space is **closed** (by showing its complement is open), from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Fix a point $p\\notin K$; we seek a neighborhood of $p$ disjoint from $K$."
+            },
+            {
+              "id": "i2",
+              "label": "For each $q\\in K$, choose disjoint open balls $U_q\\ni q$ and $V_q\\ni p$."
+            },
+            {
+              "id": "i3",
+              "label": "The $U_q$ form an open cover of $K$; by compactness take a finite subcover $U_{q_1},\\dots,U_{q_k}$."
+            },
+            {
+              "id": "i4",
+              "label": "Then $V=V_{q_1}\\cap\\dots\\cap V_{q_k}$ is an open neighborhood of $p$ disjoint from $K$."
+            },
+            {
+              "id": "i5",
+              "label": "So every $p\\notin K$ is interior to $K^c$; hence $K^c$ is open and $K$ is closed."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly the Hausdorff-separation argument: separate $p$ from each point of $K$, compress infinitely many separations into finitely many via compactness, then intersect the $p$-side balls.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "What converts 'infinitely many disjoint-ball choices' into a *single* neighborhood of $p$? That compression step is the role of compactness — order the steps around it."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-08",
+      "tags": [
+        "compactness",
+        "heine-borel",
+        "completeness",
+        "bolzano-weierstrass"
+      ],
+      "difficulty": 2,
+      "prompt": "Select **all** sets that are compact in $\\mathbb{R}$. *(two are compact)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$[0,1]\\cup\\{2\\}$"
+            },
+            {
+              "id": "b",
+              "label": "$\\{0\\}\\cup\\{\\,1/n : n\\in\\mathbb{N}\\,\\}$"
+            },
+            {
+              "id": "c",
+              "label": "$\\{\\,1/n : n\\in\\mathbb{N}\\,\\}$"
+            },
+            {
+              "id": "d",
+              "label": "$[0,1)$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b"
+        ]
+      },
+      "feedback": {
+        "correct": "Both are closed and bounded: $\\{0\\}\\cup\\{1/n\\}$ includes the limit point $0$, and $\\{2\\}$ is an isolated point adjoined to $[0,1]$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Compact $=$ closed and bounded. One option drops the limit point $0$; another is missing an endpoint. Both of those fail to be closed."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-compactness-09",
+      "tags": [
+        "compactness",
+        "heine-borel",
+        "completeness",
+        "bolzano-weierstrass"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** characterizations that are equivalent to compactness for a general metric space $(X,d)$. *(four are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Every open cover of $X$ has a finite subcover."
+            },
+            {
+              "id": "b",
+              "label": "Every sequence in $X$ has a subsequence converging to a point of $X$."
+            },
+            {
+              "id": "c",
+              "label": "$X$ is closed and bounded."
+            },
+            {
+              "id": "d",
+              "label": "$X$ is complete and totally bounded."
+            },
+            {
+              "id": "e",
+              "label": "Every family of closed sets with the finite-intersection property has nonempty intersection."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,d,e"
+        ]
+      },
+      "feedback": {
+        "correct": "Open-cover, sequential compactness, complete + totally bounded, and the finite-intersection property all coincide in a metric space. Only 'closed and bounded' is the $\\mathbb{R}^n$-only criterion (Heine–Borel).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Four hold in *any* metric space; one needs $\\mathbb{R}^n$. Which property can a closed, bounded set fail once the space isn't $\\mathbb{R}^n$? (Think of $\\mathbb{Q}$ or an infinite discrete space.)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-uniform-continuity-01",
+      "tags": [
+        "uniform-continuity",
+        "epsilon-delta"
+      ],
+      "difficulty": 1,
+      "prompt": "$f$ **fails** to be uniformly continuous on $E$ exactly when:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "there is an $\\varepsilon>0$ such that for every $\\delta>0$ some pair $x,y\\in E$ has $|x-y|<\\delta$ yet $|f(x)-f(y)|\\ge\\varepsilon$"
+            },
+            {
+              "id": "b",
+              "label": "for every $\\varepsilon>0$ there is a $\\delta>0$ with $|x-y|<\\delta \\Rightarrow |f(x)-f(y)|\\ge\\varepsilon$"
+            },
+            {
+              "id": "c",
+              "label": "there is some point $p\\in E$ at which $f$ is discontinuous"
+            },
+            {
+              "id": "d",
+              "label": "$f$ is unbounded on $E$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — negating $\\forall\\varepsilon\\,\\exists\\delta\\,\\forall x,y$ flips it to $\\exists\\varepsilon\\,\\forall\\delta\\,\\exists x,y$: one stubborn $\\varepsilon$ that no $\\delta$ can beat.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Negate the definition mechanically: each $\\forall$ becomes $\\exists$, each $\\exists$ becomes $\\forall$, and the final implication is witnessed by a pair where the inputs are close but the outputs are not. Which option does that?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-function-limit-01",
+      "tags": [
+        "function-limit",
+        "limit"
+      ],
+      "difficulty": 1,
+      "prompt": "For the statement $\\lim_{x\\to p} f(x)=L$ to even be meaningful, the point $p$ must be:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "a limit point of the domain of $f$ (so there are inputs arbitrarily close to $p$ with $x\\ne p$)"
+            },
+            {
+              "id": "b",
+              "label": "a point where $f$ is defined, i.e. $p\\in\\operatorname{dom}(f)$"
+            },
+            {
+              "id": "c",
+              "label": "an interior point of the domain of $f$"
+            },
+            {
+              "id": "d",
+              "label": "the maximum of the domain of $f$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — the clause $0<|x-p|<\\delta$ needs nearby inputs other than $p$ itself, so $p$ must be a limit point; whether $f(p)$ exists is irrelevant.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "The definition deletes $p$ via $0<|x-p|$, so $f(p)$ need not exist — but $x$ must be able to approach $p$ through the domain. Which condition guarantees inputs arbitrarily close to $p$ with $x\\ne p$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-evt-01",
+      "tags": [
+        "extreme-value-theorem",
+        "compactness"
+      ],
+      "difficulty": 1,
+      "prompt": "The Extreme Value Theorem guarantees a function attains its max and min on a domain $D\\subseteq\\mathbb{R}$. Select **all** conditions that are *required* hypotheses. *(three are required)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f$ is continuous on $D$"
+            },
+            {
+              "id": "b",
+              "label": "$D$ is bounded"
+            },
+            {
+              "id": "c",
+              "label": "$D$ is closed"
+            },
+            {
+              "id": "d",
+              "label": "$f$ is differentiable on $D$"
+            },
+            {
+              "id": "e",
+              "label": "$f$ is monotonic on $D$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — continuity plus a compact domain, and compact in $\\mathbb{R}$ means closed **and** bounded; differentiability and monotonicity are never needed.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Compactness in $\\mathbb{R}$ is the pair 'closed and bounded' — dropping either breaks the EVT. Are smoothness or monotonicity anywhere in the statement?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-evt-02",
+      "tags": [
+        "extreme-value-theorem",
+        "continuity"
+      ],
+      "difficulty": 2,
+      "prompt": "Let $f(x)=\\arctan x$ on $\\mathbb{R}$. It is continuous and **bounded**, with $-\\tfrac{\\pi}{2}<f(x)<\\tfrac{\\pi}{2}$. Which conclusion is correct?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f$ attains neither extreme: $\\sup f=\\tfrac{\\pi}{2}$ and $\\inf f=-\\tfrac{\\pi}{2}$ are approached but never reached, and $\\mathbb{R}$ is not compact"
+            },
+            {
+              "id": "b",
+              "label": "By the EVT $f$ attains both a maximum and a minimum, since it is continuous and bounded"
+            },
+            {
+              "id": "c",
+              "label": "$f$ attains a maximum but not a minimum"
+            },
+            {
+              "id": "d",
+              "label": "$f$ is not continuous, so the EVT does not apply"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — 'continuous and bounded' is not enough; the domain $\\mathbb{R}$ is not compact, and $\\pm\\tfrac{\\pi}{2}$ are limiting values that $\\arctan$ never actually hits.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "The EVT needs a *compact* domain, not merely a bounded *function*. Is $\\mathbb{R}$ compact, and does $\\arctan x$ ever equal $\\tfrac{\\pi}{2}$?"
+          },
+          {
+            "match": "*",
+            "message": "Check the hypothesis that actually matters: is the *domain* compact? Then ask whether $\\sup f$ and $\\inf f$ are values $f$ takes or merely values it approaches."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-ivt-02",
+      "tags": [
+        "intermediate-value-theorem",
+        "connectedness"
+      ],
+      "difficulty": 2,
+      "prompt": "Let $E=[0,1]\\cup[2,3]$ and define $f(x)=x-2$ on $[0,1]$ and $f(x)=x-1$ on $[2,3]$, so $f$ is continuous on $E$. A *flawed* argument follows; select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$f$ is continuous on $E$, with $f(0)=-2$ and $f(3)=2$."
+            },
+            {
+              "id": "p2",
+              "label": "The value $0$ lies between $f(0)=-2$ and $f(3)=2$."
+            },
+            {
+              "id": "p3",
+              "label": "By the IVT, since $f$ is continuous and $0$ is an intermediate value, there is a $c\\in E$ with $f(c)=0$."
+            },
+            {
+              "id": "p4",
+              "label": "But $f$ takes only values in $[-2,-1]\\cup[1,2]$, so $f(c)=0$ is impossible."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. The IVT requires the domain to be an interval (connected); $E$ has the gap $(1,2)$, so its continuous image can be disconnected and skip $0$ entirely.",
+        "incorrect": [
+          {
+            "match": "p4",
+            "message": "Step 4 is a true observation — it is the *contradiction* that exposes an earlier illegal move. Which step applied the IVT despite the domain not being an interval?"
+          },
+          {
+            "match": "*",
+            "message": "The IVT needs more than continuity and an in-between value: the domain must be connected (an interval). Is $[0,1]\\cup[2,3]$ an interval?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-uniform-continuity-02",
+      "tags": [
+        "uniform-continuity",
+        "lipschitz"
+      ],
+      "difficulty": 2,
+      "prompt": "Select **all** functions that are uniformly continuous on the indicated domain. *(two are)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f(x)=5x-2$ on $\\mathbb{R}$"
+            },
+            {
+              "id": "b",
+              "label": "$f(x)=\\sqrt{x}$ on $[0,\\infty)$"
+            },
+            {
+              "id": "c",
+              "label": "$f(x)=x^2$ on $\\mathbb{R}$"
+            },
+            {
+              "id": "d",
+              "label": "$f(x)=\\sin(1/x)$ on $(0,1)$"
+            },
+            {
+              "id": "e",
+              "label": "$f(x)=1/x$ on $(0,1)$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $5x-2$ is Lipschitz (take $\\delta=\\varepsilon/5$) and $\\sqrt{x}$ is uniformly continuous on $[0,\\infty)$; the other three force $\\delta\\to 0$ as $x\\to\\infty$ or as $x\\to 0^+$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Ask where the required $\\delta$ must keep shrinking: $x^2$ as $x\\to\\infty$, and $1/x$ and $\\sin(1/x)$ as $x\\to 0^+$. The safe ones have a global slope bound or tame growth."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-ivt-03",
+      "tags": [
+        "intermediate-value-theorem",
+        "continuity"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof of the IVT *via the supremum*. Assume $f$ is continuous on $[a,b]$ with $f(a)<0<f(b)$; order the steps to prove some $c$ has $f(c)=0$.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Let $S=\\{x\\in[a,b]: f(x)<0\\}$. Then $a\\in S$ and $S$ is bounded above by $b$, so $c=\\sup S$ exists in $[a,b]$."
+            },
+            {
+              "id": "i2",
+              "label": "Pick $x_n\\in S$ with $x_n\\to c$; since each $f(x_n)<0$ and $f$ is continuous, $f(c)=\\lim f(x_n)\\le 0$."
+            },
+            {
+              "id": "i3",
+              "label": "In particular $f(c)\\le 0<f(b)$, so $c\\ne b$, i.e. $c<b$."
+            },
+            {
+              "id": "i4",
+              "label": "Every $t\\in(c,b]$ lies outside $S$, so $f(t)\\ge 0$; letting $t\\to c^+$ and using continuity gives $f(c)\\ge 0$."
+            },
+            {
+              "id": "i5",
+              "label": "From $f(c)\\le 0$ and $f(c)\\ge 0$ we conclude $f(c)=0$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — define the cut $c=\\sup S$, squeeze $f(c)\\le 0$ from the left (points in $S$) and $f(c)\\ge 0$ from the right (points past the sup), and continuity pins $f(c)=0$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Build it around $c=\\sup S$: first that the sup exists, then the left-hand bound $f(c)\\le 0$, then that $c<b$, then the right-hand bound $f(c)\\ge 0$, and only then combine. Order by which fact each step needs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-uniform-continuity-03",
+      "tags": [
+        "uniform-continuity",
+        "compactness",
+        "continuity"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that a continuous $f$ on a **compact** set $K$ is uniformly continuous (by contradiction). Match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Suppose $f$ is continuous on the compact $K$ but is NOT uniformly continuous."
+            },
+            {
+              "id": "st2",
+              "label": "Then there is an $\\varepsilon_0>0$ and points $x_n,y_n\\in K$ with $|x_n-y_n|\\to 0$ yet $|f(x_n)-f(y_n)|\\ge\\varepsilon_0$."
+            },
+            {
+              "id": "st3",
+              "label": "Pass to a subsequence with $x_{n_k}\\to p\\in K$; then $y_{n_k}\\to p$ as well."
+            },
+            {
+              "id": "st4",
+              "label": "By continuity $f(x_{n_k})\\to f(p)$ and $f(y_{n_k})\\to f(p)$, so $|f(x_{n_k})-f(y_{n_k})|\\to 0$ — contradicting $\\ge\\varepsilon_0$."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "This is exactly the negation of uniform continuity: one fixed $\\varepsilon_0$ that resists every $\\delta$, witnessed by inputs forced together whose outputs stay apart."
+            },
+            {
+              "id": "j_b",
+              "label": "Compactness of $K$ (sequential compactness) yields a convergent subsequence $x_{n_k}\\to p\\in K$, and $|x_n-y_n|\\to 0$ drags $y_{n_k}$ to the same limit $p$."
+            },
+            {
+              "id": "j_c",
+              "label": "Continuity at $p$ sends both image-sequences to $f(p)$, so their difference tends to $0$, which is impossible against the gap $\\ge\\varepsilon_0$."
+            },
+            {
+              "id": "j_d",
+              "label": "To argue indirectly, assume the conclusion fails while the hypotheses (continuous on compact $K$) still hold."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_d,st2:j_a,st3:j_b,st4:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — assume the failure, unpack it as the negation (a bad $\\varepsilon_0$), extract a convergent subsequence via compactness, then let continuity collapse the output gap to a contradiction.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Trace where each hypothesis enters: which step is just the negated definition, which one *needs compactness* (a convergent subsequence in $K$), and which one *needs continuity* (images converging to $f(p)$)?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-transfer-03",
+      "tags": [
+        "continuity",
+        "compactness",
+        "connectedness",
+        "intermediate-value-theorem"
+      ],
+      "difficulty": 3,
+      "prompt": "Let $f:\\mathbb{R}\\to\\mathbb{R}$ be continuous. Select **all** statements that are TRUE for *every* such $f$. *(four are true)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f$ maps every compact set to a compact set"
+            },
+            {
+              "id": "b",
+              "label": "$f$ maps every connected set to a connected set"
+            },
+            {
+              "id": "c",
+              "label": "$f$ maps every interval to an interval"
+            },
+            {
+              "id": "d",
+              "label": "if $K$ is compact then $f$ attains a maximum and a minimum on $K$"
+            },
+            {
+              "id": "e",
+              "label": "$f$ maps every open set to an open set"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c,d"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — continuity preserves compactness and connectedness, so it sends intervals to intervals (the IVT) and forces extremes on compacts (the EVT); only openness is *not* preserved.",
+        "incorrect": [
+          {
+            "match": "e",
+            "message": "Continuity does not preserve open sets — e.g. $f(x)=x^2$ maps the open $(-1,1)$ to $[0,1)$, which is not open. Which other four are genuine preservation theorems?"
+          },
+          {
+            "match": "*",
+            "message": "Continuity preserves compactness and connectedness (hence intervals $\\to$ intervals and the EVT). Exactly one listed property is *not* preserved by continuous maps — find it."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-01",
+      "tags": [
+        "differentiability",
+        "continuity"
+      ],
+      "difficulty": 1,
+      "prompt": "The theorem 'if $f$ is differentiable at $p$, then $f$ is continuous at $p$' is **logically equivalent** to which statement?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "If $f$ is not continuous at $p$, then $f$ is not differentiable at $p$."
+            },
+            {
+              "id": "b",
+              "label": "If $f$ is continuous at $p$, then $f$ is differentiable at $p$."
+            },
+            {
+              "id": "c",
+              "label": "If $f$ is not differentiable at $p$, then $f$ is not continuous at $p$."
+            },
+            {
+              "id": "d",
+              "label": "$f$ is differentiable at $p$ if and only if $f$ is continuous at $p$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — an implication is equivalent to its contrapositive, so a discontinuity at $p$ rules out differentiability there.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "An implication is equivalent only to its contrapositive (swap *and* negate both parts). The converse and inverse are not equivalent — indeed $|x|$ at $0$ refutes the converse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-02",
+      "tags": [
+        "monotonicity",
+        "mean-value-theorem"
+      ],
+      "difficulty": 1,
+      "prompt": "Suppose $f$ is differentiable on an interval $I$ and $f'(x)>0$ for **every** $x\\in I$. What follows on $I$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f$ is strictly increasing on $I$."
+            },
+            {
+              "id": "b",
+              "label": "$f$ is constant on $I$."
+            },
+            {
+              "id": "c",
+              "label": "$f$ must attain a local maximum somewhere in $I$."
+            },
+            {
+              "id": "d",
+              "label": "$f$ is strictly increasing only if $f'$ is also continuous."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — for $x<y$ the MVT gives $f(y)-f(x)=f'(c)(y-x)>0$, so $f$ strictly increases.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Apply the MVT to two points $x<y$: $f(y)-f(x)=f'(c)(y-x)$. With $f'>0$ this is positive, so $f$ rises — and no continuity of $f'$ is needed."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-03",
+      "tags": [
+        "taylor-polynomial",
+        "derivative"
+      ],
+      "difficulty": 1,
+      "prompt": "The **first-order** Taylor polynomial $P_1$ of $f$ at $a$ is:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f(a)+f'(a)(x-a)$ — the tangent line (linearization) at $a$."
+            },
+            {
+              "id": "b",
+              "label": "$f'(a)(x-a)$."
+            },
+            {
+              "id": "c",
+              "label": "$f(a)+f'(a)\\,x$."
+            },
+            {
+              "id": "d",
+              "label": "$f(a)+\\frac{f''(a)}{2}(x-a)^2$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — $P_1$ matches $f$'s value and slope at $a$, which is precisely the tangent line $f(a)+f'(a)(x-a)$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Use $P_n(x)=\\sum_{k=0}^{n}\\frac{f^{(k)}(a)}{k!}(x-a)^k$ with $n=1$: the $k=0$ term is $f(a)$ and the $k=1$ term is $f'(a)(x-a)$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-04",
+      "tags": [
+        "interior-extremum",
+        "derivative"
+      ],
+      "difficulty": 2,
+      "prompt": "Which example shows that $f'(c)=0$ does **not** guarantee a local extremum at $c$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f(x)=x^3$ at $c=0$: $f'(0)=0$, yet $f$ is strictly increasing, so $0$ is neither a max nor a min."
+            },
+            {
+              "id": "b",
+              "label": "$f(x)=x^2$ at $c=0$: $f'(0)=0$ and $0$ is a minimum."
+            },
+            {
+              "id": "c",
+              "label": "$f(x)=|x|$ at $c=0$: $f'(0)$ does not exist."
+            },
+            {
+              "id": "d",
+              "label": "$f(x)=\\cos x$ at $c=0$: $f'(0)=0$ and $0$ is a maximum."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $x^3$ has a horizontal tangent at $0$ (a stationary inflection) but keeps rising, so $f'(c)=0$ is necessary, not sufficient, for an extremum.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "You need $f'(c)=0$ *and* no extremum at $c$. Cases with a genuine max/min, or with no derivative at all, miss the point — look for a stationary point the graph still passes straight through."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-05",
+      "tags": [
+        "rolle"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument applies Rolle's theorem to $f(x)=x$ on $[0,1]$. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$f(x)=x$ is continuous on $[0,1]$ and differentiable on $(0,1)$."
+            },
+            {
+              "id": "p2",
+              "label": "Therefore the hypotheses of Rolle's theorem are satisfied on $[0,1]$."
+            },
+            {
+              "id": "p3",
+              "label": "So there exists $c\\in(0,1)$ with $f'(c)=0$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p2"
+        ]
+      },
+      "feedback": {
+        "correct": "Correct — Rolle also requires $f(a)=f(b)$, but $f(0)=0\\neq 1=f(1)$. Without equal endpoints the theorem does not apply, and indeed $f'(x)=1$ is never $0$.",
+        "incorrect": [
+          {
+            "match": "p3",
+            "message": "Step 3 is the false conclusion that *follows* from the gap; the real error is the step that declares Rolle's hypotheses met. Is every hypothesis truly satisfied?"
+          },
+          {
+            "match": "*",
+            "message": "List Rolle's hypotheses: continuous on $[a,b]$, differentiable on $(a,b)$, and $f(a)=f(b)$. Which one fails for $f(x)=x$ on $[0,1]$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-06",
+      "tags": [
+        "differentiability",
+        "derivative",
+        "continuity"
+      ],
+      "difficulty": 2,
+      "prompt": "Select **all** functions that are differentiable at $x=0$. *(two are)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$f(x)=x^2$"
+            },
+            {
+              "id": "b",
+              "label": "$f(x)=|x|$"
+            },
+            {
+              "id": "c",
+              "label": "$f(x)=x\\,|x|$"
+            },
+            {
+              "id": "d",
+              "label": "$f(x)=x^{1/3}$ (the cube root)"
+            },
+            {
+              "id": "e",
+              "label": "$f(x)=x\\sin(1/x)$ for $x\\neq 0$, with $f(0)=0$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,c"
+        ]
+      },
+      "feedback": {
+        "correct": "$x^2$ and $x\\,|x|$ are differentiable at $0$ (the latter has $f'(0)=0$). The corner of $|x|$, the vertical tangent of $x^{1/3}$, and the oscillation of $x\\sin(1/x)$ each destroy the difference-quotient limit.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Test $\\lim_{h\\to 0}\\frac{f(h)-f(0)}{h}$ for each: a corner gives clashing one-sided slopes, a cube root sends the slope to $+\\infty$, and $\\sin(1/h)$ never settles. Only two yield a finite two-sided limit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-07",
+      "tags": [
+        "monotonicity",
+        "mean-value-theorem"
+      ],
+      "difficulty": 3,
+      "prompt": "Arrange the steps proving that if $f$ is continuous on $[a,b]$, differentiable on $(a,b)$, and $f'>0$ on $(a,b)$, then $f$ is **strictly increasing** on $[a,b]$.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Take any two points $x_1<x_2$ in $[a,b]$; we must show $f(x_1)<f(x_2)$."
+            },
+            {
+              "id": "i2",
+              "label": "On $[x_1,x_2]$, $f$ is continuous and differentiable on $(x_1,x_2)$, so the MVT applies there."
+            },
+            {
+              "id": "i3",
+              "label": "By the MVT there is $c\\in(x_1,x_2)$ with $f(x_2)-f(x_1)=f'(c)(x_2-x_1)$."
+            },
+            {
+              "id": "i4",
+              "label": "Since $f'(c)>0$ and $x_2-x_1>0$, the right-hand side is positive, so $f(x_2)-f(x_1)>0$."
+            },
+            {
+              "id": "i5",
+              "label": "Thus $f(x_1)<f(x_2)$ for every such pair, i.e. $f$ is strictly increasing."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — fix an arbitrary ordered pair, apply the MVT on the subinterval, and read positivity off $f'(c)(x_2-x_1)>0$. The sign of $f'$ becomes the sign of the increment.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "The engine is the MVT on $[x_1,x_2]$: first fix two points, verify the hypotheses there, apply the MVT, then turn $f'(c)>0$ into $f(x_2)-f(x_1)>0$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-08",
+      "tags": [
+        "differentiability",
+        "continuity",
+        "interior-extremum",
+        "chain-rule",
+        "lagrange-remainder"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** statements that are **true**. *(three are)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "If $f$ is differentiable at $p$, then $f$ is continuous at $p$."
+            },
+            {
+              "id": "b",
+              "label": "If $f'(c)=0$, then $f$ has a local extremum at $c$."
+            },
+            {
+              "id": "c",
+              "label": "$(f\\circ g)'(x)=f'(g(x))\\,g'(x)$ wherever $g$ is differentiable at $x$ and $f$ at $g(x)$."
+            },
+            {
+              "id": "d",
+              "label": "If $f$ is continuous on $[a,b]$, then $f$ is differentiable on $(a,b)$."
+            },
+            {
+              "id": "e",
+              "label": "If $|f^{(n+1)}|\\le M$ on an interval containing $a$ and $x$, then $|f(x)-P_n(x)|\\le\\frac{M}{(n+1)!}|x-a|^{n+1}$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,c,e"
+        ]
+      },
+      "feedback": {
+        "correct": "True: differentiable $\\Rightarrow$ continuous; the chain rule; and the Lagrange-remainder error bound. False: $f'(c)=0$ need not give an extremum ($x^3$ at $0$), and continuity never forces differentiability ($|x|$).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three are theorems; two are classic misconceptions. Check which 'implies' runs the wrong way (continuity vs. differentiability), and whether a horizontal tangent alone is enough for an extremum."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-diff-09",
+      "tags": [
+        "differentiability",
+        "continuity",
+        "limit"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that differentiability at $p$ implies continuity at $p$: match each step to the fact that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "For $x\\neq p$, write $f(x)-f(p)=\\frac{f(x)-f(p)}{x-p}\\cdot(x-p)$."
+            },
+            {
+              "id": "st2",
+              "label": "As $x\\to p$, the quotient $\\frac{f(x)-f(p)}{x-p}$ tends to $f'(p)$."
+            },
+            {
+              "id": "st3",
+              "label": "As $x\\to p$, the factor $(x-p)\\to 0$, so the product tends to $f'(p)\\cdot 0=0$."
+            },
+            {
+              "id": "st4",
+              "label": "Hence $f(x)\\to f(p)$."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "Algebraic identity valid for $x\\neq p$ (multiply and divide by $x-p$)."
+            },
+            {
+              "id": "j_b",
+              "label": "This limit exists and equals $f'(p)$ precisely because $f$ is differentiable at $p$."
+            },
+            {
+              "id": "j_c",
+              "label": "Product law for limits: a convergent quotient times a factor going to $0$ gives $0$."
+            },
+            {
+              "id": "j_d",
+              "label": "$\\lim_{x\\to p} f(x)=f(p)$ is exactly the definition of continuity at $p$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c,st4:j_d"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — the identity isolates a quotient (which converges *because* $f$ is differentiable) times $(x-p)\\to 0$, forcing $f(x)\\to f(p)$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Trace where differentiability enters: it guarantees the *quotient* has the finite limit $f'(p)$; the extra $(x-p)\\to 0$ then kills the product, yielding continuity."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-pointwise-uniform-01",
+      "tags": [
+        "uniform-convergence",
+        "pointwise-convergence",
+        "convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "What is the precise logical relationship between **uniform** and **pointwise** convergence of $f_n$ on a set $E$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Uniform convergence implies pointwise convergence, but not conversely."
+            },
+            {
+              "id": "b",
+              "label": "Pointwise convergence implies uniform convergence, but not conversely."
+            },
+            {
+              "id": "c",
+              "label": "The two notions are equivalent on every set $E$."
+            },
+            {
+              "id": "d",
+              "label": "Neither notion implies the other."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — a single $N$ that works for all $x$ certainly works at each fixed $x$, so uniform $\\Rightarrow$ pointwise; the converse fails (e.g. $x^n$ on $[0,1]$).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "If one $N$ controls every $x$ at once, does it control each fixed $x$? Then ask whether per-point convergence can force a single shared $N$ — recall $x^n$ on $[0,1]$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-sup-norm-01",
+      "tags": [
+        "uniform-convergence",
+        "sup-norm"
+      ],
+      "difficulty": 1,
+      "prompt": "Let $M_n=\\sup_{x\\in E}|f_n(x)-f(x)|$. Which condition by itself shows that $f_n\\to f$ is **not** uniform on $E$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$M_n\\not\\to 0$ — the worst-case gap fails to vanish."
+            },
+            {
+              "id": "b",
+              "label": "$M_n\\to 0$."
+            },
+            {
+              "id": "c",
+              "label": "$f_n(x)\\to f(x)$ for every fixed $x\\in E$."
+            },
+            {
+              "id": "d",
+              "label": "Some individual $f_n$ is discontinuous on $E$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — uniform convergence is exactly $M_n\\to 0$, so $M_n\\not\\to 0$ is precisely its negation.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Uniform convergence $\\iff M_n\\to 0$. So which statement is the logical negation of $M_n\\to 0$? (Pointwise convergence and the shape of single $f_n$ say nothing about the sup gap.)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-m-test-01",
+      "tags": [
+        "weierstrass-m-test",
+        "series",
+        "uniform-convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "Suppose $|f_n(x)|\\le M_n$ for all $x\\in E$ and $\\sum M_n<\\infty$. What does the Weierstrass M-test let you **conclude**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$\\sum f_n$ converges uniformly on $E$."
+            },
+            {
+              "id": "b",
+              "label": "$\\sum f_n$ converges pointwise but possibly not uniformly on $E$."
+            },
+            {
+              "id": "c",
+              "label": "Each $f_n\\to 0$ uniformly on $E$."
+            },
+            {
+              "id": "d",
+              "label": "$\\sum M_n$ converges."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — a convergent constant majorant $\\sum M_n$ bounds the tails of $\\sum f_n$ uniformly in $x$, giving uniform convergence.",
+        "incorrect": [
+          {
+            "match": "d",
+            "message": "$\\sum M_n<\\infty$ is a hypothesis you are given, not the payoff. What does the M-test deliver about the series $\\sum f_n$ itself?"
+          },
+          {
+            "match": "*",
+            "message": "The whole point of the M-test is the strong mode of convergence it yields for $\\sum f_n$ — stronger than pointwise. Which option names it?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-m-test-02",
+      "tags": [
+        "weierstrass-m-test",
+        "series",
+        "uniform-convergence"
+      ],
+      "difficulty": 2,
+      "prompt": "To prove $\\sum_{n=1}^{\\infty}\\dfrac{\\sin(nx)}{2^n}$ converges **uniformly** on $\\mathbb{R}$ by the M-test, which majorant $M_n$ works?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$M_n=\\dfrac{1}{2^n}$, since $\\left|\\dfrac{\\sin(nx)}{2^n}\\right|\\le \\dfrac{1}{2^n}$ for all $x$ and $\\sum \\dfrac{1}{2^n}<\\infty$."
+            },
+            {
+              "id": "b",
+              "label": "$M_n=\\dfrac{1}{n}$, since $|\\sin(nx)|\\le 1$ and $\\sum \\dfrac{1}{n}$ dominates the terms."
+            },
+            {
+              "id": "c",
+              "label": "$M_n=\\dfrac{\\sin(nx)}{2^n}$, the term itself."
+            },
+            {
+              "id": "d",
+              "label": "$M_n=\\dfrac{1}{2^n}$, but only for $x\\ge 0$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — a constant bound $1/2^n$ holds for every $x$, and $\\sum 1/2^n$ is a convergent geometric series, so the M-test applies on all of $\\mathbb{R}$.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "The bound holds, but $\\sum 1/n$ **diverges** — the M-test needs a *convergent* majorant series. Find a bound whose sum is finite."
+          },
+          {
+            "match": "c",
+            "message": "$M_n$ must be a constant (independent of $x$) that bounds $|f_n(x)|$. A bound that still contains $x$ cannot give a numerical series $\\sum M_n$."
+          },
+          {
+            "match": "*",
+            "message": "You need two things at once: $|f_n(x)|\\le M_n$ for **every** $x$, and $\\sum M_n<\\infty$. Which choice satisfies both, uniformly in $x$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-limit-integral-01",
+      "tags": [
+        "limit-interchange",
+        "pointwise-convergence",
+        "uniform-convergence"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument concludes $\\lim_{n}\\int_0^1 f_n=\\int_0^1 f$ for the moving-spike sequence. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "Let $f_n$ be a triangular spike of height $2n$ and base $1/n$ near $0$, so $\\int_0^1 f_n=1$, while $f_n(x)\\to 0$ for every fixed $x$."
+            },
+            {
+              "id": "p2",
+              "label": "Hence $f_n\\to f\\equiv 0$ pointwise on $[0,1]$."
+            },
+            {
+              "id": "p3",
+              "label": "Since $f_n\\to f$, we may pass the limit inside: $\\lim_n\\int_0^1 f_n=\\int_0^1\\lim_n f_n=\\int_0^1 f$."
+            },
+            {
+              "id": "p4",
+              "label": "Therefore $\\lim_n\\int_0^1 f_n=\\int_0^1 0=0$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — step 3 swaps limit and integral using only *pointwise* convergence. The swap needs *uniform* convergence; here the mass escapes, so $\\lim_n\\int_0^1 f_n=1\\neq 0=\\int_0^1 f$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Steps 1, 2, and 4 are correct computations or honest consequences. Which step invokes a theorem (limit$\\,\\leftrightarrow\\,$integral interchange) whose hypothesis — *uniform* convergence — is never checked?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-seq-classify-01",
+      "tags": [
+        "sequences-of-functions",
+        "uniform-convergence",
+        "sup-norm",
+        "weierstrass-m-test"
+      ],
+      "difficulty": 2,
+      "prompt": "Match each convergence claim to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "$f_n(x)=\\dfrac{x}{n}$ converges to $0$ uniformly on $[0,1]$."
+            },
+            {
+              "id": "st2",
+              "label": "$f_n(x)=x^n$ converges to $0$ on $[0,1)$, but not uniformly."
+            },
+            {
+              "id": "st3",
+              "label": "$\\sum_{n\\ge 1}\\dfrac{\\cos(nx)}{n^2}$ converges uniformly on $\\mathbb{R}$."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "$\\sup_{x}|f_n(x)-0|=\\dfrac{1}{n}\\to 0$, so the sup-norm criterion gives uniform convergence."
+            },
+            {
+              "id": "j_b",
+              "label": "$\\sup_{x\\in[0,1)}|x^n-0|=1$ for every $n$, a gap that never shrinks, so convergence is only pointwise."
+            },
+            {
+              "id": "j_c",
+              "label": "$\\left|\\dfrac{\\cos(nx)}{n^2}\\right|\\le \\dfrac{1}{n^2}$ with $\\sum \\dfrac{1}{n^2}<\\infty$, so the Weierstrass M-test applies."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — a vanishing sup gap ($1/n$) gives uniform convergence, a frozen sup gap ($\\equiv 1$) leaves only pointwise, and a convergent constant majorant ($1/n^2$) triggers the M-test.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Pair each claim with its mechanism: compute the sup gap for the first two (does it $\\to 0$ or stay at $1$?), and find a summable constant bound for the series."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-m-test-03",
+      "tags": [
+        "weierstrass-m-test",
+        "series",
+        "uniform-convergence",
+        "convergence"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof of the Weierstrass M-test ($|f_n(x)|\\le M_n$, $\\sum M_n<\\infty$ $\\Rightarrow$ $\\sum f_n$ converges uniformly). Order the steps from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Assume $|f_n(x)|\\le M_n$ for all $x\\in E$ and that $\\sum M_n$ converges."
+            },
+            {
+              "id": "i2",
+              "label": "By the Cauchy criterion for the numerical series $\\sum M_n$, given $\\varepsilon>0$ there is $N$ with $\\sum_{k=n+1}^{m} M_k<\\varepsilon$ whenever $m>n\\ge N$."
+            },
+            {
+              "id": "i3",
+              "label": "For those $m>n\\ge N$ and every $x$: $\\left|\\sum_{k=n+1}^{m} f_k(x)\\right|\\le \\sum_{k=n+1}^{m} M_k<\\varepsilon$."
+            },
+            {
+              "id": "i4",
+              "label": "The partial sums thus satisfy the uniform Cauchy criterion, so $\\sum f_n$ converges uniformly on $E$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly the arc: hypotheses $\\to$ Cauchy tails of $\\sum M_n$ $\\to$ the same bound controls the function tails for *all* $x$ $\\to$ uniform Cauchy, hence uniform convergence.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "You can only bound the function tails once you have the numerical-tail estimate from $\\sum M_n$, and that estimate needs the convergence hypothesis first. Order around 'get $N$, then bound for all $x$'."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-uniform-preserve-01",
+      "tags": [
+        "continuity",
+        "limit-interchange",
+        "weierstrass-m-test",
+        "uniform-convergence"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** statements that are TRUE. *(three are true)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "If $f_n\\to f$ uniformly on $E$ and each $f_n$ is continuous, then $f$ is continuous."
+            },
+            {
+              "id": "b",
+              "label": "If $f_n\\to f$ pointwise on $E$ and each $f_n$ is continuous, then $f$ is continuous."
+            },
+            {
+              "id": "c",
+              "label": "If $|f_n(x)|\\le M_n$ on $E$ and $\\sum M_n<\\infty$, then $\\sum f_n$ converges uniformly on $E$."
+            },
+            {
+              "id": "d",
+              "label": "If $f_n\\to f$ uniformly on $[a,b]$ with each $f_n$ integrable, then $\\int_a^b f_n\\to\\int_a^b f$."
+            },
+            {
+              "id": "e",
+              "label": "If $f_n\\to f$ uniformly on $E$, then $f_n'\\to f'$ wherever the derivatives exist."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,c,d"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — uniform limits preserve continuity (the $\\varepsilon/3$ argument) and the integral ($|\\int f_n-\\int f|\\le(b-a)\\sup|f_n-f|$), and the M-test gives uniform convergence; but (b) and (e) fail.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three hold. Reject the two that pointwise-style misuse uniformity: continuity needs *uniform* (so (b) fails via $x^n$), and uniform $f_n$ says nothing about $f_n'$ (so (e) fails via $\\sin(nx)/\\sqrt{n}$)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-riemann-01",
+      "tags": [
+        "upper-lower-sums",
+        "integrability"
+      ],
+      "difficulty": 1,
+      "prompt": "For a **bounded** $f$ on $[a,b]$ and **any** partition $P$, which relation is *always* true?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$L(P,f)\\le U(P,f)$"
+            },
+            {
+              "id": "b",
+              "label": "$U(P,f)\\le L(P,f)$"
+            },
+            {
+              "id": "c",
+              "label": "$U(P,f)=L(P,f)$ for every $P$"
+            },
+            {
+              "id": "d",
+              "label": "$L(P,f)\\le 0\\le U(P,f)$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Yes — on each subinterval $m_i\\le M_i$, so summing $m_i\\,\\Delta x_i\\le M_i\\,\\Delta x_i$ gives $L(P,f)\\le U(P,f)$ for every partition.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Compare term by term: is $\\inf$ on a piece ever above its $\\sup$? And note $f$ could be entirely negative, so $0$ need not sit between $L$ and $U$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-riemann-02",
+      "tags": [
+        "upper-lower-sums",
+        "integrability"
+      ],
+      "difficulty": 1,
+      "prompt": "Let $P^{*}$ be a **refinement** of $P$ (so $P\\subseteq P^{*}$). What does adding points do to the sums?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$L(P,f)\\le L(P^{*},f)\\le U(P^{*},f)\\le U(P,f)$ — refining can only shrink the gap."
+            },
+            {
+              "id": "b",
+              "label": "$U(P^{*},f)\\ge U(P,f)$ and $L(P^{*},f)\\le L(P,f)$ — refining widens the gap."
+            },
+            {
+              "id": "c",
+              "label": "$U(P^{*},f)=U(P,f)$ and $L(P^{*},f)=L(P,f)$ — refining changes nothing."
+            },
+            {
+              "id": "d",
+              "label": "Refining can force $L(P^{*},f)>U(P^{*},f)$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — splitting a subinterval can only lower (or hold) its $\\sup$ contribution and raise (or hold) its $\\inf$ contribution, so $U$ decreases, $L$ increases, and the gap narrows.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Picture one subinterval split in two: can the new $\\sup$ rectangles overshoot the old single $M_i$ rectangle? Which way must $U$ and $L$ each move?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-ftc-01",
+      "tags": [
+        "antiderivative",
+        "ftc"
+      ],
+      "difficulty": 1,
+      "prompt": "An **antiderivative** of $f$ on $[a,b]$ is, by definition, a function $F$ such that:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$F'(x)=f(x)$ on $[a,b]$"
+            },
+            {
+              "id": "b",
+              "label": "$F(x)=f'(x)$ on $[a,b]$"
+            },
+            {
+              "id": "c",
+              "label": "$F(x)=\\int_a^b f$ (a fixed number)"
+            },
+            {
+              "id": "d",
+              "label": "$F'(x)=0$ on $[a,b]$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — $F$ antidifferentiates $f$ means differentiating $F$ returns $f$: $F'=f$. This is the object FTC Part 2 needs.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Which function gets differentiated to recover the other? An antiderivative is the thing whose *derivative* is $f$, not the thing built from $f'$ or a single number."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-integrability-03",
+      "tags": [
+        "integrability",
+        "continuity",
+        "monotone"
+      ],
+      "difficulty": 2,
+      "prompt": "Select **all** classes that are *guaranteed* Riemann integrable on $[a,b]$. *(three are guaranteed)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Every continuous function on $[a,b]$."
+            },
+            {
+              "id": "b",
+              "label": "Every monotone function on $[a,b]$."
+            },
+            {
+              "id": "c",
+              "label": "Every bounded function on $[a,b]$ with only finitely many discontinuities."
+            },
+            {
+              "id": "d",
+              "label": "The Dirichlet function on $[0,1]$."
+            },
+            {
+              "id": "e",
+              "label": "Every bounded function on $[a,b]$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — continuous, monotone, and bounded-with-finitely-many-discontinuities all pass the Riemann criterion. Boundedness alone does not, and the Dirichlet function is the standard bounded-but-not-integrable counterexample.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three sufficient conditions force $U-L<\\varepsilon$; one option is *merely* bounded and one is the dense $0/1$ function. Which two can keep $U-L=1$ no matter how fine $P$ is?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-integrability-04",
+      "tags": [
+        "ftc",
+        "continuity"
+      ],
+      "difficulty": 2,
+      "prompt": "Define $f$ on $[0,2]$ by $f(x)=0$ for $x<1$ and $f(x)=1$ for $x\\ge 1$, and let $F(x)=\\int_0^x f(t)\\,dt$. A *flawed* argument computes $F'(1)$. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$f$ is a bounded step function, integrable on $[0,2]$, so $F(x)=\\int_0^x f$ is well-defined."
+            },
+            {
+              "id": "p2",
+              "label": "Computing the area: $F(x)=0$ for $x\\le 1$ and $F(x)=x-1$ for $x\\ge 1$."
+            },
+            {
+              "id": "p3",
+              "label": "By FTC Part 1, $F'(x)=f(x)$ everywhere on $(0,2)$; in particular $F'(1)=f(1)=1$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — step 3 is the flaw. FTC Part 1 delivers $F'(x)=f(x)$ only where $f$ is *continuous*. At the jump $x=1$, $F$ has left derivative $0$ and right derivative $1$, so $F'(1)$ does not even exist.",
+        "incorrect": [
+          {
+            "match": "p1",
+            "message": "Step 1 is fine: a bounded function with one discontinuity is integrable, so $F$ exists."
+          },
+          {
+            "match": "p2",
+            "message": "Step 2 is correct accumulation: $\\int_0^x f$ is $0$ until $1$, then grows like $x-1$."
+          },
+          {
+            "match": "*",
+            "message": "FTC Part 1 carries a hypothesis. Is $f$ continuous *at* $x=1$? Check the left and right derivatives of $F$ there."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-integration-01",
+      "tags": [
+        "integration"
+      ],
+      "difficulty": 2,
+      "prompt": "Match each basic property of the Riemann integral to the statement that expresses it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Linearity"
+            },
+            {
+              "id": "st2",
+              "label": "Additivity over intervals"
+            },
+            {
+              "id": "st3",
+              "label": "Monotonicity"
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "$\\int_a^b (\\alpha f+\\beta g)=\\alpha\\int_a^b f+\\beta\\int_a^b g$."
+            },
+            {
+              "id": "j_b",
+              "label": "For $a<c<b$, $\\int_a^c f+\\int_c^b f=\\int_a^b f$."
+            },
+            {
+              "id": "j_c",
+              "label": "If $f(x)\\le g(x)$ on $[a,b]$, then $\\int_a^b f\\le\\int_a^b g$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — linearity pulls scalars and sums through, additivity splits the domain at an interior point, and monotonicity preserves pointwise inequalities under integration.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Read each statement's shape: which one combines $f$ and $g$, which one splits $[a,b]$ at $c$, and which one compares two integrands by an inequality?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-integrability-05",
+      "tags": [
+        "monotone",
+        "integrability",
+        "upper-lower-sums"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that an **increasing** $f$ on $[a,b]$ is Riemann integrable. Arrange the steps from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "o1",
+              "label": "Take the uniform partition with $n$ equal subintervals, each of width $\\Delta x=\\tfrac{b-a}{n}$."
+            },
+            {
+              "id": "o2",
+              "label": "Since $f$ increases, on $[x_{i-1},x_i]$ we have $M_i=f(x_i)$ and $m_i=f(x_{i-1})$."
+            },
+            {
+              "id": "o3",
+              "label": "So $U(P,f)-L(P,f)=\\sum_i (M_i-m_i)\\,\\Delta x=\\Delta x\\sum_i\\big(f(x_i)-f(x_{i-1})\\big)$."
+            },
+            {
+              "id": "o4",
+              "label": "The sum telescopes: $\\sum_i\\big(f(x_i)-f(x_{i-1})\\big)=f(b)-f(a)$."
+            },
+            {
+              "id": "o5",
+              "label": "Hence $U-L=\\tfrac{b-a}{n}\\,(f(b)-f(a))\\to 0$; given $\\varepsilon$, choose $n$ large, and the Riemann criterion gives integrability."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "o1,o2,o3,o4,o5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — monotonicity pins $M_i,m_i$ to the endpoints, so the oscillation sum telescopes to $f(b)-f(a)$ and the common width $\\tfrac{b-a}{n}$ drives $U-L$ to $0$. No continuity needed.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "What makes the $\\sum(M_i-m_i)$ collapse? Identify $M_i,m_i$ from monotonicity first, factor out $\\Delta x$, then telescope before letting $n\\to\\infty$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-integration-02",
+      "tags": [
+        "integration",
+        "continuity",
+        "uniform-continuity"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** true statements linking integration, continuity, and compactness. *(three are true)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Continuity on the *compact* $[a,b]$ upgrades to uniform continuity, which is exactly what forces every oscillation $M_i-m_i$ small and proves continuous $\\Rightarrow$ integrable."
+            },
+            {
+              "id": "b",
+              "label": "Boundedness of $f$ on $[a,b]$ by itself guarantees Riemann integrability."
+            },
+            {
+              "id": "c",
+              "label": "A continuous $f$ on $[a,b]$ attains a max and min (compactness), so it is bounded — a prerequisite for the upper/lower sums to be finite."
+            },
+            {
+              "id": "d",
+              "label": "If $f$ is integrable on $[a,b]$, then $F(x)=\\int_a^x f$ is continuous on $[a,b]$."
+            },
+            {
+              "id": "e",
+              "label": "A bounded function with infinitely many discontinuities can never be Riemann integrable."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,c,d"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — compactness makes continuity uniform (a) and bounds $f$ (c), and a bounded integrable $f$ makes $F(x)=\\int_a^x f$ Lipschitz, hence continuous (d). Boundedness alone fails (Dirichlet), and infinitely many discontinuities is not fatal (e.g. Thomae's function is integrable).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Separate the genuine implications from the over-claims: does *bounded* alone suffice? Does *some* discontinuities forbid integrability? And why is $F(x)=\\int_a^x f$ continuous when $f$ is bounded?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-interior-01",
+      "tags": [
+        "interior",
+        "open-set"
+      ],
+      "difficulty": 1,
+      "prompt": "In $\\mathbb{R}$ with the usual metric, what is the **interior** $[0,1]^{\\circ}$ of the closed interval $[0,1]$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$[0,1]$"
+            },
+            {
+              "id": "b",
+              "label": "$(0,1)$"
+            },
+            {
+              "id": "c",
+              "label": "$\\{0,1\\}$"
+            },
+            {
+              "id": "d",
+              "label": "$\\varnothing$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Every point of $(0,1)$ has a small ball staying inside $[0,1]$, but no ball around an endpoint does — any ball around $0$ contains negatives. So the interior drops the endpoints: $[0,1]^{\\circ}=(0,1)$.",
+        "incorrect": [
+          {
+            "match": "a",
+            "message": "An interior point needs a *whole* ball inside the set. The endpoints $0$ and $1$ fail that, so they cannot be interior."
+          },
+          {
+            "match": "c",
+            "message": "$\\{0,1\\}$ are the boundary points, the opposite of interior — every ball around them leaks outside $[0,1]$."
+          },
+          {
+            "match": "*",
+            "message": "Which points of $[0,1]$ have room on *both* sides, and which sit on the edge? The interior keeps only the former."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-boundary-01",
+      "tags": [
+        "interior",
+        "closure",
+        "boundary",
+        "topology"
+      ],
+      "difficulty": 2,
+      "prompt": "For the half-open interval $E=(0,1]$ in $\\mathbb{R}$, arrange these three sets from **smallest to largest** by inclusion: the interior $E^{\\circ}$, the set $E$ itself, and the closure $\\overline{E}$.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "int",
+              "label": "$E^{\\circ}=(0,1)$"
+            },
+            {
+              "id": "set",
+              "label": "$E=(0,1]$"
+            },
+            {
+              "id": "clo",
+              "label": "$\\overline{E}=[0,1]$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "int,set,clo"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly. Always $E^{\\circ}\\subseteq E\\subseteq\\overline{E}$. The interior loses the included endpoint $1$ (no ball around $1$ stays in $E$), while the closure gains the missing limit point $0$: $(0,1)\\subseteq(0,1]\\subseteq[0,1]$. The two edge points $\\{0,1\\}$ removed-then-added are exactly the boundary $\\partial E$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Recall the sandwich $E^{\\circ}\\subseteq E\\subseteq\\overline{E}$. Strip $E$ to points with room on both sides for the interior; add limit points (like $0$) for the closure."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-distance-01",
+      "tags": [
+        "distance",
+        "metric-space"
+      ],
+      "difficulty": 1,
+      "prompt": "In $\\mathbb{R}^2$ with the **sup metric** $d_\\infty(x,y)=\\max\\big(|x_1-y_1|,\\,|x_2-y_2|\\big)$, compute $d_\\infty\\big((1,4),(-2,8)\\big)$.",
+      "widget": {
+        "kind": "fill_blank",
+        "props": {
+          "template": "d_\\infty((1,4),(-2,8)) = {{answer}}",
+          "placeholder": "a number"
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "4"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. The sup metric keeps the *largest* coordinate gap: $|1-(-2)|=3$ and $|4-8|=4$, so $d_\\infty=\\max(3,4)=4$.",
+        "incorrect": [
+          {
+            "match": "7",
+            "message": "That sums the gaps ($3+4$), which is the taxicab metric $d_1$. The sup metric takes the maximum, not the total."
+          },
+          {
+            "match": "5",
+            "message": "That is the Euclidean distance $\\sqrt{3^2+4^2}=5$. The sup metric keeps only the single biggest coordinate gap."
+          },
+          {
+            "match": "3",
+            "message": "$3=|1-(-2)|$ is just the first coordinate gap; compare it with $|4-8|=4$ and keep the larger."
+          },
+          {
+            "match": "*",
+            "message": "Form each coordinate gap $|1-(-2)|$ and $|4-8|$, then keep the larger of the two."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-triangle-inequality-01",
+      "tags": [
+        "triangle-inequality",
+        "cauchy-schwarz",
+        "norm",
+        "euclidean"
+      ],
+      "difficulty": 2,
+      "prompt": "For nonzero $x,y\\in\\mathbb{R}^n$, the triangle inequality becomes an **equality** $\\|x+y\\|=\\|x\\|+\\|y\\|$ exactly when:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$y=cx$ for some scalar $c\\ge 0$ (they point the same way)"
+            },
+            {
+              "id": "b",
+              "label": "$y=cx$ for some scalar $c$ (parallel, either direction)"
+            },
+            {
+              "id": "c",
+              "label": "$x\\cdot y=0$ (they are perpendicular)"
+            },
+            {
+              "id": "d",
+              "label": "never — it is always strict for nonzero vectors"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Equality forces the cross term to its maximum, $x\\cdot y=\\|x\\|\\,\\|y\\|$, which needs $y=cx$ with $c\\ge 0$. Anti-parallel vectors like $x=(1,0),\\,y=(-1,0)$ give $\\|x+y\\|=0<2=\\|x\\|+\\|y\\|$.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "Parallel ($y=cx$, any $c$) is the equality case for *Cauchy–Schwarz*, $|x\\cdot y|=\\|x\\|\\,\\|y\\|$. The triangle inequality is stricter: the vectors must point the *same* way, $c\\ge 0$."
+          },
+          {
+            "match": "c",
+            "message": "Perpendicular gives $\\|x+y\\|^2=\\|x\\|^2+\\|y\\|^2$ (Pythagoras), which is *strictly* below $(\\|x\\|+\\|y\\|)^2$ — the far-from-equality case."
+          },
+          {
+            "match": "d",
+            "message": "It can be equality: take $y=x$. Then $\\|x+y\\|=2\\|x\\|=\\|x\\|+\\|y\\|$."
+          },
+          {
+            "match": "*",
+            "message": "Expand $\\|x+y\\|^2=\\|x\\|^2+2\\,(x\\cdot y)+\\|y\\|^2$ and compare with $(\\|x\\|+\\|y\\|)^2$. Equality needs $x\\cdot y=\\|x\\|\\,\\|y\\|$ — when do the vectors achieve that?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-metric-space-01",
+      "tags": [
+        "metric-space",
+        "distance"
+      ],
+      "difficulty": 2,
+      "prompt": "Someone claims $d(x,y)=|x^2-y^2|$ is a metric on $\\mathbb{R}$ and offers this 'proof'. Exactly one step is invalid — select it.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$d(x,y)=|x^2-y^2|\\ge 0$ for all $x,y$, so (M1) nonnegativity holds."
+            },
+            {
+              "id": "p2",
+              "label": "$d(x,y)=0 \\iff x^2=y^2 \\iff x=y$, so (M2) holds."
+            },
+            {
+              "id": "p3",
+              "label": "$d(x,y)=|x^2-y^2|=|y^2-x^2|=d(y,x)$, so (M3) symmetry holds."
+            },
+            {
+              "id": "p4",
+              "label": "Therefore $d(x,y)=|x^2-y^2|$ is a metric on $\\mathbb{R}$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p2"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Step (p2) is false: $x^2=y^2$ means $x=\\pm y$, not $x=y$. For instance $d(1,-1)=|1-1|=0$ even though $1\\ne -1$, so distinct points sit at distance $0$ — (M2) fails and $d$ is only a *pseudometric*.",
+        "incorrect": [
+          {
+            "match": "p1",
+            "message": "A modulus is always $\\ge 0$, so (M1) genuinely holds. Look for the axiom that confuses $x^2=y^2$ with $x=y$."
+          },
+          {
+            "match": "p3",
+            "message": "Swapping $x,y$ flips the inside of the modulus but not its value, so symmetry really does hold. The flaw is elsewhere."
+          },
+          {
+            "match": "p4",
+            "message": "(p4) only restates the conclusion; the false claim is one of the axiom checks. Which one assumes $x^2=y^2$ forces $x=y$?"
+          },
+          {
+            "match": "*",
+            "message": "Test (M2) directly: can two *different* numbers have $|x^2-y^2|=0$? Try $x=1,\\,y=-1$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-closure-01",
+      "tags": [
+        "closure",
+        "limit-point",
+        "accumulation"
+      ],
+      "difficulty": 1,
+      "prompt": "In $\\mathbb{R}$ with the usual metric, what is the **closure** $\\overline{\\mathbb{Q}}$ of the set of rationals?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$\\mathbb{Q}$ itself"
+            },
+            {
+              "id": "b",
+              "label": "$\\mathbb{R}$"
+            },
+            {
+              "id": "c",
+              "label": "the irrationals $\\mathbb{R}\\setminus\\mathbb{Q}$"
+            },
+            {
+              "id": "d",
+              "label": "$\\varnothing$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right. Between any two reals lies a rational, so every real number is a limit point of $\\mathbb{Q}$. Adding them all gives $\\overline{\\mathbb{Q}}=\\mathbb{Q}\\cup\\mathbb{Q}'=\\mathbb{R}$ — $\\mathbb{Q}$ is *dense* in $\\mathbb{R}$.",
+        "incorrect": [
+          {
+            "match": "a",
+            "message": "That would make $\\mathbb{Q}$ closed. But $\\mathbb{Q}$ misses limit points: a rational sequence $\\to\\sqrt2$ shows $\\sqrt2\\in\\mathbb{Q}'\\setminus\\mathbb{Q}$."
+          },
+          {
+            "match": "c",
+            "message": "The closure always *contains* $\\mathbb{Q}$ itself, so it cannot be only the irrationals."
+          },
+          {
+            "match": "*",
+            "message": "Which points have rationals arbitrarily close in *every* ball? By density of $\\mathbb{Q}$, that is every real number."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-open-ball-01",
+      "tags": [
+        "open-ball",
+        "open-set",
+        "triangle-inequality",
+        "neighborhood",
+        "topology"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that every open ball $B_r(x)$ is an **open set**: match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Let $y\\in B_r(x)$, and set $s=r-d(x,y)$."
+            },
+            {
+              "id": "st2",
+              "label": "Let $z\\in B_s(y)$, so $d(y,z)<s$."
+            },
+            {
+              "id": "st3",
+              "label": "$d(x,z)\\le d(x,y)+d(y,z)<d(x,y)+s=r$."
+            },
+            {
+              "id": "st4",
+              "label": "Hence $B_s(y)\\subseteq B_r(x)$, so $y$ is interior; as $y$ was arbitrary, $B_r(x)$ is open."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "Since $y\\in B_r(x)$ means $d(x,y)<r$, the number $s=r-d(x,y)$ is strictly positive — a usable radius."
+            },
+            {
+              "id": "j_b",
+              "label": "This is exactly the definition of membership in the ball $B_s(y)$."
+            },
+            {
+              "id": "j_c",
+              "label": "Apply the triangle inequality, then substitute $s=r-d(x,y)$ to collapse the bound to $r$."
+            },
+            {
+              "id": "j_d",
+              "label": "Every point of $B_s(y)$ lands in $B_r(x)$, giving a ball around $y$ inside it; openness needs this at *every* such $y$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c,st4:j_d"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly. The slack $s=r-d(x,y)>0$ is the breathing room; the triangle inequality shows any $z$ within $s$ of $y$ is still within $r$ of $x$; so a whole ball sits inside $B_r(x)$ around each of its points — which is precisely openness.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Track where each fact enters: positivity of $s$ comes from $d(x,y)<r$; the chain $d(x,z)<r$ is the *triangle inequality*; and openness demands an inside-ball at *every* point $y$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-connectedness-01",
+      "tags": [
+        "connected",
+        "connectedness",
+        "disconnected",
+        "topology"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** statements that are TRUE. *(three are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "The continuous image of a connected set is connected."
+            },
+            {
+              "id": "b",
+              "label": "A subset of $\\mathbb{R}$ is connected if and only if it is an interval."
+            },
+            {
+              "id": "c",
+              "label": "If two connected sets share at least one common point, their union is connected."
+            },
+            {
+              "id": "d",
+              "label": "Every bounded connected subset of $\\mathbb{R}$ is a closed interval."
+            },
+            {
+              "id": "e",
+              "label": "Removing a single point from a connected subset of $\\mathbb{R}$ always leaves a connected set."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "All three are core facts: continuity preserves connectedness, the connected subsets of $\\mathbb{R}$ are exactly the intervals, and connected sets glued at a shared point stay connected. The other two fail: $(0,1)$ is bounded and connected but not closed, and deleting an interior point (say $0$ from $(-1,1)$) splits the interval into $(-1,0)\\cup(0,1)$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three are theorems; two are tempting overreaches. Test the suspects on a small example — is $(0,1)$ a *closed* interval? Does $(-1,1)$ survive deleting $0$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-closed-set-01",
+      "tags": [
+        "closed-set",
+        "open-set",
+        "topology"
+      ],
+      "difficulty": 3,
+      "prompt": "A *flawed* argument claims an arbitrary union of closed sets is closed. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "For each $n\\ge 1$, $F_n=\\left[\\tfrac1n,1\\right]$ is closed, being a closed interval."
+            },
+            {
+              "id": "p2",
+              "label": "The union of any family of closed sets is closed (by De Morgan, dual to open sets)."
+            },
+            {
+              "id": "p3",
+              "label": "$\\bigcup_{n=1}^{\\infty}F_n=(0,1]$."
+            },
+            {
+              "id": "p4",
+              "label": "Therefore $(0,1]$ is closed."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p2"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — (p2) is the flaw. De Morgan turns 'arbitrary unions of open sets are open' into 'arbitrary *intersections* of closed sets are closed'; only *finite* unions of closed sets stay closed. Here the infinite union is $(0,1]$, which is **not** closed — its limit point $0$ is missing — exactly the failure (p2) overlooks.",
+        "incorrect": [
+          {
+            "match": "p1",
+            "message": "Each $[1/n,1]$ really is a closed interval, so (p1) is sound. Look for the step that over-generalizes a closure property."
+          },
+          {
+            "match": "p3",
+            "message": "The union genuinely is $(0,1]$: every $t\\in(0,1]$ lies in some $[1/n,1]$, while $0$ never does. The computation is fine — the bad step is the *principle* applied to it."
+          },
+          {
+            "match": "p4",
+            "message": "(p4) follows correctly *if* the union were closed; the error is the earlier claim that infinite unions of closed sets must be closed."
+          },
+          {
+            "match": "*",
+            "message": "Which closure rule is invoked? Unions of closed sets are guaranteed closed only when there are *finitely* many — and $(0,1]$ shows why."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-bounds-01",
+      "tags": [
+        "sequence",
+        "bounds",
+        "convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "Is the implication \"bounded $\\Rightarrow$ convergent\" valid for sequences in $\\mathbb{R}$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Yes — a sequence trapped in a finite interval must settle on a single limit."
+            },
+            {
+              "id": "b",
+              "label": "No — $a_n=(-1)^n$ stays in $[-1,1]$ yet has no limit."
+            },
+            {
+              "id": "c",
+              "label": "Yes, but only when the sequence is monotone."
+            },
+            {
+              "id": "d",
+              "label": "No — bounded sequences are never convergent."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — boundedness only confines the terms; it lets them oscillate forever, as $(-1)^n$ does between $-1$ and $1$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Can a sequence live inside $[-1,1]$ yet never approach one value? Try $(-1)^n$. (Bolzano–Weierstrass only promises a convergent *subsequence*.)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-abs-limit-01",
+      "tags": [
+        "limit",
+        "sequence",
+        "convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "Suppose $|a_n|\\to 3$. Does it follow that $a_n\\to 3$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Yes — convergence of $|a_n|$ forces $a_n$ to the same value."
+            },
+            {
+              "id": "b",
+              "label": "No — $a_n=3(-1)^n$ has $|a_n|=3\\to 3$, but $a_n$ has no limit."
+            },
+            {
+              "id": "c",
+              "label": "Yes — $a_n$ must converge to either $3$ or $-3$."
+            },
+            {
+              "id": "d",
+              "label": "No — $|a_n|$ can never converge."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — absolute value discards sign, so $|a_n|\\to 3$ lets $a_n$ keep flipping between $3$ and $-3$ without ever settling.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Does knowing the *size* $|a_n|$ pin down the *sign* of $a_n$? Examine $a_n=3(-1)^n$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-subseq-01",
+      "tags": [
+        "subsequence",
+        "convergence",
+        "limit"
+      ],
+      "difficulty": 1,
+      "prompt": "A sequence $(a_n)$ has a subsequence converging to $5$. Must $(a_n)$ itself converge?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Yes — a single convergent subsequence pins down the whole sequence."
+            },
+            {
+              "id": "b",
+              "label": "Not necessarily — $(-1)^n$ has the subsequence $1,1,1,\\dots\\to 1$ yet diverges."
+            },
+            {
+              "id": "c",
+              "label": "Yes, and its limit must be $5$, since subsequences share the parent's limit."
+            },
+            {
+              "id": "d",
+              "label": "No — a divergent sequence has no convergent subsequences."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — the theorem runs the other way: convergence forces *every* subsequence to agree, but one well-behaved subsequence cannot tame a divergent parent like $(-1)^n$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Which direction is the theorem? $a_n\\to L$ forces every subsequence to $L$ — but does the existence of one convergent subsequence run backwards? Test $(-1)^n$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-bounds-02",
+      "tags": [
+        "sequence",
+        "bounds",
+        "convergence",
+        "supremum"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument claims that **every** bounded sequence $(a_n)$ converges. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$(a_n)$ is bounded, so all its terms lie in some interval $[-M,M]$."
+            },
+            {
+              "id": "p2",
+              "label": "By the least upper bound property, $L=\\sup_n a_n$ exists in $\\mathbb{R}$."
+            },
+            {
+              "id": "p3",
+              "label": "Therefore $a_n\\to L$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $\\sup_n a_n$ certainly exists, but a sequence converges to its supremum only when it *climbs* toward it (monotone). For $(-1)^n$, $\\sup=1$ yet the sequence never converges.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Two steps are sound. Which one secretly assumes the terms *increase* toward the supremum — a feature only monotone sequences have? Try it on $(-1)^n$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-limit-laws-01",
+      "tags": [
+        "limit-laws",
+        "algebra-of-limits",
+        "convergence"
+      ],
+      "difficulty": 2,
+      "prompt": "Suppose $a_n+b_n\\to 0$. Must each of $a_n$ and $b_n$ converge?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Yes — apply the sum law in reverse."
+            },
+            {
+              "id": "b",
+              "label": "No — take $a_n=n$ and $b_n=-n$: then $a_n+b_n=0\\to 0$, but neither $a_n$ nor $b_n$ converges."
+            },
+            {
+              "id": "c",
+              "label": "Yes, because the limit of the sum is $0$."
+            },
+            {
+              "id": "d",
+              "label": "No — the sum of two sequences never converges."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — the limit laws only run *forward*, from convergent pieces to a convergent combination. Two divergent halves can cancel into a convergent sum.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "The sum law assumes $a_n$ and $b_n$ each converge *first*. Can two divergent sequences cancel? Try $a_n=n,\\ b_n=-n$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-cauchy-01",
+      "tags": [
+        "cauchy",
+        "sequence",
+        "completeness"
+      ],
+      "difficulty": 2,
+      "prompt": "A sequence satisfies $|a_{n+1}-a_n|\\to 0$. Must it be a Cauchy sequence?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Yes — shrinking consecutive gaps are exactly the Cauchy condition."
+            },
+            {
+              "id": "b",
+              "label": "No — $a_n=\\sqrt{n}$ has $\\sqrt{n+1}-\\sqrt{n}\\to 0$ but $a_n\\to\\infty$, so it is not Cauchy."
+            },
+            {
+              "id": "c",
+              "label": "Yes, as long as every term is positive."
+            },
+            {
+              "id": "d",
+              "label": "No — a sequence is Cauchy only when it is monotone."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "b"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — Cauchy controls *all* pairs $m,n\\ge N$, not just neighbors. The steps of $\\sqrt{n}$ shrink, yet the terms accumulate without bound to $\\infty$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Small *consecutive* gaps still let far-apart terms drift apart. Where does $\\sqrt{n}$ go, even though $\\sqrt{n+1}-\\sqrt{n}\\to 0$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-cauchy-02",
+      "tags": [
+        "cauchy",
+        "completeness",
+        "sequence",
+        "epsilon-delta"
+      ],
+      "difficulty": 3,
+      "prompt": "Reconstruct the proof that every convergent sequence is Cauchy. Assuming $a_n\\to L$, match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Let $\\varepsilon>0$. Choose $N$ so that $|a_n-L|<\\varepsilon/2$ for all $n\\ge N$."
+            },
+            {
+              "id": "st2",
+              "label": "For any $m,n\\ge N$, $\\;|a_m-a_n| \\le |a_m-L|+|a_n-L|$."
+            },
+            {
+              "id": "st3",
+              "label": "Hence $|a_m-a_n|<\\tfrac{\\varepsilon}{2}+\\tfrac{\\varepsilon}{2}=\\varepsilon$ whenever $m,n\\ge N$, so $(a_n)$ is Cauchy."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "Apply the definition of $a_n\\to L$ at the halved tolerance $\\varepsilon/2$ to manufacture the cutoff $N$."
+            },
+            {
+              "id": "j_b",
+              "label": "Insert $L$ as a waypoint, $a_m-a_n=(a_m-L)+(L-a_n)$, and apply the triangle inequality."
+            },
+            {
+              "id": "j_c",
+              "label": "Both pieces are below $\\varepsilon/2$ once $m,n\\ge N$, which is precisely the Cauchy condition."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — halve the tolerance, route the gap through $L$ with the triangle inequality, and the two halves recombine to $\\varepsilon$. This direction needs no completeness.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Trace the engine of each step: which one *uses convergence* to obtain $N$, which *splits the gap through $L$*, and which *adds the halves* to meet the Cauchy definition?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-cauchy-03",
+      "tags": [
+        "cauchy",
+        "completeness",
+        "bolzano-weierstrass",
+        "subsequence"
+      ],
+      "difficulty": 3,
+      "prompt": "Arrange the steps proving that a **Cauchy** sequence in $\\mathbb{R}$ converges, from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i3",
+              "label": "Given $\\varepsilon>0$, the Cauchy condition gives $N_1$ with $|a_m-a_n|<\\varepsilon/2$ for all $m,n\\ge N_1$."
+            },
+            {
+              "id": "i1",
+              "label": "A Cauchy sequence is bounded: with $\\varepsilon=1$, all terms past some $N$ lie within $1$ of $a_N$, and the finitely many earlier terms are bounded too."
+            },
+            {
+              "id": "i5",
+              "label": "For $n\\ge N_1$, $\\;|a_n-L|\\le|a_n-a_{n_k}|+|a_{n_k}-L|<\\tfrac{\\varepsilon}{2}+\\tfrac{\\varepsilon}{2}=\\varepsilon$, so $a_n\\to L$."
+            },
+            {
+              "id": "i2",
+              "label": "By Bolzano–Weierstrass, this bounded sequence has a convergent subsequence $a_{n_k}\\to L$."
+            },
+            {
+              "id": "i4",
+              "label": "Pick a subsequence index $n_k\\ge N_1$ with $|a_{n_k}-L|<\\varepsilon/2$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — bound the sequence, mine a convergent subsequence via Bolzano–Weierstrass, then let the Cauchy estimate drag the *whole* tail to that subsequential limit $L$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Order by dependence: boundedness must precede Bolzano–Weierstrass, the limit point $L$ must exist before you can aim at it, and the Cauchy estimate is what pulls every term toward $L$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-completeness-01",
+      "tags": [
+        "completeness",
+        "cauchy",
+        "bolzano-weierstrass",
+        "supremum",
+        "bounds"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** statements that express the **completeness** of $\\mathbb{R}$ — each TRUE in $\\mathbb{R}$ but FALSE in $\\mathbb{Q}$. *(three are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Every Cauchy sequence converges to a point of the space."
+            },
+            {
+              "id": "b",
+              "label": "Every nonempty subset bounded above has a least upper bound in the space."
+            },
+            {
+              "id": "c",
+              "label": "Every bounded sequence has a convergent subsequence (Bolzano–Weierstrass)."
+            },
+            {
+              "id": "d",
+              "label": "Every bounded sequence converges."
+            },
+            {
+              "id": "e",
+              "label": "Every sequence has a monotone subsequence."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "All three collapse in $\\mathbb{Q}$: a rational Cauchy sequence can limit to $\\sqrt{2}$, the set $\\{q\\in\\mathbb{Q}:q^2<2\\}$ has no rational supremum, and a bounded rational sequence may cluster only at an irrational. The distractors are either false even in $\\mathbb{R}$ or a pure order fact.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three are equivalent ways to say '$\\mathbb{R}$ has no holes.' Which listed claim is false even in $\\mathbb{R}$ (recall $(-1)^n$), and which is a pure ordering fact that already holds in $\\mathbb{Q}$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-nth-term-01",
+      "tags": [
+        "nth-term-test",
+        "series",
+        "convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "Select **all** series that the **nth-term (divergence) test** proves to diverge. *(two are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$\\sum_{n=1}^{\\infty} \\dfrac{n}{2n+1}$"
+            },
+            {
+              "id": "b",
+              "label": "$\\sum_{n=1}^{\\infty} (-1)^n$"
+            },
+            {
+              "id": "c",
+              "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{n}$"
+            },
+            {
+              "id": "d",
+              "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{2^n}$"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $\\dfrac{n}{2n+1} \\to \\tfrac12 \\neq 0$ and $(-1)^n \\not\\to 0$, so the nth-term test forces divergence. The other two have terms $\\to 0$, so the test is silent (the harmonic series diverges, but *not* by this test).",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "The nth-term test concludes divergence only when $a_n \\not\\to 0$. Check each limit: which terms fail to reach $0$? (Note $\\tfrac1n \\to 0$ — its divergence is real but invisible to *this* test.)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "series-pb-cauchy-01",
+      "tags": [
+        "cauchy",
+        "convergence",
+        "partial-sums"
+      ],
+      "difficulty": 1,
+      "prompt": "The **Cauchy criterion** for a series $\\sum a_n$ says it converges if and only if:",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "for every $\\varepsilon>0$ there is $N$ with $\\big|\\sum_{k=n}^{m} a_k\\big| < \\varepsilon$ for all $m \\ge n \\ge N$"
+            },
+            {
+              "id": "b",
+              "label": "the terms satisfy $a_n \\to 0$"
+            },
+            {
+              "id": "c",
+              "label": "the terms $(a_n)$ form a Cauchy sequence"
+            },
+            {
+              "id": "d",
+              "label": "the partial sums $(s_n)$ are bounded"
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — the criterion controls *tail blocks* $\\sum_{k=n}^{m} a_k$, which is precisely the partial sums $(s_n)$ being a Cauchy sequence.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "Taking $m=n$ recovers only $a_n \\to 0$ — that is the nth-term condition, necessary but far weaker than the full block criterion."
+          },
+          {
+            "match": "d",
+            "message": "Bounded partial sums force convergence only for *nonnegative* terms (monotone sums). With signs, you need the tail-block control."
+          },
+          {
+            "match": "*",
+            "message": "The Cauchy criterion is about *blocks* of consecutive terms $\\sum_{k=n}^{m} a_k$ being small, mirroring 'partial sums form a Cauchy sequence'."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-abs-conv-01",
+      "tags": [
+        "absolute-convergence",
+        "convergence"
+      ],
+      "difficulty": 1,
+      "prompt": "Which implication is **always valid** for a real series $\\sum a_n$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "If $\\sum |a_n|$ converges, then $\\sum a_n$ converges."
+            },
+            {
+              "id": "b",
+              "label": "If $\\sum a_n$ converges, then $\\sum |a_n|$ converges."
+            },
+            {
+              "id": "c",
+              "label": "If $a_n \\to 0$, then $\\sum a_n$ converges."
+            },
+            {
+              "id": "d",
+              "label": "If $\\sum a_n$ converges, then the terms $a_n$ are eventually positive."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — absolute convergence implies convergence. The other direction can fail (conditional convergence).",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "That is the converse, and it fails: $\\sum \\tfrac{(-1)^{n+1}}{n}$ converges while $\\sum \\tfrac1n$ diverges."
+          },
+          {
+            "match": "c",
+            "message": "$a_n \\to 0$ is necessary, not sufficient — the harmonic series is the standard counterexample."
+          },
+          {
+            "match": "*",
+            "message": "Only one direction is a theorem: control of $\\sum|a_n|$ controls $\\sum a_n$, not the reverse."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-comparison-01",
+      "tags": [
+        "comparison-test",
+        "geometric-series",
+        "nth-term-test"
+      ],
+      "difficulty": 2,
+      "prompt": "Decide the convergence of $\\sum_{n=1}^{\\infty} \\dfrac{1}{2^n+n}$. Which is the **cleanest valid** argument?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$0 < \\dfrac{1}{2^n+n} < \\dfrac{1}{2^n}$, and $\\sum \\tfrac{1}{2^n}$ is a convergent geometric series, so it converges."
+            },
+            {
+              "id": "b",
+              "label": "The terms tend to $0$, so by the nth-term test the series converges."
+            },
+            {
+              "id": "c",
+              "label": "$\\dfrac{1}{2^n+n} < \\dfrac1n$ and $\\sum \\tfrac1n$ diverges, so it diverges by comparison."
+            },
+            {
+              "id": "d",
+              "label": "No standard test settles it."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — dominate by the geometric $\\sum 2^{-n}$ (which converges), and a nonnegative series under a convergent bound converges.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "The nth-term test never *proves* convergence; $a_n \\to 0$ is only necessary."
+          },
+          {
+            "match": "c",
+            "message": "Being *smaller* than a divergent series tells you nothing — the comparison flows the wrong way here."
+          },
+          {
+            "match": "*",
+            "message": "Look for a convergent *upper* bound. The denominator's $2^n$ suggests a geometric benchmark."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-comparison-02",
+      "tags": [
+        "comparison-test",
+        "p-series"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument claims $\\sum_{n=1}^{\\infty} \\left(-\\dfrac1n\\right)$ converges. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "For every $n$, $-\\dfrac1n \\le \\dfrac{1}{n^2}$."
+            },
+            {
+              "id": "p2",
+              "label": "$\\sum \\dfrac{1}{n^2}$ converges, being a $p$-series with $p=2>1$."
+            },
+            {
+              "id": "p3",
+              "label": "By the comparison test, $a_n = -\\dfrac1n \\le b_n = \\dfrac1{n^2}$ with $\\sum b_n$ convergent, so $\\sum a_n$ converges."
+            },
+            {
+              "id": "p4",
+              "label": "Therefore $\\sum \\left(-\\dfrac1n\\right)$ converges."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — the comparison test requires $0 \\le a_n \\le b_n$. Here $a_n = -\\tfrac1n < 0$, so it does not apply; in fact $\\sum(-\\tfrac1n) = -\\sum \\tfrac1n$ diverges.",
+        "incorrect": [
+          {
+            "match": "p1",
+            "message": "Step 1 is a true inequality (a negative number is below a positive one) — but ask whether the *test* allows negative $a_n$."
+          },
+          {
+            "match": "p2",
+            "message": "Step 2 is correct: $\\sum 1/n^2$ really does converge. The error is applying comparison outside its hypotheses."
+          },
+          {
+            "match": "*",
+            "message": "What sign condition does the comparison test demand on the *smaller* terms? Find where it is violated."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-conditional-01",
+      "tags": [
+        "conditional-convergence",
+        "alternating-series",
+        "comparison-test"
+      ],
+      "difficulty": 2,
+      "prompt": "Classify $\\sum_{n=2}^{\\infty} \\dfrac{(-1)^n}{\\ln n}$.",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Conditionally convergent."
+            },
+            {
+              "id": "b",
+              "label": "Absolutely convergent."
+            },
+            {
+              "id": "c",
+              "label": "Divergent, because the terms do not tend to $0$."
+            },
+            {
+              "id": "d",
+              "label": "Divergent, because no cancellation can help."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $b_n = 1/\\ln n$ decreases to $0$, so the alternating series test gives convergence; but $\\tfrac{1}{\\ln n} > \\tfrac1n$, so $\\sum \\tfrac{1}{\\ln n}$ diverges by comparison with the harmonic series. Hence conditional.",
+        "incorrect": [
+          {
+            "match": "b",
+            "message": "Test the absolute series: since $\\ln n < n$, $\\tfrac{1}{\\ln n} > \\tfrac1n$, so $\\sum \\tfrac{1}{\\ln n}$ diverges — not absolute."
+          },
+          {
+            "match": "c",
+            "message": "$\\tfrac{1}{\\ln n} \\to 0$, so the terms *do* reach $0$; the alternating series test applies."
+          },
+          {
+            "match": "*",
+            "message": "Two-step classification: does $\\sum|a_n|$ converge (absolute)? If not, does the AST still give convergence (conditional)?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-abs-conv-02",
+      "tags": [
+        "absolute-convergence",
+        "cauchy",
+        "convergence",
+        "sequence",
+        "series"
+      ],
+      "difficulty": 3,
+      "prompt": "Arrange the steps proving **absolute convergence $\\Rightarrow$ convergence** (via the Cauchy criterion), from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Assume $\\sum |a_n|$ converges; we prove $\\sum a_n$ converges using the Cauchy criterion."
+            },
+            {
+              "id": "i2",
+              "label": "Fix $\\varepsilon>0$. Since $\\sum |a_n|$ is Cauchy, there is $N$ with $\\sum_{k=n}^{m} |a_k| < \\varepsilon$ for all $m \\ge n \\ge N$."
+            },
+            {
+              "id": "i3",
+              "label": "By the triangle inequality, $\\big|\\sum_{k=n}^{m} a_k\\big| \\le \\sum_{k=n}^{m} |a_k|$."
+            },
+            {
+              "id": "i4",
+              "label": "Hence $\\big|\\sum_{k=n}^{m} a_k\\big| < \\varepsilon$ for $m \\ge n \\ge N$, so the partial sums of $\\sum a_n$ are Cauchy."
+            },
+            {
+              "id": "i5",
+              "label": "A Cauchy sequence in $\\mathbb{R}$ converges, so the partial sums converge — i.e. $\\sum a_n$ converges."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — transfer the Cauchy property from $\\sum|a_n|$ to $\\sum a_n$ through the triangle inequality, then cash in completeness of $\\mathbb{R}$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Which inequality lets the *sizes* control the *signed* blocks? Apply it only after you have a small bound on $\\sum_{k=n}^m |a_k|$, and finish by invoking completeness of $\\mathbb{R}$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-tests-01",
+      "tags": [
+        "ratio-test",
+        "root-test",
+        "comparison-test",
+        "p-series",
+        "convergence"
+      ],
+      "difficulty": 3,
+      "prompt": "Match each series to the test that **cleanly settles** it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "$\\sum_{n=1}^{\\infty} \\dfrac{n!}{10^n}$"
+            },
+            {
+              "id": "st2",
+              "label": "$\\sum_{n=1}^{\\infty} \\left(1-\\dfrac1n\\right)^{n^2}$"
+            },
+            {
+              "id": "st3",
+              "label": "$\\sum_{n=1}^{\\infty} \\dfrac{1}{n^3+n}$"
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "Ratio test: $\\dfrac{a_{n+1}}{a_n} = \\dfrac{n+1}{10} \\to \\infty > 1$, so it diverges."
+            },
+            {
+              "id": "j_b",
+              "label": "Root test: $a_n^{1/n} = \\left(1-\\dfrac1n\\right)^{n} \\to e^{-1} < 1$, so it converges."
+            },
+            {
+              "id": "j_c",
+              "label": "Comparison: $0 < \\dfrac{1}{n^3+n} < \\dfrac{1}{n^3}$, a convergent $p$-series ($p=3$)."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — factorials/exponentials reward the ratio test, the $(\\cdot)^{n^2}$ structure begs for the root test, and a rational tail compares to a $p$-series.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Pick the test whose computation collapses: factorials $\\to$ ratio, an $n$-th power $\\to$ root, a polynomial fraction $\\to$ comparison with $1/n^p$."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-rearrangement-01",
+      "tags": [
+        "conditional-convergence",
+        "rearrangement",
+        "absolute-convergence",
+        "root-test"
+      ],
+      "difficulty": 3,
+      "prompt": "Let $\\sum a_n$ be a **conditionally convergent** real series. Select **all** statements that must be true. *(three are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$\\sum |a_n|$ diverges."
+            },
+            {
+              "id": "b",
+              "label": "The positive terms alone sum to $+\\infty$ and the negative terms alone to $-\\infty$."
+            },
+            {
+              "id": "c",
+              "label": "For any real $L$, some rearrangement of $\\sum a_n$ converges to $L$."
+            },
+            {
+              "id": "d",
+              "label": "The root test gives $\\limsup |a_n|^{1/n} < 1$."
+            },
+            {
+              "id": "e",
+              "label": "Every rearrangement converges to the same sum."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — by definition $\\sum|a_n|$ diverges, which forces the positive and negative parts to $\\pm\\infty$; that imbalance is exactly what Riemann's theorem exploits to hit any target $L$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Two options describe *absolute* convergence instead: a root-test value $<1$ would force $\\sum|a_n|$ to converge, and order-invariance is the absolute case. Which three follow from $\\sum|a_n|$ diverging?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-suprema-01",
+      "tags": [
+        "supremum",
+        "bounds"
+      ],
+      "difficulty": 1,
+      "prompt": "Is $5$ a **supremum** of the open interval $E=(0,1)$?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "No — $5$ is an upper bound of $(0,1)$, but not the *least* one; the supremum is $1$."
+            },
+            {
+              "id": "b",
+              "label": "Yes — $5$ lies above every element of $(0,1)$, so it is a supremum."
+            },
+            {
+              "id": "c",
+              "label": "No — $(0,1)$ has no supremum, because it has no maximum."
+            },
+            {
+              "id": "d",
+              "label": "Yes — any number outside the set may serve as its supremum."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — a supremum is the *least* upper bound. $5$ bounds $(0,1)$ from above, but $1$ is smaller and still an upper bound, so $\\sup(0,1)=1$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Many numbers bound $(0,1)$ from above — $5$, $2$, and $1$ all qualify. Which single one is the *smallest* such ceiling? That is the supremum."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-infimum-01",
+      "tags": [
+        "infimum",
+        "bounds"
+      ],
+      "difficulty": 1,
+      "prompt": "For a nonempty $E\\subseteq\\mathbb{R}$, the statement $\\alpha=\\inf E$ means $\\alpha$ is a lower bound of $E$ **and** which additional condition?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "For every $\\gamma>\\alpha$, some $x\\in E$ satisfies $x<\\gamma$ (no larger number is still a lower bound)."
+            },
+            {
+              "id": "b",
+              "label": "$\\alpha$ must be an element of $E$."
+            },
+            {
+              "id": "c",
+              "label": "Every number larger than $\\alpha$ is also a lower bound of $E$."
+            },
+            {
+              "id": "d",
+              "label": "$\\alpha$ is greater than or equal to every element of $E$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly — that clause is the *greatest* part of 'greatest lower bound': nothing above $\\alpha$ can still bound $E$ from below.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "An infimum is the **greatest** lower bound. Which option says that no number larger than $\\alpha$ can still be a lower bound — rather than forcing $\\alpha$ to live inside $E$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-ordered-field-01",
+      "tags": [
+        "ordered-field",
+        "completeness"
+      ],
+      "difficulty": 1,
+      "prompt": "Which statement is **true**?",
+      "widget": {
+        "kind": "multiple_choice",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$\\mathbb{Q}$ is an ordered field but is not complete."
+            },
+            {
+              "id": "b",
+              "label": "$\\mathbb{R}$ is complete but is not an ordered field."
+            },
+            {
+              "id": "c",
+              "label": "Completeness is one of the ordered-field axioms."
+            },
+            {
+              "id": "d",
+              "label": "Every ordered field is complete."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $\\mathbb{Q}$ obeys all the field and order axioms yet lacks the least-upper-bound property. Completeness is an *extra* assumption, not a field axiom.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Separate two layers: arithmetic-and-order (the ordered-field axioms) versus the least-upper-bound property (completeness). Which field satisfies the first but fails the second?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-nth-roots-02",
+      "tags": [
+        "nth-roots",
+        "completeness",
+        "supremum",
+        "construction"
+      ],
+      "difficulty": 2,
+      "prompt": "Fix a real $a>0$ and an integer $n\\ge 1$, and let $E=\\{\\,x>0 : x^n<a\\,\\}$. Select **all** true statements. *(two are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "$E$ is nonempty and bounded above, so $\\sup E$ exists in $\\mathbb{R}$ by completeness."
+            },
+            {
+              "id": "b",
+              "label": "Writing $s=\\sup E$, one shows $s^n=a$, so $s=\\sqrt[n]{a}$ is the positive $n$-th root of $a$."
+            },
+            {
+              "id": "c",
+              "label": "$E$ has a maximum element, and that maximum equals $\\sqrt[n]{a}$."
+            },
+            {
+              "id": "d",
+              "label": "The same construction produces $\\sqrt[n]{a}$ inside $\\mathbb{Q}$ for every rational $a>0$."
+            },
+            {
+              "id": "e",
+              "label": "The construction only works when $a$ is a perfect $n$-th power."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b"
+        ]
+      },
+      "feedback": {
+        "correct": "Both hold: completeness hands you $s=\\sup E$, and squeezing $s^n$ (neither $<a$ nor $>a$ can survive) forces $s^n=a$. That is exactly how $\\sqrt[n]{a}$ is built.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Two statements describe the sup-construction of a root; the rest are traps. Does $s$ itself lie in $E$ (is there a maximum)? Would the argument survive inside the incomplete field $\\mathbb{Q}$?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-archimedean-02",
+      "tags": [
+        "infimum",
+        "archimedean",
+        "completeness"
+      ],
+      "difficulty": 2,
+      "prompt": "A *flawed* argument claims there is a **smallest positive real number**. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "Let $S=\\{x\\in\\mathbb{R}:x>0\\}$ be the set of positive reals."
+            },
+            {
+              "id": "p2",
+              "label": "$S$ is nonempty and bounded below by $0$."
+            },
+            {
+              "id": "p3",
+              "label": "By the greatest-lower-bound property, $\\inf S$ exists, and $\\inf S=0$."
+            },
+            {
+              "id": "p4",
+              "label": "Since $0$ is the greatest lower bound, $0\\in S$, so $0$ is the smallest positive real."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p4"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — step $p4$ is the flaw. An infimum need not belong to the set, and $0$ is not positive; indeed for any $x>0$ the smaller $x/2$ is still positive, so $S$ has no least element.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Steps 1–3 are sound, and $\\inf S=0$ is correct. Where does the argument silently assume the infimum is a *member* of $S$ — and is $0$ even positive?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-density-02",
+      "tags": [
+        "density",
+        "archimedean"
+      ],
+      "difficulty": 2,
+      "prompt": "Reconstruct the proof that between any reals $x<y$ there is a rational $r$: match each step to the reason that justifies it.",
+      "widget": {
+        "kind": "justify_step",
+        "props": {
+          "steps": [
+            {
+              "id": "st1",
+              "label": "Pick $n\\in\\mathbb{N}$ with $\\tfrac1n<y-x$."
+            },
+            {
+              "id": "st2",
+              "label": "Let $m$ be the least integer with $m>nx$."
+            },
+            {
+              "id": "st3",
+              "label": "Then $x<\\tfrac{m}{n}<y$, so $r=\\tfrac{m}{n}$ works."
+            }
+          ],
+          "justifications": [
+            {
+              "id": "j_a",
+              "label": "The Archimedean property: since $y-x>0$, some $n$ makes $\\tfrac1n$ smaller than it."
+            },
+            {
+              "id": "j_b",
+              "label": "$\\mathbb{N}$ is well-ordered, so a least integer exceeding the real number $nx$ exists."
+            },
+            {
+              "id": "j_c",
+              "label": "$m>nx$ gives $x<\\tfrac{m}{n}$; and $m-1\\le nx$ with $\\tfrac1n<y-x$ gives $\\tfrac{m}{n}\\le x+\\tfrac1n<y$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "st1:j_a,st2:j_b,st3:j_c"
+        ]
+      },
+      "feedback": {
+        "correct": "Exactly the standard argument: shrink the step size below the gap (Archimedean), grab the first grid point past $nx$ (well-ordering), then verify it lands inside $(x,y)$.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Trace where each tool enters: which step needs a *small enough* $\\tfrac1n$ (Archimedean), which needs a *least* integer (well-ordering), and which is the closing inequality check?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-archimedean-03",
+      "tags": [
+        "archimedean",
+        "lub",
+        "completeness"
+      ],
+      "difficulty": 3,
+      "prompt": "Arrange the steps proving that the least-upper-bound property forces the **Archimedean property** (that $\\mathbb{N}$ is unbounded above), from first to last.",
+      "widget": {
+        "kind": "drag_order",
+        "props": {
+          "items": [
+            {
+              "id": "i1",
+              "label": "Suppose, for contradiction, that $\\mathbb{N}$ is bounded above in $\\mathbb{R}$."
+            },
+            {
+              "id": "i2",
+              "label": "Since $\\mathbb{N}$ is nonempty and bounded above, completeness gives $\\alpha=\\sup\\mathbb{N}$."
+            },
+            {
+              "id": "i3",
+              "label": "As $\\alpha-1<\\alpha$, it is not an upper bound, so some $n\\in\\mathbb{N}$ has $n>\\alpha-1$."
+            },
+            {
+              "id": "i4",
+              "label": "Then $n+1>\\alpha$ with $n+1\\in\\mathbb{N}$, contradicting that $\\alpha$ bounds $\\mathbb{N}$."
+            },
+            {
+              "id": "i5",
+              "label": "Hence $\\mathbb{N}$ is unbounded: for every $x>0$ and $y$, some $n$ gives $nx>y$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "i1,i2,i3,i4,i5"
+        ]
+      },
+      "feedback": {
+        "correct": "That is the completeness $\\Rightarrow$ Archimedean arc: assume $\\mathbb{N}$ bounded, take its supremum, beat $\\alpha-1$ with some $n$, then overshoot $\\alpha$ by one step — the contradiction that frees $\\mathbb{N}$ to be unbounded.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Where must the supremum be born before you can poke at $\\alpha-1$? Order it so completeness produces $\\alpha$, then a natural number slips above $\\alpha-1$, then $n+1$ overshoots."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-completeness-03",
+      "tags": [
+        "completeness",
+        "lub",
+        "infimum",
+        "archimedean",
+        "density"
+      ],
+      "difficulty": 3,
+      "prompt": "Select **all** statements that are **true** in $\\mathbb{R}$ — each a genuine consequence of completeness. *(three are correct)*",
+      "widget": {
+        "kind": "multiple_select",
+        "props": {
+          "choices": [
+            {
+              "id": "a",
+              "label": "Every nonempty subset of $\\mathbb{R}$ that is bounded below has an infimum in $\\mathbb{R}$."
+            },
+            {
+              "id": "b",
+              "label": "The natural numbers are unbounded above in $\\mathbb{R}$."
+            },
+            {
+              "id": "c",
+              "label": "Between any two distinct real numbers there is a rational number."
+            },
+            {
+              "id": "d",
+              "label": "Every nonempty subset of $\\mathbb{R}$ that is bounded above has a maximum."
+            },
+            {
+              "id": "e",
+              "label": "$\\mathbb{Q}$ also satisfies the least-upper-bound property."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "a,b,c"
+        ]
+      },
+      "feedback": {
+        "correct": "The greatest-lower-bound property (a), the Archimedean property (b), and density of $\\mathbb{Q}$ (c) all flow from completeness. A bounded set need not *attain* a maximum, and $\\mathbb{Q}$ famously fails the lub property.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Three are real consequences of completeness (infima, $\\mathbb{N}$ unbounded, density). One confuses supremum with maximum (recall $(0,1)$); one credits $\\mathbb{Q}$ with a property it lacks (recall $\\{x\\in\\mathbb{Q}:x^2<2\\}$)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pb-completeness-04",
+      "tags": [
+        "lub",
+        "completeness",
+        "irrational",
+        "construction"
+      ],
+      "difficulty": 3,
+      "prompt": "A *flawed* argument claims that $\\sup A$ is **rational**, where $A=\\{\\,x\\in\\mathbb{Q}:x>0,\\ x^2<2\\,\\}$ — supposedly showing $\\mathbb{Q}$ has no gap here. Select the invalid step.",
+      "widget": {
+        "kind": "spot_the_flaw",
+        "props": {
+          "steps": [
+            {
+              "id": "p1",
+              "label": "$A$ is nonempty, since $1\\in A$, and bounded above, since $x<2$ for all $x\\in A$."
+            },
+            {
+              "id": "p2",
+              "label": "Viewing $A\\subseteq\\mathbb{R}$, completeness gives $s=\\sup A$ with $s^2=2$, so $s=\\sqrt2$."
+            },
+            {
+              "id": "p3",
+              "label": "Because every element of $A$ is rational, its least upper bound $s$ is rational too."
+            },
+            {
+              "id": "p4",
+              "label": "Hence $\\sup A=\\sqrt2$ is rational, lying inside $\\mathbb{Q}$."
+            }
+          ]
+        }
+      },
+      "validator": {
+        "type": "set_match",
+        "engine": "mathjs",
+        "accept": [
+          "p3"
+        ]
+      },
+      "feedback": {
+        "correct": "Right — $p3$ is false: the supremum of a set of rationals need not be rational. Here $s=\\sqrt2$ is irrational, which is *precisely* why $\\mathbb{Q}$ lacks the least-upper-bound property.",
+        "incorrect": [
+          {
+            "match": "*",
+            "message": "Steps 1 and 2 are correct, and $p4$ merely restates $p3$. Which step assumes a least upper bound inherits the rationality of the set's members — is $\\sqrt2$ rational?"
+          }
+        ]
+      }
+    }
+  ]
+}

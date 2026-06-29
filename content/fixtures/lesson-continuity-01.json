@@ -34,7 +34,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "**Definition.** $f$ is **continuous at $p$** (a point of its domain) when $\\lim_{x\\to p} f(x) = f(p)$. Unwinding the ε–δ definition — and noting $x=p$ now causes no trouble — this reads:"
+          "content": "**Definition.** $f$ is **continuous at $p$** (a point of its domain) when $\\lim_{x\\to p} f(x) = f(p)$. Unwinding the $\\varepsilon$–$\\delta$ definition — and noting $x=p$ now causes no trouble — this reads:"
         },
         {
           "type": "math",
@@ -139,7 +139,7 @@
       },
       "validator": { "type": "set_match", "engine": "mathjs", "accept": ["p3"] },
       "feedback": {
-        "correct": "Right — step 3 is the flaw. 'Looks connected when drawn' is not the definition; continuity is the ε–δ / limit condition $\\lim_{x\\to p}f(x)=f(p)$ at *every* point. Functions like $x\\sin(1/x)$ or pathological ones defy eyeballing entirely.",
+        "correct": "Right — step 3 is the flaw. 'Looks connected when drawn' is not the definition; continuity is the $\\varepsilon$–$\\delta$ / limit condition $\\lim_{x\\to p}f(x)=f(p)$ at *every* point. Functions like $x\\sin(1/x)$ or pathological ones defy eyeballing entirely.",
         "incorrect": [
           { "match": "p1", "message": "Step 1 is only an observation about a picture, not the error. The leap happens when a *picture* is treated as a *proof* of continuity." },
           { "match": "p2", "message": "This is a harmless description of the drawing. The illegitimate move is concluding *continuity* from how the graph looks." },
@@ -183,7 +183,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Continuity at $p$ has three equivalent faces: the limit equals the value, $\\lim_{x\\to p}f(x)=f(p)$; the ε–δ condition $|x-p|<\\delta\\Rightarrow|f(x)-f(p)|<\\varepsilon$; and the sequential criterion $x_n\\to p \\Rightarrow f(x_n)\\to f(p)$."
+          "content": "Continuity at $p$ has three equivalent faces: the limit equals the value, $\\lim_{x\\to p}f(x)=f(p)$; the $\\varepsilon$–$\\delta$ condition $|x-p|<\\delta\\Rightarrow|f(x)-f(p)|<\\varepsilon$; and the sequential criterion $x_n\\to p \\Rightarrow f(x_n)\\to f(p)$."
         },
         {
           "type": "math",
@@ -295,7 +295,7 @@
         "incorrect": [
           { "match": "b", "message": "One sequence is too weak; a different sequence could betray a discontinuity (as for the Dirichlet function). It must hold for all $x_n\\to p$." },
           { "match": "c", "message": "Monotonicity is unrelated to continuity — continuous functions need not be increasing, and increasing functions can have jumps." },
-          { "match": "*", "message": "Continuity ⇔ for *every* $x_n\\to p$, $f(x_n)\\to f(p)$." }
+          { "match": "*", "message": "Continuity $\\iff$ for *every* $x_n\\to p$, $f(x_n)\\to f(p)$." }
         ]
       }
     },
@@ -343,7 +343,7 @@
         "incorrect": [
           { "match": "b", "message": "Removable requires the two-sided limit to *exist*. Here the sides disagree, so no single value at $2$ can patch it." },
           { "match": "c", "message": "Disagreeing one-sided limits mean $\\lim_{x\\to2}f$ does not exist, so $f$ cannot be continuous at $2$ — it is a jump." },
-          { "match": "*", "message": "One-sided limits exist but differ ⇒ no two-sided limit ⇒ jump discontinuity." }
+          { "match": "*", "message": "One-sided limits exist but differ $\\Rightarrow$ no two-sided limit $\\Rightarrow$ jump discontinuity." }
         ]
       }
     }

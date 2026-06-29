@@ -255,7 +255,7 @@
             "incorrect": [
               { "match": "b", "message": "Not every continuous function on $[0,1]$ is Lipschitz (e.g. $\\sqrt{x}$). Uniform continuity there comes from *compactness*, not a Lipschitz bound." },
               { "match": "c", "message": "$[0,1]$ has uncountably many points. The relevant finiteness is the *finite subcover* from compactness, not finitely many points." },
-              { "match": "*", "message": "The theorem is: continuous on compact ⇒ uniformly continuous. Compactness compresses the local $\\delta$'s into one global $\\delta$." }
+              { "match": "*", "message": "The theorem is: continuous on compact $\\Rightarrow$ uniformly continuous. Compactness compresses the local $\\delta$'s into one global $\\delta$." }
             ]
           }
         }
@@ -331,7 +331,7 @@
         "incorrect": [
           { "match": "b", "message": "The failure on $\\mathbb{R}$ relied on $x\\to\\infty$. On the bounded $[0,5]$ that escape is gone, and compactness restores uniform continuity." },
           { "match": "c", "message": "$x^2$ is a polynomial, continuous everywhere — including $[0,5]$. The question is uniform continuity, which compactness grants." },
-          { "match": "*", "message": "Apply the theorem: continuous on a compact (closed and bounded) set ⇒ uniformly continuous." }
+          { "match": "*", "message": "Apply the theorem: continuous on a compact (closed and bounded) set $\\Rightarrow$ uniformly continuous." }
         ]
       }
     }

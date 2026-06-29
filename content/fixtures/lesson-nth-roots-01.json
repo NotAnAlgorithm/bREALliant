@@ -10,18 +10,18 @@
       "blocks": [
         {
           "type": "text",
-          "content": "We are holding two facts that seem to be at war. We *proved* √2 is not a fraction — it cannot live in ℚ. Yet √2 is the length of the diagonal of a unit square, a perfectly real distance you could measure with a ruler. A real length has to be *some* number on the line."
+          "content": "We are holding two facts that seem to be at war. We *proved* $\\sqrt{2}$ is not a fraction — it cannot live in $\\mathbb{Q}$. Yet $\\sqrt{2}$ is the length of the diagonal of a unit square, a perfectly real distance you could measure with a ruler. A real length has to be *some* number on the line."
         },
         {
           "type": "text",
-          "content": "So something must fill that gap. The question is no longer 'does √2 exist as a fraction?' (it doesn't) but 'what guarantees a number lives exactly where the rationals pile up?' We finally have the tool: the *least upper bound property* from the previous lesson. Watch it manufacture √2 out of thin air."
+          "content": "So something must fill that gap. The question is no longer 'does $\\sqrt{2}$ exist as a fraction?' (it doesn't) but 'what guarantees a number lives exactly where the rationals pile up?' We finally have the tool: the *least upper bound property* from the previous lesson. Watch it manufacture $\\sqrt{2}$ out of thin air."
         }
       ]
     },
     {
       "id": "s2",
       "type": "discover",
-      "prompt": "Recall the set climbing toward the gap, now with *real* inputs allowed: choose $x = m/n$ and watch $x^2$ approach 2. Every $x$ with $x^2 < 2$ sits in the lower band; the upper bounds sit in the band above. They squeeze together on a single boundary point. In ℝ that boundary is a genuine number — we will call it $\\sup A$.",
+      "prompt": "Recall the set climbing toward the gap, now with *real* inputs allowed: choose $x = m/n$ and watch $x^2$ approach 2. Every $x$ with $x^2 < 2$ sits in the lower band; the upper bounds sit in the band above. They squeeze together on a single boundary point. In $\\mathbb{R}$ that boundary is a genuine number — we will call it $\\sup A$.",
       "widget": {
         "kind": "fraction_line",
         "props": {
@@ -41,7 +41,7 @@
     {
       "id": "s3",
       "type": "problem",
-      "prompt": "Let $x = \\sup\\{\\, t \\in \\mathbb{R} : t > 0 \\text{ and } t^2 < 2 \\,\\}$. The least upper bound property guarantees this $x$ exists in ℝ. Now pin down its square: $x^2 = \\;$ ___.",
+      "prompt": "Let $x = \\sup\\{\\, t \\in \\mathbb{R} : t > 0 \\text{ and } t^2 < 2 \\,\\}$. The least upper bound property guarantees this $x$ exists in $\\mathbb{R}$. Now pin down its square: $x^2 = \\;$ ___.",
       "widget": {
         "kind": "fill_blank",
         "props": { "template": "x^2 = {{answer}}", "placeholder": "a number" }
@@ -52,7 +52,7 @@
         "accept": ["2"]
       },
       "feedback": {
-        "correct": "Exactly — $x^2 = 2$. The reasoning: if $x^2 < 2$ you could nudge $x$ up a hair and stay in the set, so $x$ wasn't an upper bound; if $x^2 > 2$ you could shave $x$ down a hair and still bound the set, so $x$ wasn't the *least* upper bound. Only $x^2 = 2$ survives. This $x$ is what we mean by √2.",
+        "correct": "Exactly — $x^2 = 2$. The reasoning: if $x^2 < 2$ you could nudge $x$ up a hair and stay in the set, so $x$ wasn't an upper bound; if $x^2 > 2$ you could shave $x$ down a hair and still bound the set, so $x$ wasn't the *least* upper bound. Only $x^2 = 2$ survives. This $x$ is what we mean by $\\sqrt{2}$.",
         "incorrect": [
           {
             "match": "*",
@@ -64,14 +64,14 @@
     {
       "id": "s4",
       "type": "problem",
-      "prompt": "Why does √2 exist in ℝ but not in ℚ?",
+      "prompt": "Why does $\\sqrt{2}$ exist in $\\mathbb{R}$ but not in $\\mathbb{Q}$?",
       "widget": {
         "kind": "multiple_choice",
         "props": {
           "choices": [
-            { "id": "a", "label": "ℝ has the least upper bound property (every non-empty set bounded above has a supremum); ℚ does not." },
-            { "id": "b", "label": "ℝ has infinitely many decimals but ℚ does not." },
-            { "id": "c", "label": "√2 is actually rational; the earlier proof was mistaken." }
+            { "id": "a", "label": "$\\mathbb{R}$ has the least upper bound property (every non-empty set bounded above has a supremum); $\\mathbb{Q}$ does not." },
+            { "id": "b", "label": "$\\mathbb{R}$ has infinitely many decimals but $\\mathbb{Q}$ does not." },
+            { "id": "c", "label": "$\\sqrt{2}$ is actually rational; the earlier proof was mistaken." }
           ]
         }
       },
@@ -81,19 +81,19 @@
         "accept": ["a"]
       },
       "feedback": {
-        "correct": "That's the heart of it. Both ℝ and ℚ are dense and infinite; the *only* difference is completeness. The supremum of $\\{t > 0 : t^2 < 2\\}$ exists in ℝ and equals √2, while in ℚ that same supremum is simply missing.",
+        "correct": "That's the heart of it. Both $\\mathbb{R}$ and $\\mathbb{Q}$ are dense and infinite; the *only* difference is completeness. The supremum of $\\{t > 0 : t^2 < 2\\}$ exists in $\\mathbb{R}$ and equals $\\sqrt{2}$, while in $\\mathbb{Q}$ that same supremum is simply missing.",
         "incorrect": [
           {
             "match": "b",
-            "message": "Both ℚ and ℝ have infinitely many values in any interval — ℚ is dense too. Infinitude isn't the difference; the *least upper bound property* is."
+            "message": "Both $\\mathbb{Q}$ and $\\mathbb{R}$ have infinitely many values in any interval — $\\mathbb{Q}$ is dense too. Infinitude isn't the difference; the *least upper bound property* is."
           },
           {
             "match": "c",
-            "message": "We proved √2 is irrational by contradiction last lesson, and that proof is airtight. √2 genuinely isn't a fraction — yet it still exists in ℝ thanks to completeness."
+            "message": "We proved $\\sqrt{2}$ is irrational by contradiction last lesson, and that proof is airtight. $\\sqrt{2}$ genuinely isn't a fraction — yet it still exists in $\\mathbb{R}$ thanks to completeness."
           },
           {
             "match": "*",
-            "message": "Compare the two systems. They're both dense ordered fields. The single property ℝ has and ℚ lacks is that every non-empty bounded-above set has a supremum."
+            "message": "Compare the two systems. They're both dense ordered fields. The single property $\\mathbb{R}$ has and $\\mathbb{Q}$ lacks is that every non-empty bounded-above set has a supremum."
           }
         ]
       }
@@ -107,7 +107,7 @@
         "props": {
           "steps": [
             { "id": "p1", "label": "Let $A$ be non-empty and bounded above." },
-            { "id": "p2", "label": "By completeness, $\\sup A$ exists in ℝ." },
+            { "id": "p2", "label": "By completeness, $\\sup A$ exists in $\\mathbb{R}$." },
             { "id": "p3", "label": "Since $\\sup A$ is an upper bound of $A$, we have $\\sup A \\in A$." },
             { "id": "p4", "label": "Hence $\\sup A$ is the maximum (largest element) of $A$." }
           ]
@@ -168,7 +168,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Completeness 'fills the holes.' In ℝ, every non-empty set that is bounded above has a supremum. Apply that promise to $A = \\{x > 0 : x^2 < 2\\}$ and out pops a number whose square is exactly 2 — we manufactured √2."
+          "content": "Completeness 'fills the holes.' In $\\mathbb{R}$, every non-empty set that is bounded above has a supremum. Apply that promise to $A = \\{x > 0 : x^2 < 2\\}$ and out pops a number whose square is exactly 2 — we manufactured $\\sqrt{2}$."
         },
         {
           "type": "math",
@@ -176,11 +176,11 @@
         },
         {
           "type": "text",
-          "content": "The same machine builds every root you want. For any real $a > 0$ and integer $n \\ge 1$, the number $\\sup\\{x > 0 : x^n < a\\}$ exists in ℝ and is the unique positive $n$-th root $\\sqrt[n]{a}$. One property, all the roots."
+          "content": "The same machine builds every root you want. For any real $a > 0$ and integer $n \\ge 1$, the number $\\sup\\{x > 0 : x^n < a\\}$ exists in $\\mathbb{R}$ and is the unique positive $n$-th root $\\sqrt[n]{a}$. One property, all the roots."
         },
         {
           "type": "text",
-          "content": "And there is the whole arc, start to finish: the rationals are dense but holey → the hole was a missing least upper bound → completeness is exactly the property that supplies those bounds → so √2 (and every nth root) is real. ℝ is simply ℚ with the gaps filled in."
+          "content": "And there is the whole arc, start to finish: the rationals are dense but holey → the hole was a missing least upper bound → completeness is exactly the property that supplies those bounds → so $\\sqrt{2}$ (and every nth root) is real. $\\mathbb{R}$ is simply $\\mathbb{Q}$ with the gaps filled in."
         }
       ]
     },
@@ -190,14 +190,14 @@
       "items": [
         {
           "id": "q1",
-          "prompt": "What guarantees that √2 exists in ℝ?",
+          "prompt": "What guarantees that $\\sqrt{2}$ exists in $\\mathbb{R}$?",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "The least upper bound (completeness) property of ℝ." },
-                { "id": "b", "label": "The fact that √2 has a repeating decimal expansion." },
-                { "id": "c", "label": "The density of ℚ." }
+                { "id": "a", "label": "The least upper bound (completeness) property of $\\mathbb{R}$." },
+                { "id": "b", "label": "The fact that $\\sqrt{2}$ has a repeating decimal expansion." },
+                { "id": "c", "label": "The density of $\\mathbb{Q}$." }
               ]
             }
           },
@@ -207,26 +207,26 @@
             "accept": ["a"]
           },
           "feedback": {
-            "correct": "Right — we obtained √2 as the supremum of a bounded-above set, which completeness promises to exist.",
+            "correct": "Right — we obtained $\\sqrt{2}$ as the supremum of a bounded-above set, which completeness promises to exist.",
             "incorrect": [
               {
                 "match": "b",
-                "message": "√2's decimal never repeats — that's another way of saying it's irrational. Its existence comes from completeness, not from any decimal pattern."
+                "message": "$\\sqrt{2}$'s decimal never repeats — that's another way of saying it's irrational. Its existence comes from completeness, not from any decimal pattern."
               },
               {
                 "match": "c",
-                "message": "ℚ is dense too, yet √2 isn't in ℚ. Density isn't enough; the missing ingredient is the least upper bound property."
+                "message": "$\\mathbb{Q}$ is dense too, yet $\\sqrt{2}$ isn't in $\\mathbb{Q}$. Density isn't enough; the missing ingredient is the least upper bound property."
               },
               {
                 "match": "*",
-                "message": "We built √2 as $\\sup\\{x > 0 : x^2 < 2\\}$. What property of ℝ guarantees that supremum exists?"
+                "message": "We built $\\sqrt{2}$ as $\\sup\\{x > 0 : x^2 < 2\\}$. What property of $\\mathbb{R}$ guarantees that supremum exists?"
               }
             ]
           }
         },
         {
           "id": "q2",
-          "prompt": "Every non-empty subset of ℝ that is bounded above has a ___.",
+          "prompt": "Every non-empty subset of $\\mathbb{R}$ that is bounded above has a ___.",
           "widget": {
             "kind": "multiple_choice",
             "props": {
@@ -251,7 +251,7 @@
               },
               {
                 "match": "c",
-                "message": "The bound need not be rational — the supremum of $\\{x>0:x^2<2\\}$ is √2, which is irrational. Completeness promises a supremum, with no rationality attached."
+                "message": "The bound need not be rational — the supremum of $\\{x>0:x^2<2\\}$ is $\\sqrt{2}$, which is irrational. Completeness promises a supremum, with no rationality attached."
               },
               {
                 "match": "*",
@@ -262,13 +262,13 @@
         },
         {
           "id": "q3",
-          "prompt": "True or false: ℝ is 'ℚ with the gaps filled in.'",
+          "prompt": "True or false: $\\mathbb{R}$ is '$\\mathbb{Q}$ with the gaps filled in.'",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "True — ℝ is the ordered field ℚ plus the least upper bound property, which supplies the missing boundary points." },
-                { "id": "b", "label": "False — ℝ and ℚ are completely unrelated number systems." }
+                { "id": "a", "label": "True — $\\mathbb{R}$ is the ordered field $\\mathbb{Q}$ plus the least upper bound property, which supplies the missing boundary points." },
+                { "id": "b", "label": "False — $\\mathbb{R}$ and $\\mathbb{Q}$ are completely unrelated number systems." }
               ]
             }
           },
@@ -278,15 +278,15 @@
             "accept": ["a"]
           },
           "feedback": {
-            "correct": "True. ℝ keeps all of ℚ's arithmetic and order and adds completeness, which fills in points like √2 that ℚ was missing.",
+            "correct": "True. $\\mathbb{R}$ keeps all of $\\mathbb{Q}$'s arithmetic and order and adds completeness, which fills in points like $\\sqrt{2}$ that $\\mathbb{Q}$ was missing.",
             "incorrect": [
               {
                 "match": "b",
-                "message": "They're deeply related: ℚ sits inside ℝ. ℝ is exactly the ordered field of rationals upgraded with the least upper bound property, which fills the gaps."
+                "message": "They're deeply related: $\\mathbb{Q}$ sits inside $\\mathbb{R}$. $\\mathbb{R}$ is exactly the ordered field of rationals upgraded with the least upper bound property, which fills the gaps."
               },
               {
                 "match": "*",
-                "message": "Recall the arc: ℚ is dense but holey, and adding completeness supplies the missing boundary points. That's precisely 'ℚ with the gaps filled in.'"
+                "message": "Recall the arc: $\\mathbb{Q}$ is dense but holey, and adding completeness supplies the missing boundary points. That's precisely '$\\mathbb{Q}$ with the gaps filled in.'"
               }
             ]
           }

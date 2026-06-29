@@ -104,7 +104,7 @@
         },
         {
           "type": "text",
-          "content": "The chain is: $K$ compact → $f(K)$ compact → $f(K)$ closed and bounded → $M=\\sup f(K)$ is finite and in $f(K)$ → some $x^*$ attains it."
+          "content": "The chain is: $K$ compact $\\to$ $f(K)$ compact $\\to$ $f(K)$ closed and bounded $\\to$ $M=\\sup f(K)$ is finite and in $f(K)$ $\\to$ some $x^*$ attains it."
         }
       ],
       "widget": {
@@ -123,7 +123,7 @@
       "feedback": {
         "correct": "Exactly. Continuity carries compactness to the image; compact in $\\mathbb{R}$ means closed and bounded; bounded makes $M$ finite and closed drags $M$ back into $f(K)$; so $M$ is attained.",
         "incorrect": [
-          { "match": "*", "message": "Order by dependency: hypotheses (compact + continuous) ⇒ $f(K)$ compact ⇒ closed and bounded ⇒ $\\sup$ finite and in $f(K)$ ⇒ attained. Each step needs the one before it." }
+          { "match": "*", "message": "Order by dependency: hypotheses (compact + continuous) $\\Rightarrow$ $f(K)$ compact $\\Rightarrow$ closed and bounded $\\Rightarrow$ $\\sup$ finite and in $f(K)$ $\\Rightarrow$ attained. Each step needs the one before it." }
         ]
       }
     },
@@ -223,7 +223,7 @@
             "incorrect": [
               { "match": "b", "message": "Boundedness alone is not enough: $f(x)=x$ on $(0,1)$ is bounded yet attains no max. You also need continuity and a *compact* domain." },
               { "match": "c", "message": "Not *any* interval — open or unbounded ones break it ($x$ on $(0,1)$, $1/x$ on $(0,1)$). The interval must be closed and bounded." },
-              { "match": "*", "message": "EVT: continuous + compact domain ⇒ bounded and attains max and min." }
+              { "match": "*", "message": "EVT: continuous + compact domain $\\Rightarrow$ bounded and attains max and min." }
             ]
           }
         },

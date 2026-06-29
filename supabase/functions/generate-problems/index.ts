@@ -1,11 +1,16 @@
-// F8.3 — Problem generation edge function (Deno).
+// F8.3 / Stage 6 — Problem generation edge function (Deno).
 //
-// The LLM PROPOSES candidate problems (prompt + a math.js answer expression);
-// it never decides what is served. Authoritative verification happens on the
-// client via the F8.2 verifier (`verifyCandidate` + `parseLlmCandidates`), which
-// independently evaluates each expression with math.js and gates on the real
-// validator. This function therefore just proxies the proposal request with the
-// server-held API key and returns the raw model text for the client to verify.
+// The LLM PROPOSES candidate problems; it never decides what is served.
+// Authoritative verification happens on the CLIENT: the numeric path
+// (`parseLlmCandidates`) re-evaluates each math.js expression, and the
+// conceptual beta path (`parseConceptCandidates`) structurally gates and
+// canonically re-encodes each item; both then pass the shared `verifyCandidate`
+// gate against the real validator. This function is a thin proxy that injects
+// the server-held API key and returns the raw model text for the client to
+// verify. The detailed item contract lives in the client-built messages, so the
+// server guard here is intentionally schema-agnostic — it only enforces JSON
+// output and the never-reveal-the-answer policy, and never fights the caller's
+// schema (numeric OR conceptual).
 //
 // Safety: verify_jwt enabled at deploy (authenticated callers only); payload
 // capped; a server-authoritative guard message is always prepended.
@@ -14,14 +19,14 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 type ChatMessage = { role: "system" | "user"; content: string };
 
-const MAX_TOTAL_CHARS = 4000;
+const MAX_TOTAL_CHARS = 8000;
 const MODEL = Deno.env.get("AI_GENERATION_MODEL") ?? "gpt-4o-mini";
 
 const SERVER_GUARD = [
-  "You generate real-analysis practice problems.",
-  "Return ONLY a JSON array; each element { \"prompt\": string, \"answerExpression\": string }.",
-  "answerExpression must be a pure math.js numeric expression (no prose, no variables).",
-  "Do not include the answer inside the prompt.",
+  "You generate real-analysis practice problems on request.",
+  "Return ONLY valid JSON that matches the structure the user message specifies — no prose, no markdown fences.",
+  "Never reveal or restate the correct answer inside a problem's prompt text.",
+  "Every problem must be mathematically correct and well-posed.",
 ].join("\n");
 
 const CORS = {
@@ -83,7 +88,7 @@ Deno.serve(async (req: Request) => {
         model: MODEL,
         messages,
         temperature: 0.7,
-        max_tokens: 600,
+        max_tokens: 1800,
         response_format: { type: "json_object" },
       }),
     });

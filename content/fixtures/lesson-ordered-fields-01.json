@@ -10,15 +10,15 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Last lesson left us with a paradox. The rationals are dense: between any two of them sits another, so as you zoom in you never see a gap. Yet we claimed ℚ is still missing points. How can something be missing from a line that looks completely solid?"
+          "content": "Last lesson left us with a paradox. The rationals are dense: between any two of them sits another, so as you zoom in you never see a gap. Yet we claimed $\\mathbb{Q}$ is still missing points. How can something be missing from a line that looks completely solid?"
         },
         {
           "type": "text",
-          "content": "Here's where the missing point hides. Draw a right triangle with both legs equal to 1. By the Pythagorean theorem its hypotenuse has length √2. Around 500 BC a follower of Pythagoras discovered that this length is NOT a fraction — a result so unsettling to a school that worshipped whole-number ratios that, legend says, it was kept secret. We are about to rediscover their scandal."
+          "content": "Here's where the missing point hides. Draw a right triangle with both legs equal to 1. By the Pythagorean theorem its hypotenuse has length $\\sqrt{2}$. Around 500 BC a follower of Pythagoras discovered that this length is NOT a fraction — a result so unsettling to a school that worshipped whole-number ratios that, legend says, it was kept secret. We are about to rediscover their scandal."
         },
         {
           "type": "text",
-          "content": "Before we hunt the gap, fix the setting. ℚ comes with +, −, ×, ÷ and an order ≤ that plays nicely with them: you can add the same thing to both sides, multiply by a positive number, and so on. A structure with these arithmetic and order rules is called an *ordered field*. ℝ is one too. The only thing that will distinguish ℝ from ℚ in this entire unit is a single extra property — *completeness* — and that is the star of the show."
+          "content": "Before we hunt the gap, fix the setting. $\\mathbb{Q}$ comes with $+, -, \\times, \\div$ and an order $\\leq$ that plays nicely with them: you can add the same thing to both sides, multiply by a positive number, and so on. A structure with these arithmetic and order rules is called an *ordered field*. $\\mathbb{R}$ is one too. The only thing that will distinguish $\\mathbb{R}$ from $\\mathbb{Q}$ in this entire unit is a single extra property — *completeness* — and that is the star of the show."
         },
         {
           "type": "math",
@@ -100,7 +100,7 @@
         "accept": ["1,2,3,4,5"]
       },
       "feedback": {
-        "correct": "That's the proof exactly. The fraction's own 'lowest terms' assumption is what collapses: m and n turn out to share the factor 2, which is impossible. So √2 simply cannot be written as a ratio of integers.",
+        "correct": "That's the proof exactly. The fraction's own 'lowest terms' assumption is what collapses: m and n turn out to share the factor 2, which is impossible. So $\\sqrt{2}$ simply cannot be written as a ratio of integers.",
         "incorrect": [
           {
             "match": "*",
@@ -115,7 +115,7 @@
       "blocks": [
         {
           "type": "text",
-          "content": "Put the two discoveries together. ℚ is a perfectly good ordered field — arithmetic and order behave flawlessly — and yet it is *incomplete*. We just proved that √2 is not one of its members."
+          "content": "Put the two discoveries together. $\\mathbb{Q}$ is a perfectly good ordered field — arithmetic and order behave flawlessly — and yet it is *incomplete*. We just proved that $\\sqrt{2}$ is not one of its members."
         },
         {
           "type": "math",
@@ -123,11 +123,11 @@
         },
         {
           "type": "text",
-          "content": "And the set A showed us exactly *where* the hole is. A has no largest element; it climbs toward a boundary and stops just short. That boundary — the smallest number that is ≥ every element of A — is precisely a *least upper bound*. In ℚ, that boundary point is missing."
+          "content": "And the set A showed us exactly *where* the hole is. A has no largest element; it climbs toward a boundary and stops just short. That boundary — the smallest number that is $\\geq$ every element of A — is precisely a *least upper bound*. In $\\mathbb{Q}$, that boundary point is missing."
         },
         {
           "type": "text",
-          "content": "This is the whole game. The single property ℚ lacks is: every non-empty set that is bounded above has a least upper bound. Add that property and you get ℝ. The next lessons build the language of bounds and suprema carefully, so we can return and prove that √2 really does live in ℝ."
+          "content": "This is the whole game. The single property $\\mathbb{Q}$ lacks is: every non-empty set that is bounded above has a least upper bound. Add that property and you get $\\mathbb{R}$. The next lessons build the language of bounds and suprema carefully, so we can return and prove that $\\sqrt{2}$ really does live in $\\mathbb{R}$."
         }
       ]
     },
@@ -137,13 +137,13 @@
       "items": [
         {
           "id": "q1",
-          "prompt": "Is ℚ an ordered field?",
+          "prompt": "Is $\\mathbb{Q}$ an ordered field?",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "Yes — it has +, −, ×, ÷ and a compatible order." },
-                { "id": "b", "label": "No, because √2 is missing from it." }
+                { "id": "a", "label": "Yes — it has $+, -, \\times, \\div$ and a compatible order." },
+                { "id": "b", "label": "No, because $\\sqrt{2}$ is missing from it." }
               ]
             }
           },
@@ -153,29 +153,29 @@
             "accept": ["a"]
           },
           "feedback": {
-            "correct": "Yes. Being an ordered field is only about arithmetic and order, and ℚ satisfies all of those rules.",
+            "correct": "Yes. Being an ordered field is only about arithmetic and order, and $\\mathbb{Q}$ satisfies all of those rules.",
             "incorrect": [
               {
                 "match": "b",
-                "message": "A missing √2 is a *completeness* failure, not a field-or-order failure. ℚ still adds, multiplies, divides, and orders perfectly — so it is an ordered field."
+                "message": "A missing $\\sqrt{2}$ is a *completeness* failure, not a field-or-order failure. $\\mathbb{Q}$ still adds, multiplies, divides, and orders perfectly — so it is an ordered field."
               },
               {
                 "match": "*",
-                "message": "Check the definition: an ordered field needs +, −, ×, ÷ and a compatible order. ℚ has all of these."
+                "message": "Check the definition: an ordered field needs $+, -, \\times, \\div$ and a compatible order. $\\mathbb{Q}$ has all of these."
               }
             ]
           }
         },
         {
           "id": "q2",
-          "prompt": "The standard proof that √2 is irrational is a proof by ___.",
+          "prompt": "The standard proof that $\\sqrt{2}$ is irrational is a proof by ___.",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
                 { "id": "a", "label": "induction" },
                 { "id": "b", "label": "contradiction" },
-                { "id": "c", "label": "direct construction of √2 as a fraction" }
+                { "id": "c", "label": "direct construction of $\\sqrt{2}$ as a fraction" }
               ]
             }
           },
@@ -185,7 +185,7 @@
             "accept": ["b"]
           },
           "feedback": {
-            "correct": "Exactly — we assumed √2 = m/n in lowest terms and derived an impossibility.",
+            "correct": "Exactly — we assumed $\\sqrt{2}$ = m/n in lowest terms and derived an impossibility.",
             "incorrect": [
               {
                 "match": "a",
@@ -193,7 +193,7 @@
               },
               {
                 "match": "c",
-                "message": "We can't construct √2 as a fraction — that's the whole point we disproved. Instead we assumed it could be and hit a contradiction."
+                "message": "We can't construct $\\sqrt{2}$ as a fraction — that's the whole point we disproved. Instead we assumed it could be and hit a contradiction."
               },
               {
                 "match": "*",
@@ -204,12 +204,12 @@
         },
         {
           "id": "q3",
-          "prompt": "In ℚ, the set $A = \\{ p > 0 : p^2 < 2 \\}$ fails to have a ___.",
+          "prompt": "In $\\mathbb{Q}$, the set $A = \\{ p > 0 : p^2 < 2 \\}$ fails to have a ___.",
           "widget": {
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "least upper bound (supremum) in ℚ" },
+                { "id": "a", "label": "least upper bound (supremum) in $\\mathbb{Q}$" },
                 { "id": "b", "label": "lower bound" },
                 { "id": "c", "label": "any element at all" }
               ]
@@ -221,7 +221,7 @@
             "accept": ["a"]
           },
           "feedback": {
-            "correct": "Right. A is bounded above (by 2, say) but its least upper bound would be √2, which isn't in ℚ — so no supremum exists *within* ℚ.",
+            "correct": "Right. A is bounded above (by 2, say) but its least upper bound would be $\\sqrt{2}$, which isn't in $\\mathbb{Q}$ — so no supremum exists *within* $\\mathbb{Q}$.",
             "incorrect": [
               {
                 "match": "b",
@@ -229,11 +229,11 @@
               },
               {
                 "match": "c",
-                "message": "A is far from empty — 1 is in it, since $1^2 < 2$. What it lacks is a least upper bound inside ℚ."
+                "message": "A is far from empty — 1 is in it, since $1^2 < 2$. What it lacks is a least upper bound inside $\\mathbb{Q}$."
               },
               {
                 "match": "*",
-                "message": "A climbs toward √2 and stops short. The thing missing in ℚ is the boundary it approaches — its least upper bound."
+                "message": "A climbs toward $\\sqrt{2}$ and stops short. The thing missing in $\\mathbb{Q}$ is the boundary it approaches — its least upper bound."
               }
             ]
           }

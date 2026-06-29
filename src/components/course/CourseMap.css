@@ -1,0 +1,68 @@
+/*
+ * Course Map visuals. All motion is opt-in: the default rendering is fully
+ * static so reduced-motion users (and jsdom tests) get a calm, complete view.
+ */
+
+.course-map {
+  touch-action: none; /* we own pan/zoom gestures on the surface */
+}
+
+.course-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.course-map[data-panning='true'] {
+  cursor: grabbing;
+}
+
+.course-map[data-panning='false'] {
+  cursor: grab;
+}
+
+/* The recommended node's outer ring: a gentle, looping pulse to draw the eye. */
+.course-map-spotlight {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .course-map-spotlight {
+    animation: course-map-pulse 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes course-map-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(1.35);
+  }
+}
+
+/* Node hover/focus lift — purely cosmetic, safe to drop under reduced motion. */
+.course-map-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.course-map-node:focus-visible .course-map-node-focus {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .course-map-node-body {
+    transition: transform 140ms ease;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .course-map-node:hover .course-map-node-body {
+    transform: scale(1.06);
+  }
+}

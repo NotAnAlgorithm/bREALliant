@@ -9,6 +9,10 @@
 
 import { isSupabaseConfigured, supabase } from '../supabase'
 import {
+  buildConceptGenerationPrompt,
+  parseConceptCandidates,
+} from './concept-generation'
+import {
   buildGenerationPrompt,
   generateLocalCandidates,
   parseLlmCandidates,
@@ -51,6 +55,40 @@ export async function fetchGeneratedItems(
     return verifyAll(parseLlmCandidates(data.raw, tag))
   } catch (err) {
     console.error('generate-problems failed', err)
+    return []
+  }
+}
+
+/**
+ * Stage 6 (beta) — LLM-proposed CONCEPTUAL items for one or more concept tags,
+ * aligned with the curated bank (choice-style widgets graded by `set_match`,
+ * 1-3 difficulty, Socratic feedback). Same verifier-first guarantees as the
+ * numeric path: untrusted output is structurally gated, canonically encoded, and
+ * must pass `verifyCandidate` before it is returned. Fail-soft: returns [] when
+ * generation is disabled/unavailable or the call fails, and never throws.
+ *
+ * These items are a sandboxed beta surface and DO NOT feed the mastery signal —
+ * callers must render them through a runner that never records reviews.
+ */
+export async function fetchGeneratedConceptItems(
+  tags: string[],
+  count = 3,
+  masteryHint?: string,
+  avoidPrompts: string[] = [],
+): Promise<VerifiedItem[]> {
+  if (!aiGenerationEnabled() || !supabase || tags.length === 0) return []
+
+  try {
+    const messages = buildConceptGenerationPrompt({ tags, count, masteryHint, avoidPrompts })
+    const { data, error } = await supabase.functions.invoke<{ raw?: unknown }>(
+      'generate-problems',
+      { body: { messages } },
+    )
+    if (error || !data?.raw) return []
+    // Filter out anything that merely restates an existing bank problem.
+    return verifyAll(parseConceptCandidates(data.raw, tags, avoidPrompts))
+  } catch (err) {
+    console.error('generate-problems (concept) failed', err)
     return []
   }
 }

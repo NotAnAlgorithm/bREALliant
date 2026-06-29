@@ -1,6 +1,7 @@
 import { useId, type ChangeEvent } from 'react'
 
 import type { WidgetComponentProps } from '../types'
+import { RichText } from '../../components/blocks/RichText'
 import {
   clampToRange,
   evalReadout,
@@ -36,7 +37,7 @@ export function SliderWidget({
     >
       <div className="flex items-baseline justify-between gap-3">
         <label htmlFor={inputId} className="text-sm font-medium text-ink">
-          {props.label ?? 'Value'}
+          <RichText content={props.label ?? 'Value'} />
         </label>
         <span className="font-mono text-sm font-medium text-ink">
           {props.label ? `${props.label} = ` : ''}
@@ -79,7 +80,9 @@ export function SliderWidget({
         <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
           {props.readouts.map((readout, index) => (
             <div key={index} className="contents">
-              <dt className="font-mono text-ink-muted">{readout.label}</dt>
+              <dt className="font-mono text-ink-muted">
+                <RichText content={readout.label} />
+              </dt>
               <dd className="text-right font-mono font-medium text-ink">
                 {evalReadout(readout.expression, value)}
               </dd>

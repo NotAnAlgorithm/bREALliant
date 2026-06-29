@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { loadAllLessons } from '../lib/content/schema-loader'
+import { loadAllLessons, loadPracticeBank } from '../lib/content/schema-loader'
 import {
   evaluateProblemFromWidget,
   type EvaluationResult,
@@ -28,11 +28,12 @@ export function Practice() {
   const { masteryByTag, loading, refresh } = useCourseProgress()
 
   const session = useMemo<SessionEntry<GradedItem>[]>(() => {
-    const bank = buildRetrievalBank(loadAllLessons())
+    const bank = buildRetrievalBank(loadAllLessons(), loadPracticeBank().items)
     const pools = buildPracticePools(masteryByTag, bank)
     return buildInterleavedSession(pools, {
       limit: SESSION_LIMIT,
       kindOf: (item) => item.widget.kind,
+      keyOf: (item) => item.id,
     })
   }, [masteryByTag])
 

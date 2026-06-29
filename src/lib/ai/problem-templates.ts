@@ -70,6 +70,9 @@ function fillBlankItem(
       correct: STANDARD_FEEDBACK.correct,
       incorrect: STANDARD_FEEDBACK.incorrect.map((f) => ({ ...f })),
     },
+    // These generated items are mechanical single-step computations, so they sit
+    // at the easiest rung of the 1–3 difficulty scale.
+    difficulty: 1,
   }
 }
 
@@ -237,7 +240,7 @@ const TEMPLATES: ProblemTemplate[] = [
         selfTestAnswer: String(answer),
         item: fillBlankItem(
           `gen-ball-${index}`,
-          `On $\\mathbb{R}$ with $d(x,y)=|x-y|$, what is the largest radius $r$ for which the open ball $B(${x}, r)$ is contained in the interval $(${a}, ${b})$?`,
+          `On $\\mathbb{R}$ with $d(x,y)=|x-y|$, what is the largest radius $r$ for which the open ball $B_r(${x})$ is contained in the interval $(${a}, ${b})$?`,
           { type: 'expression', engine: 'mathjs', accept: [String(answer)] },
         ),
       }

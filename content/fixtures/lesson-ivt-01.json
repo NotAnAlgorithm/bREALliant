@@ -87,7 +87,7 @@
         },
         {
           "type": "text",
-          "content": "**Conclusion.** That $c$ is a real root of $x^3-x-1$. The pattern — *continuous + sign change ⇒ root* — is the workhorse for proving existence without ever computing the root."
+          "content": "**Conclusion.** That $c$ is a real root of $x^3-x-1$. The pattern — *continuous + sign change $\\Rightarrow$ root* — is the workhorse for proving existence without ever computing the root."
         }
       ]
     },
@@ -147,7 +147,7 @@
       "feedback": {
         "correct": "Exactly. Continuity carries connectedness to the image; connected in $\\mathbb{R}$ means an interval; an interval holding $f(a)$ and $f(b)$ holds everything between; so each intermediate $y$ is realized as some $f(c)$.",
         "incorrect": [
-          { "match": "*", "message": "Order by dependency: hypotheses ⇒ $f([a,b])$ connected ⇒ it is an interval ⇒ it contains all $y$ between $f(a),f(b)$ ⇒ each such $y$ equals some $f(c)$." }
+          { "match": "*", "message": "Order by dependency: hypotheses $\\Rightarrow$ $f([a,b])$ connected $\\Rightarrow$ it is an interval $\\Rightarrow$ it contains all $y$ between $f(a),f(b)$ $\\Rightarrow$ each such $y$ equals some $f(c)$." }
         ]
       }
     },
@@ -221,7 +221,7 @@
             "incorrect": [
               { "match": "b", "message": "That is the *Extreme* Value Theorem (compactness), about attaining max/min. The IVT is about hitting in-between *values*." },
               { "match": "c", "message": "Not *every* function — continuity is essential. A jump function skips values, as the sign-step example showed." },
-              { "match": "*", "message": "IVT: $f$ continuous on $[a,b]$, $y$ between $f(a),f(b)$ ⇒ some $c$ has $f(c)=y$." }
+              { "match": "*", "message": "IVT: $f$ continuous on $[a,b]$, $y$ between $f(a),f(b)$ $\\Rightarrow$ some $c$ has $f(c)=y$." }
             ]
           }
         },
@@ -244,7 +244,7 @@
             "correct": "Right. Continuity makes $f([a,b])$ connected, and 'connected in $\\mathbb{R}$' = 'interval', which has no gaps — so all intermediate values appear.",
             "incorrect": [
               { "match": "b", "message": "Far from it — $\\{-1,1\\}$ and $\\mathbb{Q}$ are disconnected. The useful fact is that the *connected* ones are precisely the intervals." },
-              { "match": "c", "message": "Bounded does not imply interval: $\\{0\\}\\cup\\{1\\}$ is bounded but not an interval. The right notion is *connected* ⇔ interval." },
+              { "match": "c", "message": "Bounded does not imply interval: $\\{0\\}\\cup\\{1\\}$ is bounded but not an interval. The right notion is *connected* $\\iff$ interval." },
               { "match": "*", "message": "The crucial identification: connected subsets of $\\mathbb{R}$ are exactly the intervals." }
             ]
           }
@@ -297,7 +297,7 @@
         "incorrect": [
           { "match": "b", "message": "A positive derivative shows monotonicity, not existence of a root. The IVT needs a *sign change* of $f$ itself between two points." },
           { "match": "c", "message": "The opposite is true — odd-degree polynomials always have a real root, precisely by an IVT sign-change argument." },
-          { "match": "*", "message": "Find two inputs where $f$ has opposite signs; continuity + sign change ⇒ root via the IVT." }
+          { "match": "*", "message": "Find two inputs where $f$ has opposite signs; continuity + sign change $\\Rightarrow$ root via the IVT." }
         ]
       }
     },

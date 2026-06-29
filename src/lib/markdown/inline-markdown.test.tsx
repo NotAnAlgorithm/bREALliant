@@ -83,4 +83,40 @@ describe('renderInlineMarkdown', () => {
     expect(container.querySelector('button')).toBeNull()
     expect(screen.getByText(/a \[\[ b with no close/)).toBeInTheDocument()
   })
+
+  it('renders inline math as katex', () => {
+    const { container } = render(<>{renderInlineMarkdown('value $x+1$ here')}</>)
+    expect(container.querySelector('.katex')).not.toBeNull()
+  })
+
+  it('wraps math inside a strong span', () => {
+    const { container } = render(
+      <>{renderInlineMarkdown('**converges to $S$**')}</>,
+    )
+    const strong = container.querySelector('strong')
+    expect(strong).not.toBeNull()
+    expect(strong).toHaveTextContent('converges to')
+    expect(strong?.querySelector('.katex')).not.toBeNull()
+  })
+
+  it('renders inline code opaquely (no katex inside)', () => {
+    const { container } = render(
+      <>{renderInlineMarkdown('a `f($x$)` b')}</>,
+    )
+    const code = container.querySelector('code')
+    expect(code).toHaveTextContent('f($x$)')
+    expect(container.querySelector('.katex')).toBeNull()
+  })
+
+  it('keeps math internals out of markdown', () => {
+    const { container } = render(<>{renderInlineMarkdown('$a*b*c$')}</>)
+    expect(container.querySelector('em')).toBeNull()
+    expect(container.querySelector('.katex')).not.toBeNull()
+  })
+
+  it('does not throw on a lone $', () => {
+    const { container } = render(<>{renderInlineMarkdown('only $5 dollars')}</>)
+    expect(container.querySelector('.katex')).toBeNull()
+    expect(screen.getByText(/only \$5 dollars/)).toBeInTheDocument()
+  })
 })

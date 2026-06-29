@@ -44,6 +44,12 @@ export function getAnswerFromWidgetState(
     }
     case 'multiple_choice':
       return String(state.selectedId ?? '')
+    case 'multiple_select': {
+      // Deterministic encoding: selected ids sorted ascending, comma-joined,
+      // e.g. "a,c". Order-independent so any click sequence grades identically.
+      const selectedIds = Array.isArray(state.selectedIds) ? state.selectedIds : []
+      return [...selectedIds].map(String).sort().join(',')
+    }
     case 'drag_order':
       return (Array.isArray(state.order) ? state.order : []).join(',')
     case 'spot_the_flaw':

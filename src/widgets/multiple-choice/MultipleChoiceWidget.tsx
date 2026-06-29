@@ -1,5 +1,8 @@
+import { useMemo } from 'react'
+
 import type { WidgetComponentProps } from '../types'
 import { RichText } from '../../components/blocks/RichText'
+import { orderOptionsForDisplay } from '../shuffle'
 import { parseMultipleChoiceProps } from './utils'
 
 export function MultipleChoiceWidget({
@@ -11,13 +14,22 @@ export function MultipleChoiceWidget({
   const { choices } = parseMultipleChoiceProps(widget.props)
   const selectedId = typeof state.selectedId === 'string' ? state.selectedId : ''
 
+  // Scramble display order once per presentation. Keyed by the option-id set so
+  // it does not reshuffle on every re-render (only when a new question loads).
+  const choiceKey = choices.map((c) => c.id).join('|')
+  const ordered = useMemo(
+    () => orderOptionsForDisplay(choices, widget.props),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [choiceKey],
+  )
+
   return (
     <div
       className="flex flex-col gap-2"
       role="radiogroup"
       data-widget="multiple_choice"
     >
-      {choices.map((choice) => {
+      {ordered.map((choice) => {
         const selected = choice.id === selectedId
         return (
           <button

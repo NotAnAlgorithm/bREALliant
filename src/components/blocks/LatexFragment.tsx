@@ -18,7 +18,7 @@ export function LatexFragment({
 
   return (
     <span
-      className={`${display ? 'math-block block overflow-x-auto' : 'math-inline inline-block align-middle'} ${className}`}
+      className={`${display ? 'math-block block overflow-x-auto' : 'math-inline inline-block align-baseline'} ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )

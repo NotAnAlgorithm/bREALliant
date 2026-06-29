@@ -2,7 +2,9 @@ import type { ReactNode } from 'react'
 
 import type { Widget } from '@content/schemas/widgets'
 
-export type WidgetState = Record<string, unknown>
+export type WidgetState = Record<string, unknown> & {
+  selectedIds?: string[]
+}
 
 export type WidgetComponentProps = {
   widget: Widget
@@ -74,6 +76,8 @@ export function getInitialWidgetState(
     }
     case 'multiple_choice':
       return { selectedId: '' }
+    case 'multiple_select':
+      return { selectedIds: [] }
     case 'spot_the_flaw':
       return { selectedId: '' }
     case 'justify_step': {

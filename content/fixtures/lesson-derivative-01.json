@@ -251,7 +251,7 @@
             "kind": "multiple_choice",
             "props": {
               "choices": [
-                { "id": "a", "label": "It is continuous at $0$ but not differentiable there (one-sided secant slopes $+1$ and $-1$ disagree), showing the converse of 'differentiable ⇒ continuous' is false." },
+                { "id": "a", "label": "It is continuous at $0$ but not differentiable there (one-sided secant slopes $+1$ and $-1$ disagree), showing the converse of 'differentiable $\\Rightarrow$ continuous' is false." },
                 { "id": "b", "label": "It is differentiable at $0$ but not continuous there." },
                 { "id": "c", "label": "It is neither continuous nor differentiable anywhere." }
               ]

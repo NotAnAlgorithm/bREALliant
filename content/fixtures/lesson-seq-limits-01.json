@@ -124,7 +124,7 @@
       "id": "s5",
       "type": "problem",
       "tags": ["limit", "epsilon-N"],
-      "prompt": "Reconstruct the ε–N proof that $1/n \\to 0$. Match each step of the argument to the reason that makes it valid.",
+      "prompt": "Reconstruct the $\\varepsilon$–$N$ proof that $1/n \\to 0$. Match each step of the argument to the reason that makes it valid.",
       "widget": {
         "kind": "justify_step",
         "props": {
